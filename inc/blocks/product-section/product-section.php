@@ -49,7 +49,7 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'product-s
 						echo is_numeric( $image ) ? wp_get_attachment_image( $image, 'large' ) : '<img src="' . esc_url( $image ) . '" alt="" />';
 						?>
 					<?php else : ?>
-						<img src="http://lemon-concentrate.local/wp-content/uploads/2023/10/placeholder.svg" alt="<?php esc_attr_e( 'Placeholder', 'lemon-concentrate' ); ?>" />
+						<img src="https://woocommerce-1445036-6185880.cloudwaysapps.com/wp-content/uploads/2023/10/placeholder.svg" alt="<?php esc_attr_e( 'Placeholder', 'lemon-concentrate' ); ?>" />
 					<?php endif; ?>
 				</div>
 				<div class="product-section-col-text">
