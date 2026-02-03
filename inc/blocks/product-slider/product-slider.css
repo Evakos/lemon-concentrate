@@ -115,10 +115,10 @@
 .lemon-product-slider-prev,
 .lemon-product-slider-next {
 	position: absolute;
-	top: 50%;
+	top: 45%;
 	transform: translateY(-50%);
-	width: 50px;
-	height: 50px;
+	width: 70px;
+	height: 70px;
 	border-radius: 50%;
 	background-color: #FFFDF2;
 	border: none;
@@ -138,13 +138,13 @@
 }
 
 .lemon-product-slider-prev {
-	left: -25px;
-	padding-left: 25px;
+	left: -35px;
+	padding-left: 35px;
 }
 
 .lemon-product-slider-next {
-	right: -25px;
-	padding-right: 25px;
+	right: -35px;
+	padding-right: 35px;
 }
 
 @media (max-width: 1024px) {

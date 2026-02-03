@@ -331,7 +331,7 @@ function lemon_concentrate_apply_product_hero_image( $block_content, $block ) {
 	}
 
 	if ( $image_url ) {
-		$image_url = trim( $image_url );
+		$image_url = str_replace( array( "\r", "\n", ' ' ), '', $image_url );
 		$processor = new WP_HTML_Tag_Processor( $block_content );
 		if ( $processor->next_tag( array( 'class_name' => 'wp-block-cover__image-background' ) ) ) {
 			$processor->set_attribute( 'src', $image_url );

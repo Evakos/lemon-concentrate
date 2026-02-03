@@ -5,9 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		const slides = carousel.querySelectorAll('.lemon-testimonial-slide');
 		const prevBtn = carousel.querySelector('.lemon-testimonials-prev');
 		const nextBtn = carousel.querySelector('.lemon-testimonials-next');
-		let currentIndex = 0;
-
+		
 		if (!slides.length || !prevBtn || !nextBtn) return;
+
+		let currentIndex = 0;
 
 		function showSlide(index) {
 			slides.forEach(slide => slide.classList.remove('is-active'));
