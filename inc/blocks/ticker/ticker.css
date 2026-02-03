@@ -1,0 +1,35 @@
+.ticker-container {
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: transparent;
+	color: var(--wp--preset--color--base, #fff);
+    padding-top: var(--wp--preset--spacing--20, 10px);
+    padding-bottom: var(--wp--preset--spacing--20, 10px);
+    max-width: 1280px;
+}
+
+.ticker-track {
+	display: flex;
+	width: max-content;
+	animation: ticker-scroll 30s linear infinite;
+}
+
+.ticker-track:hover {
+	animation-play-state: paused;
+}
+
+.ticker-item {
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+}
+
+.ticker-item::after {
+	content: "•";
+	margin: 0 2rem;
+}
+
+@keyframes ticker-scroll {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(-50%); }
+}

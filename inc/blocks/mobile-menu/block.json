@@ -1,0 +1,21 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/mobile-menu",
+	"version": "1.0.0",
+	"title": "Mobile Menu",
+	"category": "lemon-concentrate",
+	"icon": "menu",
+	"description": "A custom mobile menu with hamburger icon and modal overlay.",
+	"keywords": [ "mobile", "menu", "hamburger", "navigation" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false,
+		"jsx": true
+	},
+	"style": "file:./mobile-menu.css",
+	"script": "file:./mobile-menu.js",
+	"acf": {
+		"renderTemplate": "mobile-menu.php",
+		"mode": "preview"
+	}
+}

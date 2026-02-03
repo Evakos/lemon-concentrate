@@ -1,0 +1,69 @@
+.lemon-contact-form {
+	width: 100%;
+	max-width: 800px;
+	margin: 0 auto;
+	font-family: 'Poppins', sans-serif;
+}
+
+.lemon-contact-form-inner {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.lemon-contact-form-row {
+	width: 100%;
+}
+
+.lemon-contact-form-row-split {
+	display: flex;
+	gap: 1.5rem;
+}
+
+.lemon-contact-form-group {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	gap: 0.5rem;
+}
+
+.lemon-contact-form-group label {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--wp--preset--color--contrast, #333);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.lemon-contact-form-group input,
+.lemon-contact-form-group textarea {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	padding: 1rem;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background-color: #fff;
+	font-size: 1rem;
+	font-family: 'Poppins', sans-serif;
+	transition: border-color 0.3s ease;
+}
+
+.lemon-contact-form-group input:focus,
+.lemon-contact-form-group textarea:focus {
+	outline: none;
+	border-color: var(--wp--preset--color--secondary, #f6b501);
+}
+
+.lemon-contact-form-submit .wp-block-button__link {
+	color: #fff;
+    font-weight: 500;
+    box-shadow: none;
+}
+
+@media (max-width: 600px) {
+	.lemon-contact-form-row-split {
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+}

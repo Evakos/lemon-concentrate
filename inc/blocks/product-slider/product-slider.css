@@ -1,0 +1,162 @@
+.lemon-product-slider-block {
+	width: 100%;
+	max-width: 100%;
+	overflow: hidden;
+	padding: 2rem 0;
+}
+
+.lemon-product-slider-container {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+}
+
+.lemon-product-slider-track {
+	display: flex;
+	transition: transform 0.5s ease-in-out;
+	width: 100%;
+}
+
+.lemon-product-slide {
+	min-width: 20%;
+	flex: 0 0 20%;
+	box-sizing: border-box;
+	padding: 0 0.5rem;
+	display: flex;
+	justify-content: center;
+}
+
+.lemon-product-card {
+	text-align: center;
+	max-width: 400px;
+	width: 100%;
+	background-color: #fff;
+	padding: 1.5rem;
+	border-radius: 8px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lemon-product-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.lemon-product-card img {
+	width: 100%;
+	height: auto;
+	border-radius: 8px;
+	margin-bottom: 1rem;
+	display: block;
+}
+
+.lemon-product-link {
+	text-decoration: none;
+	color: inherit;
+}
+
+.lemon-product-title {
+	font-size: 1.25rem;
+	margin: 0.5rem 0;
+}
+
+.lemon-product-button {
+	display: inline-block;
+	margin-top: 1rem;
+	padding: 0.75rem 1.5rem;
+	background-color: #FF9500;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 4px;
+	font-weight: 500;
+	transition: background-color 0.3s ease;
+}
+
+.lemon-product-button:hover {
+	background-color: #e08400;
+}
+
+.lemon-product-slider-dots {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 1.5rem;
+}
+
+.lemon-product-slider-dot {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background-color: #e5e5e5;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.lemon-product-slider-dot.is-active {
+	background-color: var(--wp--preset--color--primary, #000);
+	animation: lemon-dot-pulse 0.6s ease-out;
+}
+
+@keyframes lemon-dot-pulse {
+	0% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.4);
+	}
+	70% {
+		transform: scale(1.1);
+		box-shadow: 0 0 0 6px rgba(0, 0, 0, 0);
+	}
+	100% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+	}
+}
+
+.lemon-product-slider-prev,
+.lemon-product-slider-next {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: #FFFDF2;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	z-index: 10;
+	color: var(--wp--preset--color--contrast, #000);
+	transition: transform 0.3s ease;
+	box-sizing: border-box;
+}
+
+.lemon-product-slider-prev:hover,
+.lemon-product-slider-next:hover {
+	transform: translateY(-50%) scale(1.1);
+}
+
+.lemon-product-slider-prev {
+	left: -25px;
+	padding-left: 25px;
+}
+
+.lemon-product-slider-next {
+	right: -25px;
+	padding-right: 25px;
+}
+
+@media (max-width: 1024px) {
+	.lemon-product-slide {
+		min-width: 50%;
+		flex: 0 0 50%;
+	}
+}
+
+@media (max-width: 600px) {
+	.lemon-product-slide {
+		min-width: 100%;
+		flex: 0 0 100%;
+	}
+}

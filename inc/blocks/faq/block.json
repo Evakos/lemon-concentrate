@@ -1,0 +1,19 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/faq-accordion",
+	"version": "1.0.0",
+	"title": "FAQ Accordion",
+	"category": "lemon-concentrate",
+	"icon": "list-view",
+	"description": "Displays a FAQ accordion using ACF repeater fields.",
+	"keywords": [ "faq", "accordion" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false
+	},
+	"style": "file:./faq-accordion.css",
+	"acf": {
+		"renderTemplate": "faq-accordion.php",
+		"mode": "preview"
+	}
+}

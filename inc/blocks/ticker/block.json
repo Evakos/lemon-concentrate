@@ -1,0 +1,22 @@
+{
+	"name": "lemon-concentrate/ticker",
+	"title": "News Ticker",
+	"description": "A smooth scrolling news ticker.",
+	"category": "lemon-concentrate",
+	"icon": "format-status",
+	"keywords": [ "ticker", "scroll", "news", "marquee" ],
+	"apiVersion": 3,
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "ticker.php"
+	},
+	"supports": {
+		"align": [ "full", "wide" ],
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"spacing": { "margin": true, "padding": true }
+	},
+	"style": "file:./ticker.css"
+}

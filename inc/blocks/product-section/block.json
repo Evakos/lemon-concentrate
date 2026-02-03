@@ -1,0 +1,20 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/product-section",
+	"version": "1.0.0",
+	"title": "Product Section",
+	"category": "lemon-concentrate",
+	"icon": "columns",
+	"description": "A repeater block with alternating product sections containing an image, title, and text.",
+	"keywords": [ "product", "section", "repeater", "image" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ]
+	},
+	"style": "file:./product-section.css",
+	"acf": {
+		"renderTemplate": "product-section.php",
+		"mode": "preview"
+	}
+}

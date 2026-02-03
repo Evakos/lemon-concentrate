@@ -1,0 +1,21 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/product-slider",
+	"version": "1.0.0",
+	"title": "Product Slider",
+	"category": "lemon-concentrate",
+	"icon": "slides",
+	"description": "A slider displaying featured products one at a time.",
+	"keywords": [ "product", "slider", "featured", "woocommerce" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ]
+	},
+	"style": "file:./product-slider.css",
+	"script": "file:./product-slider.js",
+	"acf": {
+		"renderTemplate": "product-slider.php",
+		"mode": "preview"
+	}
+}

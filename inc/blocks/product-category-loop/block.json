@@ -1,0 +1,19 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/product-category-loop",
+	"version": "1.0.0",
+	"title": "Product Category Loop",
+	"category": "lemon-concentrate",
+	"icon": "grid-view",
+	"description": "Displays a loop of product categories with icons.",
+	"keywords": [ "woocommerce", "category", "loop" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false
+	},
+	"style": "file:./style.css",
+	"acf": {
+		"renderTemplate": "render.php",
+		"mode": "preview"
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/testimonials",
+	"version": "1.0.0",
+	"title": "Testimonials",
+	"category": "lemon-concentrate",
+	"icon": "format-quote",
+	"description": "A fading testimonial carousel fetching data from Global Options.",
+	"keywords": [ "testimonial", "quote", "carousel" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ]
+	},
+	"style": "file:./testimonials.css",
+	"script": "file:./testimonials.js",
+	"acf": {
+		"renderTemplate": "testimonials.php",
+		"mode": "preview"
+	}
+}
