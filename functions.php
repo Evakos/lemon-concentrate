@@ -185,6 +185,19 @@ function lemon_concentrate_acf_json_save_point( $path ) {
 add_filter( 'acf/settings/save_json', 'lemon_concentrate_acf_json_save_point' );
 
 /**
+ * Define ACF JSON load point.
+ *
+ * @param array $paths The paths to load the JSON files from.
+ * @return array
+ */
+function lemon_concentrate_acf_json_load_point( $paths ) {
+	// Append our new path.
+	$paths[] = get_stylesheet_directory() . '/acf-json';
+	return $paths;
+}
+add_filter( 'acf/settings/load_json', 'lemon_concentrate_acf_json_load_point' );
+
+/**
  * Programmatically set colors based on product category.
  *
  * @param string $block_content The block content.
@@ -318,6 +331,7 @@ function lemon_concentrate_apply_product_hero_image( $block_content, $block ) {
 	}
 
 	if ( $image_url ) {
+		$image_url = trim( $image_url );
 		$processor = new WP_HTML_Tag_Processor( $block_content );
 		if ( $processor->next_tag( array( 'class_name' => 'wp-block-cover__image-background' ) ) ) {
 			$processor->set_attribute( 'src', $image_url );
