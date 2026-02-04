@@ -16,32 +16,62 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-con
 		<div class="lemon-contact-form-row lemon-contact-form-row-split">
 			<div class="lemon-contact-form-group">
 				<label for="contact-name"><?php esc_html_e( 'Name', 'lemon-concentrate' ); ?></label>
-				<input type="text" id="contact-name" name="contact_name" placeholder="<?php esc_attr_e( 'Your Name', 'lemon-concentrate' ); ?>" required>
+				<input type="text" id="contact-name" name="contact_name" placeholder="<?php esc_attr_e( 'Name', 'lemon-concentrate' ); ?>" required>
 			</div>
 			<div class="lemon-contact-form-group">
-				<label for="contact-surname"><?php esc_html_e( 'Surname', 'lemon-concentrate' ); ?></label>
-				<input type="text" id="contact-surname" name="contact_surname" placeholder="<?php esc_attr_e( 'Your Surname', 'lemon-concentrate' ); ?>" required>
+				<label for="contact-phone"><?php esc_html_e( 'Phone', 'lemon-concentrate' ); ?></label>
+				<input type="tel" id="contact-phone" name="contact_phone" placeholder="<?php esc_attr_e( 'Phone', 'lemon-concentrate' ); ?>" required>
 			</div>
 		</div>
 
-		<div class="lemon-contact-form-row">
+		<div class="lemon-contact-form-row lemon-contact-form-row-split">
+			<div class="lemon-contact-form-group">
+				<label for="contact-role"><?php esc_html_e( 'Role', 'lemon-concentrate' ); ?></label>
+				<input type="text" id="contact-role" name="contact_role" placeholder="<?php esc_attr_e( 'Role', 'lemon-concentrate' ); ?>" required>
+			</div>
+			<div class="lemon-contact-form-group">
+				<label for="contact-email"><?php esc_html_e( 'Email', 'lemon-concentrate' ); ?></label>
+				<input type="email" id="contact-email" name="contact_email" placeholder="<?php esc_attr_e( 'Email', 'lemon-concentrate' ); ?>" required>
+			</div>
+		</div>
+
+		<div class="lemon-contact-form-row lemon-contact-form-row-split">
 			<div class="lemon-contact-form-group">
 				<label for="contact-company"><?php esc_html_e( 'Company', 'lemon-concentrate' ); ?></label>
-				<input type="text" id="contact-company" name="contact_company" placeholder="<?php esc_attr_e( 'Company Name', 'lemon-concentrate' ); ?>">
+				<input type="text" id="contact-company" name="contact_company" placeholder="<?php esc_attr_e( 'Company', 'lemon-concentrate' ); ?>" required>
+			</div>
+			<div class="lemon-contact-form-group">
+				<label for="contact-country"><?php esc_html_e( 'Country', 'lemon-concentrate' ); ?></label>
+				<select id="contact-country" name="contact_country" required>
+					<option value="" selected="selected"><?php esc_html_e( 'Country', 'lemon-concentrate' ); ?></option>
+					<?php
+					$countries = array();
+					if ( class_exists( 'WC_Countries' ) ) {
+						$countries_obj = new WC_Countries();
+						$countries     = $countries_obj->get_countries();
+					}
+
+					foreach ( $countries as $code => $name ) {
+						echo '<option value="' . esc_attr( $name ) . '">' . esc_html( $name ) . '</option>';
+					}
+					?>
+				</select>
 			</div>
 		</div>
 
 		<div class="lemon-contact-form-row">
 			<div class="lemon-contact-form-group">
-				<label for="contact-telephone"><?php esc_html_e( 'Telephone', 'lemon-concentrate' ); ?></label>
-				<input type="tel" id="contact-telephone" name="contact_telephone" placeholder="<?php esc_attr_e( '+1 234 567 890', 'lemon-concentrate' ); ?>">
+				<label for="contact-message"><?php esc_html_e( 'Message', 'lemon-concentrate' ); ?></label>
+				<textarea id="contact-message" name="contact_message" rows="4" placeholder="<?php esc_attr_e( 'Message', 'lemon-concentrate' ); ?>" required></textarea>
 			</div>
 		</div>
 
 		<div class="lemon-contact-form-row">
-			<div class="lemon-contact-form-group">
-				<label for="contact-comments"><?php esc_html_e( 'Comments', 'lemon-concentrate' ); ?></label>
-				<textarea id="contact-comments" name="contact_comments" rows="4" placeholder="<?php esc_attr_e( 'How can we help you?', 'lemon-concentrate' ); ?>"></textarea>
+			<div class="lemon-contact-form-group lemon-contact-form-consent">
+				<label class="lemon-contact-checkbox-label">
+					<input type="checkbox" name="contact_consent" required>
+					<?php echo wp_kses_post( __( 'I\'ve read and agree with the <a href="https://lemonconcentrate.com/privacy_policy/" target="_blank">privacy policy</a>*', 'lemon-concentrate' ) ); ?>
+				</label>
 			</div>
 		</div>
 

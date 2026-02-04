@@ -1,0 +1,19 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/technical-specifications",
+	"version": "1.0.0",
+	"title": "Technical Specifications",
+	"category": "lemon-concentrate",
+	"icon": "list-view",
+	"description": "Displays technical specifications with a title, list, and download button.",
+	"keywords": [ "specifications", "technical", "data" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false
+	},
+	"style": "file:./technical-specifications.css",
+	"acf": {
+		"renderTemplate": "technical-specifications.php",
+		"mode": "preview"
+	}
+}

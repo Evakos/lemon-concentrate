@@ -113,6 +113,7 @@ function lemon_concentrate_register_blocks() {
 	register_block_type( get_theme_file_path( 'inc/blocks/testimonials' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/product-slider' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/mobile-menu' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/technical-specifications' ) );
 }
 add_action( 'init', 'lemon_concentrate_register_blocks' );
 
@@ -353,3 +354,106 @@ function lemon_concentrate_apply_product_hero_image( $block_content, $block ) {
 	return $block_content;
 }
 add_filter( 'render_block', 'lemon_concentrate_apply_product_hero_image', 10, 2 );
+
+
+
+/**
+ * Remove /product/ and /product-category/ from WooCommerce URLs.
+ *
+ * Note: You must re-save Permalinks in Settings > Permalinks after adding this code.
+ */
+function lemon_concentrate_remove_url_bases( $link, $model = null, $taxonomy = null ) {
+	// Handle Post Type Link (Products)
+	if ( is_a( $model, 'WP_Post' ) && 'product' === $model->post_type ) {
+		return str_replace( '/product/', '/', $link );
+	}
+	// Handle Term Link (Categories)
+	if ( 'product_cat' === $taxonomy ) {
+		return str_replace( '/product-category/', '/', $link );
+	}
+	return $link;
+}
+add_filter( 'post_type_link', 'lemon_concentrate_remove_url_bases', 10, 2 );
+add_filter( 'term_link', 'lemon_concentrate_remove_url_bases', 10, 3 );
+
+/**
+ * Register the custom query var so WordPress recognizes it.
+ */
+function lemon_concentrate_add_query_vars( $vars ) {
+	$vars[] = 'lemon_slug';
+	return $vars;
+}
+add_filter( 'query_vars', 'lemon_concentrate_add_query_vars' );
+
+function lemon_concentrate_add_custom_rewrite_rules() {
+	add_rewrite_rule( '^(?!wp-json|wc-api|sitemap|robots|checkout|cart|my-account)(.+)/?$', 'index.php?lemon_slug=$matches[1]', 'top' );
+}
+add_action( 'init', 'lemon_concentrate_add_custom_rewrite_rules' );
+
+function lemon_concentrate_resolve_custom_url( $query_vars ) {
+	if ( isset( $query_vars['lemon_slug'] ) ) {
+		$slug = $query_vars['lemon_slug'];
+
+		// Handle pagination
+		if ( preg_match( '/\/page\/([0-9]+)\/?$/', $slug, $matches ) ) {
+			$query_vars['paged'] = $matches[1];
+			$slug = str_replace( $matches[0], '', $slug );
+		}
+
+		$lookup_slug = rtrim( $slug, '/' );
+
+		// Check for Product
+		$product = get_page_by_path( $lookup_slug, OBJECT, 'product' );
+		if ( $product && 'publish' === $product->post_status ) {
+			$query_vars['post_type'] = 'product';
+			$query_vars['name']      = $product->post_name;
+			$query_vars['product']   = $product->post_name;
+			unset( $query_vars['lemon_slug'] );
+			return $query_vars;
+		}
+
+		// Check for Category
+		$category = get_term_by( 'slug', basename( $lookup_slug ), 'product_cat' );
+		if ( $category ) {
+			$query_vars['product_cat'] = $lookup_slug;
+			unset( $query_vars['lemon_slug'] );
+			return $query_vars;
+		}
+
+		// Check for Page (Fallback)
+		$page = get_page_by_path( $lookup_slug, OBJECT, 'page' );
+		if ( $page && 'publish' === $page->post_status ) {
+			$query_vars['pagename'] = $lookup_slug;
+			unset( $query_vars['lemon_slug'] );
+			return $query_vars;
+		}
+
+		// Check for Post (Fallback)
+		$post = get_page_by_path( $lookup_slug, OBJECT, 'post' );
+		if ( $post && 'publish' === $post->post_status ) {
+			$query_vars['name'] = $lookup_slug;
+			unset( $query_vars['lemon_slug'] );
+			return $query_vars;
+		}
+
+		// If no match is found, force a 404 error.
+		$query_vars['error'] = '404';
+	}
+	return $query_vars;
+}
+add_filter( 'request', 'lemon_concentrate_resolve_custom_url' );
+
+/**
+ * Force Allow Null on Product Categories field in Block to allow deselecting all.
+ * Field Key: field_69732c9ac907c
+ */
+function lemon_concentrate_force_allow_null( $field ) {
+	if ( 'field_69732c9ac907c' === $field['key'] ) {
+		$field['allow_null'] = 1;
+		$field['required']   = 0;
+		$field['save_terms'] = 0;
+		$field['load_terms'] = 0;
+	}
+	return $field;
+}
+add_filter( 'acf/load_field/key=field_69732c9ac907c', 'lemon_concentrate_force_allow_null' );

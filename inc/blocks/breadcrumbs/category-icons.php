@@ -36,6 +36,7 @@ function lemon_concentrate_get_category_color( $slug ) {
 		'cherry'        => '#D50000',
 		'coconut'       => '#795548',
 		'cranberry'     => '#C2185B',
+		'grapefruit'    => '#FD5956',
 		'lemon'         => '#F4D03F',
 		'lime'          => '#CDDC39',
 		'mandarin'      => '#FF9800',

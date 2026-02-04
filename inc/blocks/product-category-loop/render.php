@@ -31,6 +31,7 @@ if ( $show_all ) {
 	$categories = get_terms( $args );
 } else {
 	$selected = get_field( 'product_categories' );
+	// Initialize as empty array. If selection is empty, this ensures no categories are shown.
 	$categories = array();
 	if ( ! empty( $selected ) ) {
 		if ( ! is_array( $selected ) ) {
@@ -45,6 +46,7 @@ if ( $show_all ) {
 				'taxonomy'   => 'product_cat',
 				'hide_empty' => false,
 				'include'    => $ids,
+				'orderby'    => 'include',
 			) );
 		}
 	}
@@ -78,7 +80,7 @@ if ( $show_all ) {
 					$b = hexdec( substr( $hex, 4, 2 ) );
 				}
 			}
-			$style = "--category-bg-color: rgba($r, $g, $b, 0.15); --category-title-color: rgb($r, $g, $b); text-align: left; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; padding:2rem;";
+			$style = "--category-bg-color: rgba($r, $g, $b, 0.15); --category-title-color: rgb($r, $g, $b); text-align: left; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; padding:2rem; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); background-color: var(--category-bg-color);";
 			?>
 			<a href="<?php echo esc_url( get_term_link( $category ) ); ?>" class="lemon-concentrate-category-item" style="<?php echo esc_attr( $style ); ?>">
 				<span class="lemon-concentrate-category-icon">
