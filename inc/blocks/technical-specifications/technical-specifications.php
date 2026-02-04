@@ -9,12 +9,20 @@
  */
 
 $title          = get_field( 'title' );
-$description    = get_field( 'description' );
-$specifications = get_field( 'specifications' );
-$button         = get_field( 'button' );
+$description    = get_field( 'introduction' );
+$specifications = get_field( 'list' );
+$url_field      = get_field( 'url' );
+
+$button = $url_field;
+if ( $url_field && ! is_array( $url_field ) ) {
+	$button = array(
+		'url'   => $url_field,
+		'title' => 'Download PDF',
+	);
+}
 
 // Fallback for preview
-if ( empty( $title ) && empty( $specifications ) ) {
+if ( empty( $title ) && empty( $specifications ) && empty( $button ) ) {
 	$title          = 'Technical Specifications';
 	$description    = 'Detailed information about the product specifications and requirements.';
 	$specifications = array(

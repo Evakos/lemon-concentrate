@@ -457,3 +457,23 @@ function lemon_concentrate_force_allow_null( $field ) {
 	return $field;
 }
 add_filter( 'acf/load_field/key=field_69732c9ac907c', 'lemon_concentrate_force_allow_null' );
+
+/**
+ * Restrict plugin uploads and installation to a specific user ID.
+ *
+ * @param array $allcaps An array of all the user's capabilities.
+ * @return array Modified capabilities.
+ */
+function lemon_concentrate_restrict_plugin_access( $allcaps ) {
+	// CHANGE THIS: The user ID allowed to upload/install plugins.
+	$allowed_user_id = 2;
+
+	if ( is_user_logged_in() && get_current_user_id() !== $allowed_user_id ) {
+		$allcaps['install_plugins'] = false;
+		$allcaps['update_plugins']  = false;
+		$allcaps['delete_plugins']  = false;
+	}
+
+	return $allcaps;
+}
+add_filter( 'user_has_cap', 'lemon_concentrate_restrict_plugin_access' );

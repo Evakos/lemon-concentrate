@@ -33,12 +33,3 @@
 	z-index: 1000;
 	transition: all 0.3s ease-in-out;
 }
-
-/**
- * Center text in Product and Category Description widgets.
- */
-
-.wc-block-product-description p {
-	text-align: center;
-	margin: 0 auto;
-}

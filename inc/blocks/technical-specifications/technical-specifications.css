@@ -15,6 +15,10 @@
 	text-transform: uppercase;
 }
 
+.tech-specs-col-center {
+	padding-left: 5rem;
+}
+
 .tech-specs-button-wrapper {
 	margin-bottom: 0;
 }
@@ -31,6 +35,10 @@
 @media (max-width: 781px) {
 	.technical-specifications-block {
 		grid-template-columns: 1fr;
+	}
+
+	.tech-specs-col-center {
+		padding-left: 0;
 	}
 
 	.tech-specs-button-wrapper {
