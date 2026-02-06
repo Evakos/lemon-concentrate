@@ -25,7 +25,7 @@ if ( ! function_exists( 'lemon_concentrate_get_category_color' ) ) {
 		$colors = array(
 			'apple'         => '#E57373',
 			'aronia'        => '#9575CD',
-			'banana'        => '#FFF176',
+			'banana'        => '#eee05f',
 			'blackcurrant'  => '#7986CB',
 			'cherry'        => '#EF5350',
 			'coconut'       => '#A1887F',
