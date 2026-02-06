@@ -12,13 +12,13 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-pro
 
 $products = array();
 
-if ( function_exists( 'wc_get_products' ) ) {
-	$products = wc_get_products( array(
-		'status'   => 'publish',
-		'limit'    => 8,
-		'featured' => true,
-	) );
-}
+$products = get_posts( array(
+	'post_type'      => 'lemon_product',
+	'posts_per_page' => 8,
+	'post_status'    => 'publish',
+	'meta_key'       => '_lemon_featured',
+	'meta_value'     => '1',
+) );
 
 // Fallback for preview if no products found or WC not active.
 if ( empty( $products ) && $is_preview ) {
@@ -50,12 +50,18 @@ if ( empty( $products ) && $is_preview ) {
 							</div>
 						<?php else : ?>
 							<div class="lemon-product-card">
-								<a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="lemon-product-link">
-									<?php echo $product->get_image( 'woocommerce_thumbnail' ); ?>
-									<h3 class="lemon-product-title"><?php echo esc_html( $product->get_name() ); ?></h3>
-									<span class="price"><?php echo $product->get_price_html(); ?></span>
+								<a href="<?php echo esc_url( get_permalink( $product->ID ) ); ?>" class="lemon-product-link">
+									<?php
+									$thumbnail = get_the_post_thumbnail( $product->ID, 'medium' );
+									if ( $thumbnail ) {
+										echo $thumbnail;
+									} else {
+										echo '<img src="' . esc_url( get_theme_file_uri( 'assets/images/placeholder.svg' ) ) . '" alt="' . esc_attr__( 'Placeholder', 'lemon-concentrate' ) . '" />';
+									}
+									?>
+									<h3 class="lemon-product-title"><?php echo esc_html( get_the_title( $product->ID ) ); ?></h3>
 								</a>
-								<a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="lemon-product-button">
+								<a href="<?php echo esc_url( get_permalink( $product->ID ) ); ?>" class="lemon-product-button">
 									<?php esc_html_e( 'Learn More', 'lemon-concentrate' ); ?>
 								</a>
 								<?php

@@ -1,0 +1,29 @@
+.lemon-concentrate-breadcrumbs {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background-color:white;
+	border-radius:100px;
+	max-width: 500px;
+	padding: 0 10px;
+}
+
+.lemon-concentrate-breadcrumbs p {
+	margin: 0;
+	font-size: 14px;
+}
+
+.lemon-concentrate-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: white;
+    border-radius: 100px;
+    max-width: max-content !important;
+    padding: 10px 20px;
+	border: 1px solid #F6B501;
+}
+
+:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) .wp-block-search__input {
+	border: none;
+}

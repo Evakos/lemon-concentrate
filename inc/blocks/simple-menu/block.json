@@ -1,0 +1,42 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/simple-menu",
+	"version": "1.0.0",
+	"title": "Simple Menu",
+	"category": "lemon-concentrate",
+	"icon": "menu",
+	"description": "A simple vertical menu block.",
+	"keywords": [ "menu", "navigation", "vertical" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false,
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"color": {
+			"text": true,
+			"background": true,
+			"link": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": true
+		}
+	},
+	"style": "file:./simple-menu.css",
+	"acf": {
+		"renderTemplate": "simple-menu.php",
+		"mode": "preview"
+	}
+}

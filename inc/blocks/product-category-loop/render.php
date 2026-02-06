@@ -5,14 +5,6 @@
  * @package lemon-concentrate
  */
 
-// Ensure icon helper is loaded.
-if ( ! function_exists( 'lemon_concentrate_get_category_icon' ) ) {
-	$icon_file = get_theme_file_path( 'inc/blocks/breadcrumbs/category-icons.php' );
-	if ( file_exists( $icon_file ) ) {
-		require_once $icon_file;
-	}
-}
-
 $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-concentrate-category-loop facetwp-template' ) );
 
 // Check if "Select All" is enabled.
@@ -20,11 +12,11 @@ $show_all = get_field( 'show_all_categories' );
 
 if ( $show_all ) {
 	$args = array(
-		'taxonomy'   => 'product_cat',
+		'taxonomy'   => 'product_category',
 		'hide_empty' => false,
 	);
 	// Exclude 'uncategorized' category.
-	$uncategorized = get_term_by( 'slug', 'uncategorized', 'product_cat' );
+	$uncategorized = get_term_by( 'slug', 'uncategorized', 'product_category' );
 	if ( $uncategorized ) {
 		$args['exclude'] = array( $uncategorized->term_id );
 	}
@@ -43,7 +35,7 @@ if ( $show_all ) {
 		}
 		if ( ! empty( $ids ) ) {
 			$categories = get_terms( array(
-				'taxonomy'   => 'product_cat',
+				'taxonomy'   => 'product_category',
 				'hide_empty' => false,
 				'include'    => $ids,
 				'orderby'    => 'include',
@@ -80,16 +72,29 @@ if ( $show_all ) {
 					$b = hexdec( substr( $hex, 4, 2 ) );
 				}
 			}
-			$style = "--category-bg-color: rgba($r, $g, $b, 0.15); --category-title-color: rgb($r, $g, $b); text-align: left; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; padding:2rem; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); background-color: var(--category-bg-color);";
+			$style = "--category-bg-color: rgba($r, $g, $b, 0.15); --category-bg-color-hover: rgba($r, $g, $b, 0.25); --category-title-color: rgb($r, $g, $b); text-align: left; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; padding:2rem; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); background-color: var(--category-bg-color); transition: background-color 0.3s ease;";
 			?>
 			<a href="<?php echo esc_url( get_term_link( $category ) ); ?>" class="lemon-concentrate-category-item" style="<?php echo esc_attr( $style ); ?>">
 				<span class="lemon-concentrate-category-icon">
 					<?php
+					$icon_svg     = function_exists( 'lemon_concentrate_get_category_icon' ) ? lemon_concentrate_get_category_icon( $category->slug ) : '';
+					$acf_icon     = get_field( 'icon', $category );
 					$thumbnail_id = get_term_meta( $category->term_id, 'thumbnail_id', true );
-					if ( $thumbnail_id ) {
+
+					if ( $acf_icon ) {
+						if ( is_array( $acf_icon ) ) {
+							echo wp_get_attachment_image( $acf_icon['ID'], 'medium', false, array( 'style' => 'width: 50px; height: 50px; object-fit: contain;' ) );
+						} elseif ( is_numeric( $acf_icon ) ) {
+							echo wp_get_attachment_image( $acf_icon, 'medium', false, array( 'style' => 'width: 50px; height: 50px; object-fit: contain;' ) );
+						} else {
+							echo '<img src="' . esc_url( $acf_icon ) . '" style="width: 50px; height: 50px; object-fit: contain;" alt="' . esc_attr( $category->name ) . '" />';
+						}
+					} elseif ( $thumbnail_id ) {
 						echo wp_get_attachment_image( $thumbnail_id, 'medium', false, array( 'style' => 'width: 50px; height: 50px; object-fit: contain;' ) );
+					} elseif ( $icon_svg ) {
+						echo $icon_svg;
 					} else {
-						echo '<span style="display:block; width:50px; height:50px; background-color: #E5E5E5; border-radius: 50%;"></span>';
+						echo '<img src="' . esc_url( get_theme_file_uri( 'assets/images/placeholder.svg' ) ) . '" style="width: 50px; height: 50px; object-fit: contain;" alt="" />';
 					}
 					?>
 				</span>

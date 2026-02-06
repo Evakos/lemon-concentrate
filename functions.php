@@ -23,7 +23,13 @@ define( 'LEMON_CONCENTRATE_VERSION', wp_get_theme()->get( 'Version' ) );
  * @return void
  */
 function lemon_concentrate_setup() {
+	add_theme_support( 'post-thumbnails' );
+	add_theme_support( 'align-wide' );
+	add_theme_support( 'editor-styles' );
 	add_editor_style( './assets/css/style-shared.min.css' );
+	register_nav_menus( array(
+		'primary' => __( 'Primary Menu', 'lemon-concentrate' ),
+	) );
 
 	/*
 	 * Load additional block styles.
@@ -93,7 +99,16 @@ require_once get_theme_file_path( 'inc/register-block-styles.php' );
 require_once get_theme_file_path( 'inc/register-block-patterns.php' );
 
 // Category Icons and Colors helper.
-require_once get_theme_file_path( 'inc/blocks/breadcrumbs/category-icons.php' );
+require_once get_theme_file_path( 'inc/blocks/mega-menu/category-icons.php' );
+
+// Category Colors helper.
+require_once get_theme_file_path( 'inc/category-colors.php' );
+
+// Migration script.
+require_once get_theme_file_path( 'inc/migration.php' );
+
+// ACF Fields.
+require_once get_theme_file_path( 'inc/acf-fields.php' );
 
 
 
@@ -114,8 +129,46 @@ function lemon_concentrate_register_blocks() {
 	register_block_type( get_theme_file_path( 'inc/blocks/product-slider' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/mobile-menu' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/technical-specifications' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/mega-menu' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/hero-image' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/simple-menu' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/hero-bullets' ) );
 }
 add_action( 'init', 'lemon_concentrate_register_blocks' );
+
+/**
+ * Register Custom Post Type and Taxonomy.
+ */
+function lemon_concentrate_register_cpt() {
+	register_post_type( 'lemon_product', array(
+		'labels'       => array(
+			'name'          => __( 'Lemon Products', 'lemon-concentrate' ),
+			'singular_name' => __( 'Product', 'lemon-concentrate' ),
+		),
+		'public'       => true,
+		'show_ui'      => true,
+		'menu_position'=> 20,
+		'has_archive'  => true,
+		'rewrite'      => array( 'slug' => 'products' ),
+		'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
+		'menu_icon'    => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9Ii01IC01IDYxIDYxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDkuNDQ1NiAxNy4xODczQzQ5LjIyMzYgMTYuNDU1NiA0OS4xNTIgMTUuNjg2NyA0OS4yMzUgMTQuOTI2N0M0OS4zMTggMTQuMTY2NiA0OS41NTM5IDEzLjQzMTMgNDkuOTI4NSAxMi43NjQ4QzUwLjg5MTggMTAuODE2OSA1MS4xMDg4IDguNTgzNzYgNTAuNTM4NSA2LjQ4Njg1QzUwLjExOSA1LjAwMzM4IDQ5LjMyNjQgMy42NTIxMyA0OC4yMzYyIDIuNTYyMDJDNDcuMTQ2MSAxLjQ3MTkxIDQ1Ljc5NDkgMC42NzkyODggNDQuMzExNCAwLjI1OTc3QzQyLjIzNDEgLTAuMjUzNTUyIDQwLjA0MTMgLTAuMDA4ODg4MjE2IDM4LjEzNTIgMC45NzE0MzdDMzcuNDgyMiAxLjMzMjM1IDM2Ljc2NDQgMS41NjA4IDM2LjAyMjkgMS42NDM2N0MzNS4yODE0IDEuNzI2NTQgMzQuNTMwOSAxLjY2MjIgMzMuODE0MyAxLjQ1NDM1QzI4LjQzNTYgLTAuMzg5MjAyIDIyLjU5NiAtMC4zODkyMDIgMTcuMjE3MyAxLjQ1NDM1QzEzLjU0NTMgMi42NzQwNyAxMC4yMDUzIDQuNzI2NjQgNy40NTgzMSA3LjQ1MTU1QzQuNzExMzUgMTAuMTc2NSAyLjYzMTk0IDEzLjQ5OTkgMS4zODI2NyAxNy4xNjE5Qy0wLjQ2MDg4OSAyMi41NDA2IC0wLjQ2MDg4OSAyOC4zODAyIDEuMzgyNjcgMzMuNzU4OUMxLjYwODQzIDM0LjQ4ODkgMS42ODQyOCAzNS4yNTY5IDEuNjA1NjYgMzYuMDE2OUMxLjUyNzA0IDM2Ljc3NjkgMS4yOTU1NyAzNy41MTMyIDAuOTI1MTY3IDM4LjE4MTRDLTAuMDM4MTIzNSA0MC4xMjkzIC0wLjI1NTEwNyA0Mi4zNjI0IDAuMzE1MTY3IDQ0LjQ1OTRDMC43MzQ2ODQgNDUuOTQyOCAxLjUyNzMxIDQ3LjI5NDEgMi42MTc0MiA0OC4zODQyQzMuNzA3NTMgNDkuNDc0MyA1LjA1ODc4IDUwLjI2NjkgNi41NDIyNSA1MC42ODY0QzguNjE5NTkgNTEuMTk5OCAxMC44MTIzIDUwLjk0NzEgMTIuNzE4NSA0OS45NzQ4QzEzLjM3MTUgNDkuNjEzOSAxNC4wODkzIDQ5LjM4NTQgMTQuODMwOCA0OS4zMDI1QzE1LjU3MjIgNDkuMjE5NyAxNi4zMjI4IDQ5LjI4NCAxNy4wMzkzIDQ5LjQ5MTlDMTkuNzM0NCA1MC40MzUxIDIyLjU3MTUgNTAuOTA4IDI1LjQyNjggNTAuODg5OEMyOC4yNTMyIDUwLjg4MzkgMzEuMDU5OSA1MC40MjA0IDMzLjczODEgNDkuNTE3M0MzNy4zOTM5IDQ4LjI4MTYgNDAuNzE1NCA0Ni4yMTkyIDQzLjQ0NDIgNDMuNDkwNUM0Ni4xNzI5IDQwLjc2MTcgNDguMjM1MyAzNy40NDAyIDQ5LjQ3MSAzMy43ODQ0QzUxLjMwNjMgMjguNDAyOCA1MS4yOTc0IDIyLjU2MzIgNDkuNDQ1NiAxNy4xODczWk0yNS40MjY4IDEyLjc2NDhDMjIuMDU2NCAxMi43NjQ4IDE4LjgyNCAxNC4xMDM3IDE2LjQ0MDcgMTYuNDg3QzE0LjA1NzQgMTguODcwMiAxMi43MTg1IDIyLjEwMjYgMTIuNzE4NSAyNS40NzMxSDcuNjM1MTdDNy42MzUxNyAyMC43NTQ1IDkuNTA5NjQgMTYuMjI5MSAxMi44NDYyIDEyLjg5MjVDMTYuMTgyOCA5LjU1NTkxIDIwLjcwODIgNy42ODE0NCAyNS40MjY4IDcuNjgxNDRWMTIuNzY0OFoiIGZpbGw9IiNGNkI1MDEiLz4KPC9zdmc+Cg==',
+		'show_in_rest' => true,
+	) );
+
+	register_taxonomy( 'product_category', 'lemon_product', array(
+		'labels'            => array(
+			'name'          => __( 'Product Categories', 'lemon-concentrate' ),
+			'singular_name' => __( 'Product Category', 'lemon-concentrate' ),
+		),
+		'public'            => true,
+		'show_in_nav_menus' => true,
+		'rewrite'           => array( 'slug' => 'product-category' ),
+		'hierarchical'      => true,
+		'show_in_rest'      => true,
+		'show_admin_column' => true,
+	) );
+}
+add_action( 'init', 'lemon_concentrate_register_cpt' );
 
 /**
  * Register custom block category.
@@ -156,7 +209,7 @@ add_filter( 'upload_mimes', 'lemon_concentrate_mime_types' );
 function lemon_concentrate_fill_descriptions() {
 	if ( isset( $_GET['fill_descriptions'] ) && current_user_can( 'manage_options' ) ) {
 		$categories = get_terms( array(
-			'taxonomy'   => 'product_cat',
+			'taxonomy'   => 'product_category',
 			'hide_empty' => false,
 		) );
 
@@ -164,7 +217,7 @@ function lemon_concentrate_fill_descriptions() {
 
 		if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) {
 			foreach ( $categories as $category ) {
-				wp_update_term( $category->term_id, 'product_cat', array(
+				wp_update_term( $category->term_id, 'product_category', array(
 					'description' => $lorem,
 				) );
 			}
@@ -199,6 +252,64 @@ function lemon_concentrate_acf_json_load_point( $paths ) {
 add_filter( 'acf/settings/load_json', 'lemon_concentrate_acf_json_load_point' );
 
 /**
+ * Lighten a hex color.
+ *
+ * @param string $color   The hex color.
+ * @param int    $percent The percentage to lighten.
+ * @return string
+ */
+function lemon_concentrate_lighten_color( $color, $percent ) {
+	if ( ! preg_match( '/^#?([a-f0-9]{3}|[a-f0-9]{6})$/i', $color ) ) {
+		return $color;
+	}
+
+	$hex = ltrim( $color, '#' );
+
+	if ( strlen( $hex ) == 3 ) {
+		$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+	}
+
+	$r = hexdec( substr( $hex, 0, 2 ) );
+	$g = hexdec( substr( $hex, 2, 2 ) );
+	$b = hexdec( substr( $hex, 4, 2 ) );
+
+	$r = min( 255, $r + ( 255 - $r ) * ( $percent / 100 ) );
+	$g = min( 255, $g + ( 255 - $g ) * ( $percent / 100 ) );
+	$b = min( 255, $b + ( 255 - $b ) * ( $percent / 100 ) );
+
+	return sprintf( '#%02x%02x%02x', $r, $g, $b );
+}
+
+/**
+ * Darken a hex color.
+ *
+ * @param string $color   The hex color.
+ * @param int    $percent The percentage to darken.
+ * @return string
+ */
+function lemon_concentrate_darken_color( $color, $percent ) {
+	if ( ! preg_match( '/^#?([a-f0-9]{3}|[a-f0-9]{6})$/i', $color ) ) {
+		return $color;
+	}
+
+	$hex = ltrim( $color, '#' );
+
+	if ( strlen( $hex ) == 3 ) {
+		$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+	}
+
+	$r = hexdec( substr( $hex, 0, 2 ) );
+	$g = hexdec( substr( $hex, 2, 2 ) );
+	$b = hexdec( substr( $hex, 4, 2 ) );
+
+	$r = max( 0, $r - ( $r * ( $percent / 100 ) ) );
+	$g = max( 0, $g - ( $g * ( $percent / 100 ) ) );
+	$b = max( 0, $b - ( $b * ( $percent / 100 ) ) );
+
+	return sprintf( '#%02x%02x%02x', $r, $g, $b );
+}
+
+/**
  * Programmatically set colors based on product category.
  *
  * @param string $block_content The block content.
@@ -206,30 +317,45 @@ add_filter( 'acf/settings/load_json', 'lemon_concentrate_acf_json_load_point' );
  * @return string
  */
 function lemon_concentrate_apply_product_colors( $block_content, $block ) {
-	$is_product_page  = function_exists( 'is_product' ) && is_product();
-	$is_category_page = function_exists( 'is_product_category' ) && is_product_category();
+	$is_product_page  = is_singular( 'lemon_product' );
+	$is_category_page = is_tax( 'product_category' );
 
 	if ( ! $is_product_page && ! $is_category_page ) {
 		return $block_content;
 	}
 
-	$category = null;
+	$color = '';
+
 	if ( $is_product_page ) {
-		// Get current product category on single product pages.
-		$terms = get_the_terms( get_the_ID(), 'product_cat' );
-		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-			$category = $terms[0];
+		// Check for product override first.
+		if ( function_exists( 'get_field' ) ) {
+			$color = get_field( 'product_color_override', get_the_ID() );
 		}
-	} elseif ( $is_category_page ) {
-		// Get current category on product category archives.
-		$category = get_queried_object();
 	}
 
-	if ( ! $category ) {
-		return $block_content;
-	}
+	if ( ! $color ) {
+		$category = null;
+		if ( $is_product_page ) {
+			// Get current product category on single product pages.
+			$terms = get_the_terms( get_the_ID(), 'product_category' );
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				$category = $terms[0];
+				// Try to find the most specific category (deepest child).
+				foreach ( $terms as $term ) {
+					if ( $term->parent !== 0 && ( $category->parent === 0 || $term->parent === $category->term_id ) ) {
+						$category = $term;
+					}
+				}
+			}
+		} elseif ( $is_category_page ) {
+			// Get current category on product category archives.
+			$category = get_queried_object();
+		}
 
-	$color = lemon_concentrate_get_category_color( $category->slug );
+		if ( $category ) {
+			$color = lemon_concentrate_get_category_color( $category->slug );
+		}
+	}
 
 	if ( $color ) {
 		// Handle Cover Block Overlay.
@@ -240,6 +366,29 @@ function lemon_concentrate_apply_product_colors( $block_content, $block ) {
 				$style = $processor->get_attribute( 'style' );
 				$style = $style ? $style . ';' : '';
 				$processor->set_attribute( 'style', $style . "background-color: $color !important;" );
+				$block_content = $processor->get_updated_html();
+			}
+		}
+
+		// Handle Button Block.
+		if ( 'core/button' === $block['blockName'] ) {
+			$processor = new WP_HTML_Tag_Processor( $block_content );
+			if ( $processor->next_tag( array( 'class_name' => 'wp-block-button__link' ) ) ) {
+				$style = $processor->get_attribute( 'style' );
+				$style = $style ? rtrim( $style, ';' ) . ';' : '';
+				$border_color = lemon_concentrate_lighten_color( $color, 20 );
+				$processor->set_attribute( 'style', $style . "background-color: $color !important; border-color: $border_color !important;" );
+				$block_content = $processor->get_updated_html();
+			}
+		}
+
+		// Handle Read More Block.
+		if ( 'core/read-more' === $block['blockName'] ) {
+			$processor = new WP_HTML_Tag_Processor( $block_content );
+			if ( $processor->next_tag( 'a' ) ) {
+				$style = $processor->get_attribute( 'style' );
+				$style = $style ? rtrim( $style, ';' ) . ';' : '';
+				$processor->set_attribute( 'style', $style . "background-color: $color !important; border-color: $color !important;" );
 				$block_content = $processor->get_updated_html();
 			}
 		}
@@ -270,6 +419,39 @@ function lemon_concentrate_apply_product_colors( $block_content, $block ) {
 add_filter( 'render_block', 'lemon_concentrate_apply_product_colors', 10, 2 );
 
 /**
+ * Output the category color as a CSS variable.
+ */
+function lemon_concentrate_category_color_css() {
+	$color = '';
+
+	if ( is_singular( 'lemon_product' ) ) {
+		if ( function_exists( 'get_field' ) ) {
+			$color = get_field( 'product_color_override', get_the_ID() );
+		}
+		if ( ! $color ) {
+			$terms = get_the_terms( get_the_ID(), 'product_category' );
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				$category = $terms[0];
+				foreach ( $terms as $term ) {
+					if ( $term->parent !== 0 && ( $category->parent === 0 || $term->parent === $category->term_id ) ) {
+						$category = $term;
+					}
+				}
+				$color = lemon_concentrate_get_category_color( $category->slug );
+			}
+		}
+	} elseif ( is_tax( 'product_category' ) ) {
+		$slug = get_queried_object()->slug;
+		$color = lemon_concentrate_get_category_color( $slug );
+	}
+
+	if ( $color ) {
+		echo "<style>:root { --category-color: " . esc_attr( $color ) . "; }</style>\n";
+	}
+}
+add_action( 'wp_head', 'lemon_concentrate_category_color_css' );
+
+/**
  * Force search blocks to search for products (WooCommerce).
  *
  * @param string $block_content The block content.
@@ -280,14 +462,14 @@ function lemon_concentrate_force_product_search( $block_content, $block ) {
 	if ( 'core/search' === $block['blockName'] ) {
 		$processor = new WP_HTML_Tag_Processor( $block_content );
 		if ( $processor->next_tag( 'form' ) ) {
-			$shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
-			$processor->set_attribute( 'action', $shop_url );
+			$archive_url = get_post_type_archive_link( 'lemon_product' );
+			$processor->set_attribute( 'action', $archive_url ? $archive_url : home_url( '/' ) );
 			$block_content = $processor->get_updated_html();
 		}
 
 		$block_content = str_replace(
 			'</form>',
-			'<input type="hidden" name="post_type" value="product"></form>',
+			'<input type="hidden" name="post_type" value="lemon_product"></form>',
 			$block_content
 		);
 	}
@@ -303,7 +485,18 @@ add_filter( 'render_block', 'lemon_concentrate_force_product_search', 10, 2 );
  * @return string
  */
 function lemon_concentrate_apply_product_hero_image( $block_content, $block ) {
-	if ( ! function_exists( 'is_product' ) || ! is_product() || 'core/cover' !== $block['blockName'] ) {
+	if ( 'core/cover' !== $block['blockName'] ) {
+		return $block_content;
+	}
+
+	$object_id = false;
+	if ( is_singular( 'lemon_product' ) ) {
+		$object_id = get_the_ID();
+	} elseif ( is_tax( 'product_category' ) ) {
+		$object_id = get_queried_object();
+	}
+
+	if ( ! $object_id ) {
 		return $block_content;
 	}
 
@@ -311,24 +504,21 @@ function lemon_concentrate_apply_product_hero_image( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$hero_image = get_field( 'hero_image', get_the_ID() );
-
-
-	if ( ! $hero_image ) {
-		return $block_content;
-	}
+	$hero_image = get_field( 'hero_background_image', $object_id );
 
 	$image_url = '';
 	$image_alt = '';
 
-	if ( is_array( $hero_image ) ) {
-		$image_url = $hero_image['url'];
-		$image_alt = $hero_image['alt'];
-	} elseif ( is_numeric( $hero_image ) ) {
-		$image_url = wp_get_attachment_image_url( $hero_image, 'full' );
-		$image_alt = get_post_meta( $hero_image, '_wp_attachment_image_alt', true );
-	} else {
-		$image_url = $hero_image;
+	if ( $hero_image ) {
+		if ( is_array( $hero_image ) ) {
+			$image_url = $hero_image['url'];
+			$image_alt = $hero_image['alt'];
+		} elseif ( is_numeric( $hero_image ) ) {
+			$image_url = wp_get_attachment_image_url( $hero_image, 'full' );
+			$image_alt = get_post_meta( $hero_image, '_wp_attachment_image_alt', true );
+		} else {
+			$image_url = $hero_image;
+		}
 	}
 
 	if ( $image_url ) {
@@ -354,94 +544,6 @@ function lemon_concentrate_apply_product_hero_image( $block_content, $block ) {
 	return $block_content;
 }
 add_filter( 'render_block', 'lemon_concentrate_apply_product_hero_image', 10, 2 );
-
-
-
-/**
- * Remove /product/ and /product-category/ from WooCommerce URLs.
- *
- * Note: You must re-save Permalinks in Settings > Permalinks after adding this code.
- */
-function lemon_concentrate_remove_url_bases( $link, $model = null, $taxonomy = null ) {
-	// Handle Post Type Link (Products)
-	if ( is_a( $model, 'WP_Post' ) && 'product' === $model->post_type ) {
-		return str_replace( '/product/', '/', $link );
-	}
-	// Handle Term Link (Categories)
-	if ( 'product_cat' === $taxonomy ) {
-		return str_replace( '/product-category/', '/', $link );
-	}
-	return $link;
-}
-add_filter( 'post_type_link', 'lemon_concentrate_remove_url_bases', 10, 2 );
-add_filter( 'term_link', 'lemon_concentrate_remove_url_bases', 10, 3 );
-
-/**
- * Register the custom query var so WordPress recognizes it.
- */
-function lemon_concentrate_add_query_vars( $vars ) {
-	$vars[] = 'lemon_slug';
-	return $vars;
-}
-add_filter( 'query_vars', 'lemon_concentrate_add_query_vars' );
-
-function lemon_concentrate_add_custom_rewrite_rules() {
-	add_rewrite_rule( '^(?!wp-json|wc-api|sitemap|robots|checkout|cart|my-account)(.+)/?$', 'index.php?lemon_slug=$matches[1]', 'top' );
-}
-add_action( 'init', 'lemon_concentrate_add_custom_rewrite_rules' );
-
-function lemon_concentrate_resolve_custom_url( $query_vars ) {
-	if ( isset( $query_vars['lemon_slug'] ) ) {
-		$slug = $query_vars['lemon_slug'];
-
-		// Handle pagination
-		if ( preg_match( '/\/page\/([0-9]+)\/?$/', $slug, $matches ) ) {
-			$query_vars['paged'] = $matches[1];
-			$slug = str_replace( $matches[0], '', $slug );
-		}
-
-		$lookup_slug = rtrim( $slug, '/' );
-
-		// Check for Product
-		$product = get_page_by_path( $lookup_slug, OBJECT, 'product' );
-		if ( $product && 'publish' === $product->post_status ) {
-			$query_vars['post_type'] = 'product';
-			$query_vars['name']      = $product->post_name;
-			$query_vars['product']   = $product->post_name;
-			unset( $query_vars['lemon_slug'] );
-			return $query_vars;
-		}
-
-		// Check for Category
-		$category = get_term_by( 'slug', basename( $lookup_slug ), 'product_cat' );
-		if ( $category ) {
-			$query_vars['product_cat'] = $lookup_slug;
-			unset( $query_vars['lemon_slug'] );
-			return $query_vars;
-		}
-
-		// Check for Page (Fallback)
-		$page = get_page_by_path( $lookup_slug, OBJECT, 'page' );
-		if ( $page && 'publish' === $page->post_status ) {
-			$query_vars['pagename'] = $lookup_slug;
-			unset( $query_vars['lemon_slug'] );
-			return $query_vars;
-		}
-
-		// Check for Post (Fallback)
-		$post = get_page_by_path( $lookup_slug, OBJECT, 'post' );
-		if ( $post && 'publish' === $post->post_status ) {
-			$query_vars['name'] = $lookup_slug;
-			unset( $query_vars['lemon_slug'] );
-			return $query_vars;
-		}
-
-		// If no match is found, force a 404 error.
-		$query_vars['error'] = '404';
-	}
-	return $query_vars;
-}
-add_filter( 'request', 'lemon_concentrate_resolve_custom_url' );
 
 /**
  * Force Allow Null on Product Categories field in Block to allow deselecting all.
@@ -477,3 +579,421 @@ function lemon_concentrate_restrict_plugin_access( $allcaps ) {
 	return $allcaps;
 }
 add_filter( 'user_has_cap', 'lemon_concentrate_restrict_plugin_access' );
+
+/**
+ * Add "Featured Product" meta box to Lemon Products.
+ */
+function lemon_concentrate_add_featured_meta_box() {
+	add_meta_box(
+		'lemon_featured_meta',
+		__( 'Featured Product', 'lemon-concentrate' ),
+		'lemon_concentrate_featured_meta_box_callback',
+		'lemon_product',
+		'side',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'lemon_concentrate_add_featured_meta_box' );
+
+function lemon_concentrate_featured_meta_box_callback( $post ) {
+	$value = get_post_meta( $post->ID, '_lemon_featured', true );
+	wp_nonce_field( 'lemon_featured_save', 'lemon_featured_nonce' );
+	?>
+	<label>
+		<input type="checkbox" name="lemon_featured" value="1" <?php checked( $value, '1' ); ?> />
+		<?php esc_html_e( 'Mark as Featured', 'lemon-concentrate' ); ?>
+	</label>
+	<?php
+}
+
+function lemon_concentrate_save_featured_meta( $post_id ) {
+	if ( ! isset( $_POST['lemon_featured_nonce'] ) || ! wp_verify_nonce( $_POST['lemon_featured_nonce'], 'lemon_featured_save' ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['lemon_featured'] ) ) {
+		update_post_meta( $post_id, '_lemon_featured', '1' );
+	} else {
+		delete_post_meta( $post_id, '_lemon_featured' );
+	}
+}
+add_action( 'save_post', 'lemon_concentrate_save_featured_meta' );
+
+/**
+ * Add Featured column to Lemon Product admin list.
+ */
+function lemon_concentrate_add_featured_column( $columns ) {
+	$new_columns = array();
+	foreach ( $columns as $key => $value ) {
+		if ( 'title' === $key ) {
+			$new_columns['thumb'] = __( 'Image', 'lemon-concentrate' );
+		}
+		$new_columns[ $key ] = $value;
+		if ( 'title' === $key ) {
+			$new_columns['featured'] = __( 'Featured', 'lemon-concentrate' );
+		}
+	}
+	return $new_columns;
+}
+add_filter( 'manage_lemon_product_posts_columns', 'lemon_concentrate_add_featured_column' );
+
+function lemon_concentrate_show_featured_column( $column, $post_id ) {
+	if ( 'thumb' === $column ) {
+		$thumbnail = get_the_post_thumbnail( $post_id, array( 50, 50 ) );
+		if ( $thumbnail ) {
+			echo $thumbnail;
+		} else {
+			echo '<span aria-hidden="true">&mdash;</span>';
+		}
+	}
+	if ( 'featured' === $column ) {
+		$is_featured = get_post_meta( $post_id, '_lemon_featured', true );
+		$icon_class  = '1' === $is_featured ? 'dashicons-star-filled' : 'dashicons-star-empty';
+		$color       = '1' === $is_featured ? '#f0ad4e' : '#ccc';
+		$nonce       = wp_create_nonce( 'lemon_toggle_featured_' . $post_id );
+
+		echo sprintf(
+			'<a href="#" class="lemon-toggle-featured" data-id="%d" data-nonce="%s" aria-label="%s"><span class="dashicons %s" style="color: %s;"></span></a>',
+			esc_attr( $post_id ),
+			esc_attr( $nonce ),
+			esc_attr__( 'Toggle Featured', 'lemon-concentrate' ),
+			esc_attr( $icon_class ),
+			esc_attr( $color )
+		);
+	}
+}
+add_action( 'manage_lemon_product_posts_custom_column', 'lemon_concentrate_show_featured_column', 10, 2 );
+
+/**
+ * Make Featured column sortable.
+ */
+function lemon_concentrate_sortable_featured_column( $columns ) {
+	$columns['featured'] = 'featured';
+	return $columns;
+}
+add_filter( 'manage_edit-lemon_product_sortable_columns', 'lemon_concentrate_sortable_featured_column' );
+
+function lemon_concentrate_featured_orderby( $query ) {
+	if ( ! is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+
+	if ( 'featured' === $query->get( 'orderby' ) ) {
+		$query->set( 'meta_key', '_lemon_featured' );
+		$query->set( 'orderby', 'meta_value' );
+	}
+}
+add_action( 'pre_get_posts', 'lemon_concentrate_featured_orderby' );
+
+/**
+ * Enqueue admin scripts for featured toggle.
+ */
+function lemon_concentrate_enqueue_admin_scripts( $hook ) {
+	global $post_type;
+	if ( 'edit.php' === $hook && 'lemon_product' === $post_type ) {
+		wp_enqueue_script( 'lemon-admin-featured', get_theme_file_uri( 'assets/js/admin-featured-toggle.js' ), array( 'jquery' ), LEMON_CONCENTRATE_VERSION, true );
+	}
+}
+add_action( 'admin_enqueue_scripts', 'lemon_concentrate_enqueue_admin_scripts' );
+
+/**
+ * AJAX handler to toggle featured status.
+ */
+function lemon_concentrate_ajax_toggle_featured() {
+	if ( ! isset( $_POST['post_id'] ) || ! isset( $_POST['nonce'] ) ) {
+		wp_send_json_error( 'Missing parameters' );
+	}
+
+	$post_id = intval( $_POST['post_id'] );
+	if ( ! wp_verify_nonce( $_POST['nonce'], 'lemon_toggle_featured_' . $post_id ) ) {
+		wp_send_json_error( 'Invalid nonce' );
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		wp_send_json_error( 'Permission denied' );
+	}
+
+	$is_featured = get_post_meta( $post_id, '_lemon_featured', true );
+	$new_status  = '1' === $is_featured ? '0' : '1';
+
+	if ( '1' === $new_status ) {
+		update_post_meta( $post_id, '_lemon_featured', '1' );
+	} else {
+		delete_post_meta( $post_id, '_lemon_featured' );
+	}
+
+	wp_send_json_success( array( 'status' => $new_status ) );
+}
+add_action( 'wp_ajax_lemon_toggle_featured', 'lemon_concentrate_ajax_toggle_featured' );
+
+/**
+ * Add styles for admin columns.
+ */
+function lemon_concentrate_admin_column_styles() {
+	$screen = get_current_screen();
+	if ( $screen && 'lemon_product' === $screen->post_type ) {
+		echo '<style>
+			.column-thumb { width: 60px; text-align: center; }
+		</style>';
+	}
+}
+add_action( 'admin_head', 'lemon_concentrate_admin_column_styles' );
+
+/**
+ * Shortcode to display the Primary Menu in block templates.
+ * Usage: [lemon_primary_menu]
+ */
+function lemon_concentrate_primary_menu_shortcode() {
+	if ( has_nav_menu( 'primary' ) ) {
+		return wp_nav_menu( array(
+			'theme_location' => 'primary',
+			'echo'           => false,
+			'container_class'=> 'lemon-primary-menu-wrapper',
+		) );
+	}
+	return '';
+}
+add_shortcode( 'lemon_primary_menu', 'lemon_concentrate_primary_menu_shortcode' );
+
+/**
+ * Add custom query var for root URL resolution.
+ */
+function lemon_concentrate_query_vars( $vars ) {
+	$vars[] = 'lemon_custom_slug';
+	return $vars;
+}
+add_filter( 'query_vars', 'lemon_concentrate_query_vars' );
+
+/**
+ * Add catch-all rewrite rules to handle root URLs for products and categories.
+ */
+function lemon_concentrate_root_rewrite_rules() {
+	add_rewrite_rule( '^(?!wp-json|wp-admin|wp-content|wp-includes)(.+?)/?$', 'index.php?lemon_custom_slug=$matches[1]', 'top' );
+	add_rewrite_rule( '^(?!wp-json|wp-admin|wp-content|wp-includes)(.+?)/page/?([0-9]{1,})/?$', 'index.php?lemon_custom_slug=$matches[1]&paged=$matches[2]', 'top' );
+}
+add_action( 'init', 'lemon_concentrate_root_rewrite_rules' );
+
+/**
+ * Resolve the custom slug to a Product, Category, Page, or Post.
+ */
+function lemon_concentrate_resolve_slug( $query_vars ) {
+	if ( isset( $query_vars['lemon_custom_slug'] ) ) {
+		$slug = $query_vars['lemon_custom_slug'];
+
+		// 1. Check Product Category
+		$slug  = untrailingslashit( $slug );
+		
+		// Remove prefixes like 'products/' or 'product-category/' if they exist in the URL
+		$clean_slug = preg_replace( '/^(products|product-category)\//', '', $slug );
+		$term_slug  = sanitize_title( urldecode( $clean_slug ) );
+
+		$terms = get_terms( array(
+			'taxonomy'   => 'product_category',
+			'slug'       => $term_slug,
+			'hide_empty' => false,
+		) );
+
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			$term = $terms[0];
+			$query_vars['product_category'] = $term->slug;
+			$query_vars['taxonomy']         = 'product_category';
+			$query_vars['term']             = $term->slug;
+			unset( $query_vars['lemon_custom_slug'] );
+			return $query_vars;
+		}
+
+		// If this is a search query, do not resolve to singular pages/posts.
+		if ( ! empty( $query_vars['s'] ) ) {
+			unset( $query_vars['lemon_custom_slug'] );
+			return $query_vars;
+		}
+
+		// 2. Check Lemon Product
+		$product = get_page_by_path( $slug, OBJECT, 'lemon_product' );
+		if ( $product && 'publish' === $product->post_status ) {
+			$query_vars['post_type'] = 'lemon_product';
+			$query_vars['name']      = $slug;
+			$query_vars['lemon_product'] = $slug;
+			unset( $query_vars['lemon_custom_slug'] );
+			return $query_vars;
+		}
+
+		// 3. Check Page (Standard WordPress pages)
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( $page && 'publish' === $page->post_status ) {
+			$query_vars['pagename'] = $slug;
+			unset( $query_vars['lemon_custom_slug'] );
+			return $query_vars;
+		}
+
+		// 4. Check Post
+		$post = get_page_by_path( $slug, OBJECT, 'post' );
+		if ( $post && 'publish' === $post->post_status ) {
+			$query_vars['name'] = $slug;
+			unset( $query_vars['lemon_custom_slug'] );
+			return $query_vars;
+		}
+
+		// If no match is found, force 404.
+		$query_vars['error'] = '404';
+	}
+	return $query_vars;
+}
+add_filter( 'request', 'lemon_concentrate_resolve_slug' );
+
+/**
+ * Remove bases from permalinks.
+ */
+function lemon_concentrate_remove_bases( $permalink, $post_or_term, $taxonomy = null ) {
+	// Handle Post Type Link
+	if ( is_object( $post_or_term ) && isset( $post_or_term->post_type ) && 'lemon_product' === $post_or_term->post_type ) {
+		return str_replace( '/products/', '/', $permalink );
+	}
+	// Handle Term Link
+	if ( 'product_category' === $taxonomy ) {
+		if ( is_object( $post_or_term ) ) {
+			return home_url( '/' . $post_or_term->slug . '/' );
+		}
+		return str_replace( '/product-category/', '/', $permalink );
+	}
+	return $permalink;
+}
+add_filter( 'post_type_link', 'lemon_concentrate_remove_bases', 10, 2 );
+add_filter( 'term_link', 'lemon_concentrate_remove_bases', 10, 3 );
+
+/**
+ * Force has_post_thumbnail to true to enable fallback image.
+ *
+ * @param bool             $has_thumbnail True if the post has a post thumbnail, otherwise false.
+ * @param int|WP_Post|null $post          Post ID or WP_Post object. Default is global $post.
+ * @param int|false        $thumbnail_id  Post thumbnail ID or false if the post does not exist.
+ * @return bool
+ */
+function lemon_concentrate_force_has_post_thumbnail( $has_thumbnail, $post, $thumbnail_id ) {
+	if ( ! $has_thumbnail ) {
+		return true;
+	}
+	return $has_thumbnail;
+}
+add_filter( 'has_post_thumbnail', 'lemon_concentrate_force_has_post_thumbnail', 10, 3 );
+
+/**
+ * Display default featured image if none exists.
+ *
+ * @param string       $html              The post thumbnail HTML.
+ * @param int          $post_id           The post ID.
+ * @param int          $post_thumbnail_id The post thumbnail ID.
+ * @param string|array $size              The post thumbnail size.
+ * @param array        $attr              Query string of attributes.
+ * @return string
+ */
+function lemon_concentrate_default_featured_image( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
+	if ( empty( $html ) ) {
+		$html = wp_get_attachment_image( 661, $size, false, $attr );
+	}
+	return $html;
+}
+add_filter( 'post_thumbnail_html', 'lemon_concentrate_default_featured_image', 10, 5 );
+
+/**
+ * Apply ACF hero image to Image block on category pages.
+ *
+ * @param string $block_content The block content.
+ * @param array  $block         The block data.
+ * @return string
+ */
+function lemon_concentrate_apply_category_hero_image( $block_content, $block ) {
+	if ( 'core/image' === $block['blockName'] ) {
+		$has_class = isset( $block['attrs']['className'] ) && strpos( $block['attrs']['className'], 'category-hero-image' ) !== false;
+		if ( ! $has_class ) {
+			$has_class = strpos( $block_content, 'category-hero-image' ) !== false;
+		}
+
+		if ( $has_class ) {
+			$term = get_queried_object();
+			$image_url = '';
+			$image_alt = '';
+
+			if ( function_exists( 'get_field' ) && $term instanceof WP_Term ) {
+				$image = get_field( 'hero_image', $term );
+				if ( $image ) {
+					if ( is_array( $image ) ) {
+						$image_url = $image['url'];
+						$image_alt = $image['alt'];
+					} elseif ( is_numeric( $image ) ) {
+						$image_url = wp_get_attachment_image_url( $image, 'large' );
+						$image_alt = get_post_meta( $image, '_wp_attachment_image_alt', true );
+					} else {
+						$image_url = $image;
+					}
+				}
+			}
+
+			// Fallback if no image found.
+			if ( empty( $image_url ) ) {
+				$image_url = get_theme_file_uri( 'assets/images/placeholder.svg' );
+				$image_alt = __( 'Placeholder', 'lemon-concentrate' );
+			}
+
+			if ( ! empty( $image_url ) ) {
+				$processor = new WP_HTML_Tag_Processor( $block_content );
+				if ( $processor->next_tag( 'img' ) ) {
+					$processor->set_attribute( 'src', $image_url );
+					if ( $image_alt ) {
+						$processor->set_attribute( 'alt', $image_alt );
+					}
+					$processor->remove_attribute( 'srcset' );
+					$block_content = $processor->get_updated_html();
+				}
+			}
+		}
+	}
+	return $block_content;
+}
+add_filter( 'render_block', 'lemon_concentrate_apply_category_hero_image', 10, 2 );
+
+/**
+ * Disable Gutenberg for Lemon Products.
+ *
+ * @param bool   $use_block_editor Whether the post type can be edited with the block editor.
+ * @param string $post_type        The post type being checked.
+ */
+function lemon_concentrate_disable_gutenberg_for_products( $use_block_editor, $post_type ) {
+	if ( 'lemon_product' === $post_type ) {
+		return false;
+	}
+	return $use_block_editor;
+}
+add_filter( 'use_block_editor_for_post_type', 'lemon_concentrate_disable_gutenberg_for_products', 10, 2 );
+
+/**
+ * Modify Rank Math Breadcrumbs to inject "Products" in the trail.
+ *
+ * @param array  $crumbs The breadcrumb items.
+ * @param string $class  The breadcrumb class.
+ * @return array
+ */
+function lemon_concentrate_rank_math_breadcrumbs( $crumbs, $class ) {
+	if ( is_tax( 'product_category' ) || is_singular( 'lemon_product' ) ) {
+		$products_url = get_post_type_archive_link( 'lemon_product' );
+
+		$found = false;
+		foreach ( $crumbs as $key => $crumb ) {
+			if ( 'Product Categories' === $crumb[0] || 'Lemon Products' === $crumb[0] ) {
+				$crumbs[ $key ][0] = __( 'Products', 'lemon-concentrate' );
+				$crumbs[ $key ][1] = $products_url;
+				$found              = true;
+			}
+		}
+
+		if ( ! $found && is_tax( 'product_category' ) ) {
+			array_splice( $crumbs, 1, 0, array( array(
+				0                => __( 'Products', 'lemon-concentrate' ),
+				1                => $products_url,
+				'hide_in_schema' => false,
+			) ) );
+		}
+	}
+	return $crumbs;
+}
+add_filter( 'rank_math/frontend/breadcrumb/items', 'lemon_concentrate_rank_math_breadcrumbs', 10, 2 );

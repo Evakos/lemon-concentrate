@@ -1,0 +1,23 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/hero-bullets",
+	"version": "1.0.0",
+	"title": "Hero Bullets",
+	"category": "lemon-concentrate",
+	"icon": "list-view",
+	"description": "Displays the hero bullets from the product settings.",
+	"keywords": [ "hero", "bullets", "list", "product" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		}
+	},
+	"style": "file:./hero-bullets.css",
+	"acf": {
+		"renderTemplate": "hero-bullets.php",
+		"mode": "preview"
+	}
+}

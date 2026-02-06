@@ -1,0 +1,19 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/hero-image",
+	"version": "1.0.0",
+	"title": "Category Hero Image",
+	"category": "lemon-concentrate",
+	"icon": "format-image",
+	"description": "Displays the Hero Image from the current category settings.",
+	"keywords": [ "hero", "image", "category" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false
+	},
+	"style": "file:./hero-image.css",
+	"acf": {
+		"renderTemplate": "hero-image.php",
+		"mode": "preview"
+	}
+}

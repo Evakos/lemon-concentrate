@@ -1,0 +1,26 @@
+.lemon-simple-menu-block .lemon-simple-menu {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.lemon-simple-menu-block .lemon-simple-menu li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.lemon-simple-menu-block .lemon-simple-menu a {
+	text-decoration: none;
+	color: inherit;
+	display: block;
+	transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.lemon-simple-menu-block .lemon-simple-menu a:hover {
+	color: var(--wp--preset--color--secondary);
+	padding-left: 5px;
+}

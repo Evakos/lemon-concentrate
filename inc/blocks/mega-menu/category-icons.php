@@ -20,38 +20,3 @@ function lemon_concentrate_get_category_icon( $slug ) {
 	$slug = strtolower( $slug );
 	return isset( $icons[ $slug ] ) ? $icons[ $slug ] : null;
 }
-
-/**
- * Retrieve the main color based on the category slug.
- *
- * @param string $slug The category slug.
- * @return string The Hex color code.
- */
-function lemon_concentrate_get_category_color( $slug ) {
-	$colors = array(
-		'apple'         => '#FF4747',
-		'aronia'        => '#4A148C',
-		'banana'        => '#FFEB3B',
-		'blackcurrant'  => '#311B92',
-		'cherry'        => '#D50000',
-		'coconut'       => '#795548',
-		'cranberry'     => '#C2185B',
-		'grapefruit'    => '#FD5956',
-		'lemon'         => '#F4D03F',
-		'lime'          => '#CDDC39',
-		'mandarin'      => '#FF9800',
-		'mango'         => '#FFC107',
-		'multifruit'    => '#FF5722',
-		'orange'        => '#FF9500',
-		'passion-fruit' => '#8E24AA',
-		'peach'         => '#FFCC80',
-		'pear'          => '#CDDC39',
-		'pineapple'     => '#FBC02D',
-		'pomegranate'   => '#C62828',
-		'raspberry'     => '#E91E63',
-		'default'       => '#CCCCCC',
-	);
-
-	$slug = strtolower( $slug );
-	return isset( $colors[ $slug ] ) ? $colors[ $slug ] : $colors['default'];
-}
