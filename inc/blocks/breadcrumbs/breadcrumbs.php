@@ -1,70 +1,60 @@
 <?php
 /**
- * Render callback for the Breadcrumbs block.
- *
- * @package lemon-concentrate
+ * Breadcrumbs Block Template.
  */
 
-$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-concentrate-breadcrumbs' ) );
+$icon_html = '';
+$term      = null;
 
-// Determine the icon based on category.
-$icon_html    = '';
-$current_term = null;
+// 1. Determine the relevant term (Category)
+$queried_object = get_queried_object();
 
-if ( is_tax( 'product_category' ) ) {
-	$current_term = get_queried_object();
+if ( is_a( $queried_object, 'WP_Term' ) && 'product_category' === $queried_object->taxonomy ) {
+	// We are on a category archive
+	$term = $queried_object;
 } elseif ( is_singular( 'lemon_product' ) ) {
+	// We are on a single product, find the most specific category
 	$terms = get_the_terms( get_the_ID(), 'product_category' );
-	if ( $terms && ! is_wp_error( $terms ) ) {
-		$current_term = $terms[0];
-	}
-}
-
-if ( $current_term ) {
-	// Try ACF Icon first.
-	if ( function_exists( 'get_field' ) ) {
-		$acf_icon = get_field( 'icon', 'product_category_' . $current_term->term_id );
-		if ( $acf_icon ) {
-			if ( is_array( $acf_icon ) ) {
-				$icon_html = wp_get_attachment_image( $acf_icon['ID'], 'thumbnail', false, array( 'style' => 'width: 20px; height: auto; display: block;' ) );
-			} elseif ( is_numeric( $acf_icon ) ) {
-				$icon_html = wp_get_attachment_image( $acf_icon, 'thumbnail', false, array( 'style' => 'width: 20px; height: auto; display: block;' ) );
-			} else {
-				$icon_html = '<img src="' . esc_url( $acf_icon ) . '" style="width: 20px; height: auto; display: block;" alt="" />';
+	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+		$term = $terms[0];
+		foreach ( $terms as $t ) {
+			// If $t is a child of the current $term, or $term is top-level, update $term to $t
+			if ( $t->parent !== 0 && ( $term->parent === 0 || $t->parent === $term->term_id ) ) {
+				$term = $t;
 			}
 		}
 	}
+}
 
-	// Fallback to term meta thumbnail.
-	if ( ! $icon_html ) {
-		$thumbnail_id = get_term_meta( $current_term->term_id, 'thumbnail_id', true );
-		if ( $thumbnail_id ) {
-			$icon_html = wp_get_attachment_image( $thumbnail_id, 'thumbnail', false, array( 'style' => 'width: 20px; height: auto; display: block;' ) );
+// 2. Fetch the icon from the term
+if ( $term ) {
+	// Use the specific ID format for terms to ensure compatibility
+	$icon = get_field( 'icon', 'product_category_' . $term->term_id );
+	if ( $icon ) {
+		if ( is_array( $icon ) ) {
+			$icon_html = wp_get_attachment_image( $icon['ID'], 'thumbnail' );
+		} elseif ( is_numeric( $icon ) ) {
+			$icon_html = wp_get_attachment_image( $icon, 'thumbnail' );
+		} else {
+			$icon_html = '<img src="' . esc_url( $icon ) . '" alt="' . esc_attr( $term->name ) . '" />';
 		}
 	}
 }
 
-if ( ! $icon_html ) {
-	$icon_html = '<span style="display:block; width:20px; height:20px; background-color: #E5E5E5; border-radius: 50%;"></span>';
-}
+$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-concentrate-breadcrumbs' ) );
 ?>
 <div <?php echo $wrapper_attributes; ?>>
-	<style>
-		.lemon-concentrate-breadcrumbs .last {
-			color: #000;
-			font-weight: 500;
-		}
-		.lemon-concentrate-breadcrumbs .separator {
-			color: #888;}
-	</style>
-	<span class="lemon-concentrate-breadcrumbs-icon" aria-hidden="true">
-		<?php echo $icon_html; ?>
-	</span>
+	<?php if ( $icon_html ) : ?>
+		<div class="lemon-concentrate-breadcrumbs-icon">
+			<?php echo $icon_html; ?>
+		</div>
+	<?php endif; ?>
+
 	<?php
 	if ( function_exists( 'rank_math_the_breadcrumbs' ) ) {
 		rank_math_the_breadcrumbs();
-	} else {
-		echo esc_html__( 'Please install and activate Rank Math SEO.', 'lemon-concentrate' );
+	} elseif ( function_exists( 'yoast_breadcrumb' ) ) {
+		yoast_breadcrumb( '<p id="breadcrumbs">', '</p>' );
 	}
 	?>
 </div>

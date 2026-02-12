@@ -1,0 +1,20 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/floating-panel",
+	"version": "1.0.0",
+	"title": "Floating Panel",
+	"category": "lemon-concentrate",
+	"icon": "location-alt",
+	"description": "A floating contact and map panel.",
+	"keywords": [ "contact", "map", "floating" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false
+	},
+	"style": "file:../../../assets/css/floating-panel.css",
+	"script": "file:../../../assets/js/floating-panel.js",
+	"acf": {
+		"renderTemplate": "floating-panel.php",
+		"mode": "preview"
+	}
+}

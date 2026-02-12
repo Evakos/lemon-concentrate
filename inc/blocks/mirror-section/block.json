@@ -1,0 +1,17 @@
+{
+	"name": "lemon-concentrate/mirror-section",
+	"title": "Mirror Section",
+	"category": "lemon-concentrate",
+	"icon": "layout",
+	"description": "Displays alternating image and text layout (Mirror Section) from the Product Settings.",
+	"keywords": [ "section", "product", "row", "mirror" ],
+	"textdomain": "lemon-concentrate",
+	"style": "file:./mirror-section.css",
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "mirror-section.php"
+	},
+	"supports": {
+		"align": [ "wide", "full" ]
+	}
+}

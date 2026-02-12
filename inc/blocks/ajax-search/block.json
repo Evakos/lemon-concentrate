@@ -1,0 +1,21 @@
+{
+	"apiVersion": 3,
+	"name": "lemon-concentrate/ajax-search",
+	"version": "1.0.1",
+	"title": "AJAX Search",
+	"category": "lemon-concentrate",
+	"icon": "search",
+	"description": "Search products with instant results.",
+	"keywords": [ "search", "ajax", "product" ],
+	"textdomain": "lemon-concentrate",
+	"supports": {
+		"html": false
+	},
+	"example": {},
+	"viewScript": "file:./ajax-search.js",
+	"style": "file:./ajax-search.css",
+	"acf": {
+		"renderTemplate": "ajax-search.php",
+		"mode": "preview"
+	}
+}

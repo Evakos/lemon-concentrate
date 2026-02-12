@@ -1,0 +1,46 @@
+.lemon-double-sections {
+	display: flex;
+	flex-direction: column;
+	gap: 4rem;
+}
+
+.lemon-double-section-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4rem;
+}
+
+.lemon-double-section-col-left {
+	padding-right: 2rem;
+	border-right: 1px solid white;
+}
+
+.lemon-double-section-col-right {
+	padding-left: 2rem;
+}
+
+.lemon-double-section-title {
+	margin-top: 0;
+	margin-bottom: 1rem;
+}
+
+.lemon-double-section-body {
+	font-size: 1rem;
+	line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+	.lemon-double-section-row {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+	.lemon-double-section-col-left {
+		padding-right: 0;
+		border-right: none;
+		border-bottom: 1px solid white;
+		padding-bottom: 2rem;
+	}
+	.lemon-double-section-col-right {
+		padding-left: 0;
+	}
+}

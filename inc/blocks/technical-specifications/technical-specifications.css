@@ -2,7 +2,7 @@
 	display: grid;
 	grid-template-columns: 1fr 1fr auto;
 	gap: 2rem;
-	padding: 2rem;
+	padding: 1rem;
 	background-color: #fff;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 	border-radius: 10px;
@@ -15,9 +15,9 @@
 	text-transform: uppercase;
 }
 
-/* .tech-specs-col-center {
+.tech-specs-col-center {
 	padding-left: 5rem;
-} */
+}
 
 .tech-specs-button-wrapper {
 	margin-bottom: 0;
@@ -25,11 +25,12 @@
 
 .tech-specs-list {
 	margin: 0;
-	padding-left: 1.2em;
+	padding: 0;
 }
 
 .tech-specs-list li {
-	margin-bottom: 0.5rem;
+	margin-bottom: 1rem;
+	font-size: 0.9rem;
 }
 
 @media (max-width: 781px) {

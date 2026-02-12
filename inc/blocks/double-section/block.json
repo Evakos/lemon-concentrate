@@ -1,0 +1,17 @@
+{
+	"name": "lemon-concentrate/double-section",
+	"title": "Double Section",
+	"category": "lemon-concentrate",
+	"icon": "layout",
+	"description": "Displays a double section with title and text on both sides and a dividing line.",
+	"keywords": [ "section", "product", "row", "double" ],
+	"textdomain": "lemon-concentrate",
+	"style": "file:./double-section.css",
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "double-section.php"
+	},
+	"supports": {
+		"align": [ "wide", "full" ]
+	}
+}

@@ -22,6 +22,7 @@
 	cursor: pointer;
 	font-weight: 500;
 	padding: 10px 0;
+	font-size: 1.2em;
 }
 
 .lemon-mega-menu-link::after {
@@ -57,21 +58,23 @@
 }
 
 .lemon-mega-menu-dropdown {
-	position: absolute;
-	top: 100%;
-	left: 50%;
-	margin-top: 30px;
-	transform: translateX(-50%) translateY(10px);
-	width: 90vw;
-	max-width: 980px;
-	background-color: #fff;
-	border-radius: 10px;
-	box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-	padding: 2rem;
-	opacity: 0;
-	visibility: hidden;
-	transition: all 0.3s ease;
-	z-index: 999999;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-top: 30px;
+    transform: translateX(-50%) translateY(10px);
+    width: 100vw;
+    max-width: 1380px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 0;
+    display: flex;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999999;
 }
 
 .lemon-mega-menu-dropdown::before {
@@ -92,7 +95,7 @@
 
 .lemon-mega-menu-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+	grid-template-columns: repeat(5, 1fr);
 	gap: 20px;
 	list-style: none;
 	margin: 0;
@@ -100,47 +103,116 @@
 }
 
 .lemon-mega-menu-subitem {
-	padding: 1rem;
-	background-color: var(--wp--preset--color--background, #f9f9f9);
+	padding: 0;
+	background-color: transparent;
 	border-radius: 10px;
+	overflow: hidden;
+	position: relative;
 }
 
 .lemon-mega-menu-subitem a {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
+	display: block;
+	position: relative;
 	text-decoration: none;
-	color: var(--wp--preset--color--contrast, #000);
-	gap: 10px;
+	color: #fff;
 	transition: transform 0.2s ease;
+	height: 100%;
 }
 
 .lemon-mega-menu-subitem a:hover {
 	transform: translateY(-3px);
-	color: var(--wp--preset--color--secondary, #f6b501);
+	color: #fff;
 }
 
 .lemon-mega-menu-item-image {
 	width: 100%;
-	height: 150px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	height: 250px;
+	display: block;
+	position: relative;
+}
+
+/* Add overlay for readability */
+.lemon-mega-menu-item-image::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.1);
+	transition: background 0.3s ease;
+}
+
+.lemon-mega-menu-subitem a:hover .lemon-mega-menu-item-image::after {
+	background: rgba(0,0,0,0.2);
 }
 
 .lemon-mega-menu-item-image img,
 .lemon-mega-menu-item-image svg {
-	width: auto;
-	max-width: 100%;
-	height: auto;
-	max-height: 100%;
-	object-fit: contain;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
 }
 
 .lemon-mega-menu-item-title {
-	font-size: 0.875rem;
+	position: absolute;
+	top: 80%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	text-align: center;
+	z-index: 2;
+	color: #fff;
+	font-size: 1rem;
 	font-weight: 500;
 	line-height: 1.2;
 	padding: 0 15px;
+	text-transform: capitalize;
+}
+
+.lemon-mega-menu-intro {
+	width: 25%;
+	min-width: 280px;
+	background-color: #000000;
+	padding: 2rem;
+	border-right: 1px solid #eee;
+	flex-shrink: 0;
+	color: #fff;
+}
+
+.lemon-mega-menu-intro h3 {
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+    text-transform: capitalize;
+    font-weight: 500;
+    color: #fff;
+	line-height: 1.2;
+}
+
+.lemon-mega-menu-intro h3::after {
+	content: '';
+	display: none;
+	width: 80px;
+	height: 4px;
+	background-color: transparent;
+	border-bottom: none;
+	background-image: url("data:image/svg+xml,%3Csvg width='80' height='4' viewBox='0 0 80 4' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 2H40M48 2H56M64 2H72' stroke='white' stroke-width='4'/%3E%3C/svg%3E");
+	background-repeat: repeat-x;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	box-shadow: none;
+}
+
+.lemon-mega-menu-intro p {
+	margin: 0;
+	font-size: 1rem;
+	color: #fff;
+	max-width: 800px;
+	line-height: 1.5;
+}
+
+.lemon-mega-menu-container {
+	flex-grow: 1;
+	padding: 1rem;
 }

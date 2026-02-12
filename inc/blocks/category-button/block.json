@@ -1,0 +1,17 @@
+{
+	"name": "lemon-concentrate/category-button",
+	"title": "Category Button",
+	"category": "lemon-concentrate",
+	"icon": "button",
+	"description": "A button linking to the current product category.",
+	"keywords": [ "button", "category", "link" ],
+	"textdomain": "lemon-concentrate",
+	"style": "file:./category-button.css",
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "category-button.php"
+	},
+	"supports": {
+		"align": true
+	}
+}

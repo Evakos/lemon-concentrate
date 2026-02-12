@@ -12,6 +12,7 @@
 		"html": false
 	},
 	"style": "file:./contact-form.css",
+	"viewScript": "file:./contact-form.js",
 	"acf": {
 		"renderTemplate": "contact-form.php",
 		"mode": "preview"

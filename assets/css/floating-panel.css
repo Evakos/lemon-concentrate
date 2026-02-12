@@ -1,0 +1,123 @@
+.lemon-floating-panel {
+    position: fixed;
+    top: 180px;
+    left: 85px;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-start;
+    font-family: var(--wp--preset--font-family--poppins, sans-serif);
+    transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.lemon-floating-panel.is-scrolled-down {
+	top: 160px;
+}
+
+.lemon-fp-content {
+	width: 350px;
+	background: #000;
+	color: #fff;
+	box-shadow: 5px 5px 20px rgba(0,0,0,0.1);
+	padding: 30px;
+	position: relative;
+	transform: translateX(-20px);
+	transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease, visibility 0.3s;
+	border-radius: 10px;
+	min-height: 200px;
+	/* Hide visually when closed but keep layout for triggers */
+	margin-left: 5px;
+	opacity: 0;
+	visibility: hidden;
+	order: 2;
+}
+
+.lemon-floating-panel.is-open .lemon-fp-content {
+	transform: translateX(0);
+	opacity: 1;
+	visibility: visible;
+}
+
+.lemon-fp-triggers {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-left: 0;
+	transition: margin-left 0.3s ease;
+	order: 1;
+}
+
+.lemon-fp-trigger {
+	width: 50px;
+	height: 50px;
+	background-color: transparent;
+	color: #000;
+	border: 2px solid #000;
+	border-radius: 100px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
+	padding: 0;
+	text-decoration: none;
+}
+
+.lemon-fp-trigger:hover,
+.lemon-fp-trigger.is-active {
+	background-color: #000;
+	border-color: #000;
+	color: #fff;
+	width: 60px;
+}
+
+.lemon-fp-close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: none;
+	border: none;
+	font-size: 24px;
+	line-height: 1;
+	cursor: pointer;
+	color: #999;
+}
+
+.lemon-fp-close:hover {
+	color: #fff;
+}
+
+.lemon-fp-tab-content {
+	display: none;
+	animation: fadeIn 0.3s ease;
+}
+
+.lemon-fp-tab-content.is-visible {
+	display: block;
+}
+
+.lemon-fp-title {
+	margin-top: 0;
+	margin-bottom: 15px;
+	font-size: 1.25rem;
+	font-weight: 700;
+	border-bottom: 2px solid #F6B501;
+	padding-bottom: 10px;
+	display: inline-block;
+}
+
+.lemon-fp-content a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+.lemon-fp-map-container iframe {
+	width: 100%;
+	height: 250px;
+	border: 0;
+	border-radius: 4px;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(5px); }
+	to { opacity: 1; transform: translateY(0); }
+}

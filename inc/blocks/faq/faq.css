@@ -1,0 +1,131 @@
+.lemon-faq-block {
+	margin-bottom: 4rem;
+}
+
+.lemon-faq-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	gap: 2rem;
+	margin-bottom: 3rem;
+	padding-bottom: 2rem;
+	border-bottom: 1px solid #eee;
+}
+
+.lemon-faq-label {
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin: 0;
+	font-weight: 600;
+	flex: 0 0 auto;
+}
+
+.lemon-faq-intro {
+	flex: 1 1 300px;
+	max-width: 1000px;
+	text-align: left;
+	margin: 0 auto;
+}
+
+.lemon-faq-title {
+	margin-top: 0;
+	margin-bottom: 1rem;
+	font-weight: 600;
+}
+
+.lemon-faq-text {
+	color: #4a4a4a;
+	margin: 0;
+	line-height: 1.6;
+}
+
+.lemon-faq-actions {
+	flex: 0 0 auto;
+}
+
+.lemon-faq-button {
+	background-color: var(--category-color, #FFB74D) !important;
+	border-color: var(--category-color, #FFB74D) !important;
+	color: #fff !important;
+	border-width: 2px;
+	text-decoration: none;
+	display: inline-block;
+	padding: 0.5em 1em;
+	border-radius: 4px;
+	transition: all 0.3s ease;
+}
+
+.lemon-faq-button:hover {
+	opacity: 0.9;
+}
+
+/* Accordion Styles */
+.lemon-faq-item {
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.lemon-faq-accordion {
+    background-color: #F9F9F9;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 0 auto;
+	border: 1px solid #bdbdbd;
+}
+
+.lemon-faq-question {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.5rem 0;
+	background: none;
+	border: none;
+	text-align: left;
+	cursor: pointer;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	font-weight: 500;
+}
+
+.lemon-faq-icon {
+	font-size: 1.5rem;
+	line-height: 1;
+	font-weight: 400;
+}
+
+.lemon-faq-icon::after {
+	content: "+";
+}
+
+.lemon-faq-question[aria-expanded="true"] .lemon-faq-icon {
+	transform: none;
+}
+
+.lemon-faq-question[aria-expanded="true"] .lemon-faq-icon::after {
+	content: "-";
+}
+
+.lemon-faq-answer {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease-out;
+}
+
+.lemon-faq-answer-inner {
+	padding-bottom: 1.5rem;
+	color: #555;
+}
+
+@media (max-width: 768px) {
+	.lemon-faq-header {
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+	
+	.lemon-faq-intro {
+		max-width: 100%;
+	}
+}

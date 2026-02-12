@@ -1,0 +1,205 @@
+.lemon-ajax-search {
+	position: relative;
+	width: 100%;
+	max-width: 420px;
+}
+
+.lemon-ajax-search-form {
+	position: relative;
+}
+
+.wp-block-search__inside-wrapper {
+	display: flex;
+	flex-wrap: nowrap;
+	position: relative;
+}
+
+.lemon-ajax-search-input {
+	flex-grow: 1;
+	min-width: 0;
+	padding: 25px 20px;
+	font-size: 16px;
+}
+
+.lemon-ajax-search-submit {
+	flex-shrink: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 25px 25px;
+	cursor: pointer;
+	color: #fff;
+}
+
+.lemon-ajax-search-submit svg {
+	fill: currentColor;
+}
+
+.lemon-ajax-search-spinner {
+	width: 24px;
+	height: 24px;
+	border: 2px solid rgba(255,255,255,0.3);
+	border-top: 2px solid #ffffff;
+	border-radius: 50%;
+	animation: lemon-spin 1s linear infinite;
+	display: none;
+}
+
+.lemon-ajax-search.is-loading .lemon-ajax-search-spinner {
+	display: block;
+}
+
+.lemon-ajax-search.is-loading .lemon-ajax-search-submit svg {
+	display: none;
+}
+
+@keyframes lemon-spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+.lemon-ajax-search-results {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	background: #fff;
+	border: 1px solid #eee;
+	border-top: none;
+	border-radius: 0 0 4px 4px;
+	box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+	z-index: 1000;
+	display: none;
+	max-height: 400px;
+	overflow-y: auto;
+	margin-top: 5px;
+}
+
+.lemon-ajax-search-results.has-results {
+	display: block;
+}
+
+.lemon-search-result-item {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	border-bottom: 1px solid #f5f5f5;
+	text-decoration: none;
+	color: #333;
+	transition: background 0.2s;
+}
+
+.lemon-search-result-item:hover {
+	background-color: #f9f9f9;
+}
+
+.lemon-search-result-thumb {
+	width: 40px;
+	height: 40px;
+	object-fit: cover;
+	border-radius: 4px;
+	margin-right: 10px;
+	background-color: #eee;
+}
+
+.lemon-search-result-title {
+	font-size: 0.95rem;
+	font-weight: 500;
+}
+
+.lemon-search-no-results {
+	padding: 15px;
+	color: #666;
+	text-align: center;
+	font-size: 0.9rem;
+}
+
+.lemon-ajax-search-input.has-jackpot {
+	padding-left: 65px;
+}
+
+.lemon-search-jackpot {
+	position: absolute;
+	left: 15px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 40px;
+	height: 40px;
+	overflow: hidden;
+	pointer-events: none;
+	z-index: 5;
+	perspective: 500px;
+}
+
+.lemon-search-jackpot-track {
+	animation: lemonJackpotScroll calc(3s * var(--jackpot-count)) steps(var(--jackpot-count)) infinite;
+	will-change: transform;
+}
+
+.lemon-ajax-search:hover .lemon-search-jackpot-track {
+	animation-play-state: paused;
+}
+
+.lemon-search-jackpot-item {
+	height: 40px;
+	width: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: lemonItemSpring 3s ease infinite;
+	transform-origin: center center;
+}
+
+.lemon-search-jackpot-item img {
+	max-width: 100%;
+	max-height: 24px;
+	object-fit: contain;
+	display: block;
+}
+
+@keyframes lemonJackpotScroll {
+	0% { transform: translateY(0); }
+	100% { transform: translateY(-33.333%); }
+}
+
+@keyframes lemonItemSpring {
+	0% { transform: translateY(100%) rotateX(-90deg); opacity: 0; }
+	20% { transform: translateY(-15%) rotateX(30deg); opacity: 1; }
+	40% { transform: translateY(10%) rotateX(-15deg); }
+	60% { transform: translateY(-5%) rotateX(5deg); }
+	80% { transform: translateY(0) rotateX(0); }
+	100% { transform: translateY(0); }
+}
+
+.lemon-ajax-search-input:focus ~ .lemon-search-jackpot,
+.lemon-ajax-search-input:not(:placeholder-shown) ~ .lemon-search-jackpot {
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s ease;
+}
+
+.lemon-search-match-icon {
+	position: absolute;
+	left: 15px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 40px;
+	height: 40px;
+	pointer-events: none;
+	z-index: 10;
+	display: none;
+}
+
+.lemon-search-match-icon.is-visible {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: lemonItemSpring 0.5s ease;
+}
+
+.lemon-search-match-icon img {
+	max-width: 100%;
+	max-height: 24px;
+	object-fit: contain;
+	display: block;
+}

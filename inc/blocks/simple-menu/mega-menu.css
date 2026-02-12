@@ -102,7 +102,7 @@
 .lemon-mega-menu-subitem {
 	padding: 1rem;
 	background-color: var(--wp--preset--color--background, #f9f9f9);
-	border-radius: 10px;
+	border-radius: 5px;
 }
 
 .lemon-mega-menu-subitem a {

@@ -1,19 +1,17 @@
 {
-	"apiVersion": 3,
 	"name": "lemon-concentrate/breadcrumbs",
-	"version": "1.0.2",
-	"title": "Rank Math Breadcrumbs",
+	"title": "Breadcrumbs",
 	"category": "lemon-concentrate",
 	"icon": "admin-links",
-	"description": "Displays Rank Math breadcrumbs with a prefix icon.",
-	"keywords": [ "rank math", "breadcrumbs", "bookmarks" ],
+	"description": "Displays breadcrumbs with the current category icon.",
+	"keywords": [ "breadcrumbs", "navigation", "icon" ],
 	"textdomain": "lemon-concentrate",
-	"supports": {
-		"html": false
-	},
 	"style": "file:./breadcrumbs.css",
 	"acf": {
-		"renderTemplate": "breadcrumbs.php",
-		"mode": "preview"
+		"mode": "preview",
+		"renderTemplate": "breadcrumbs.php"
+	},
+	"supports": {
+		"align": [ "wide", "full" ]
 	}
 }

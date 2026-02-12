@@ -8,10 +8,15 @@
  * @param   (int|string) $post_id The post ID this block is saved to.
  */
 
-$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-contact-form' ) );
+$wrapper_attributes = get_block_wrapper_attributes( array(
+	'class'         => 'lemon-contact-form',
+	'data-ajax-url' => admin_url( 'admin-ajax.php' ),
+) );
 ?>
 <div <?php echo $wrapper_attributes; ?>>
 	<form class="lemon-contact-form-inner" action="#" method="post">
+		<?php wp_nonce_field( 'lemon_contact_form_submit', 'lemon_contact_nonce' ); ?>
+		<input type="hidden" name="action" value="lemon_contact_form_submit">
 		
 		<div class="lemon-contact-form-row lemon-contact-form-row-split">
 			<div class="lemon-contact-form-group">
@@ -79,5 +84,6 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-con
 			<button type="submit" class="wp-block-button__link"><?php esc_html_e( 'Send Message', 'lemon-concentrate' ); ?></button>
 		</div>
 
+		<div class="lemon-contact-message" style="margin-top: 15px; display: none;"></div>
 	</form>
 </div>

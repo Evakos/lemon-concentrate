@@ -123,7 +123,8 @@ function lemon_concentrate_register_blocks() {
 	register_block_type( get_theme_file_path( 'inc/blocks/breadcrumbs' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/product-category-loop' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/faq' ) );
-	register_block_type( get_theme_file_path( 'inc/blocks/product-section' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/double-section' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/mirror-section' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/contact' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/testimonials' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/product-slider' ) );
@@ -133,6 +134,9 @@ function lemon_concentrate_register_blocks() {
 	register_block_type( get_theme_file_path( 'inc/blocks/hero-image' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/simple-menu' ) );
 	register_block_type( get_theme_file_path( 'inc/blocks/hero-bullets' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/ajax-search' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/floating-panel' ) );
+	register_block_type( get_theme_file_path( 'inc/blocks/category-button' ) );
 }
 add_action( 'init', 'lemon_concentrate_register_blocks' );
 
@@ -148,8 +152,8 @@ function lemon_concentrate_register_cpt() {
 		'public'       => true,
 		'show_ui'      => true,
 		'menu_position'=> 20,
-		'has_archive'  => true,
-		'rewrite'      => array( 'slug' => 'products' ),
+		'has_archive'  => 'catalogue',
+		'rewrite'      => array( 'slug' => 'catalogue', 'with_front' => false ),
 		'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
 		'menu_icon'    => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9Ii01IC01IDYxIDYxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDkuNDQ1NiAxNy4xODczQzQ5LjIyMzYgMTYuNDU1NiA0OS4xNTIgMTUuNjg2NyA0OS4yMzUgMTQuOTI2N0M0OS4zMTggMTQuMTY2NiA0OS41NTM5IDEzLjQzMTMgNDkuOTI4NSAxMi43NjQ4QzUwLjg5MTggMTAuODE2OSA1MS4xMDg4IDguNTgzNzYgNTAuNTM4NSA2LjQ4Njg1QzUwLjExOSA1LjAwMzM4IDQ5LjMyNjQgMy42NTIxMyA0OC4yMzYyIDIuNTYyMDJDNDcuMTQ2MSAxLjQ3MTkxIDQ1Ljc5NDkgMC42NzkyODggNDQuMzExNCAwLjI1OTc3QzQyLjIzNDEgLTAuMjUzNTUyIDQwLjA0MTMgLTAuMDA4ODg4MjE2IDM4LjEzNTIgMC45NzE0MzdDMzcuNDgyMiAxLjMzMjM1IDM2Ljc2NDQgMS41NjA4IDM2LjAyMjkgMS42NDM2N0MzNS4yODE0IDEuNzI2NTQgMzQuNTMwOSAxLjY2MjIgMzMuODE0MyAxLjQ1NDM1QzI4LjQzNTYgLTAuMzg5MjAyIDIyLjU5NiAtMC4zODkyMDIgMTcuMjE3MyAxLjQ1NDM1QzEzLjU0NTMgMi42NzQwNyAxMC4yMDUzIDQuNzI2NjQgNy40NTgzMSA3LjQ1MTU1QzQuNzExMzUgMTAuMTc2NSAyLjYzMTk0IDEzLjQ5OTkgMS4zODI2NyAxNy4xNjE5Qy0wLjQ2MDg4OSAyMi41NDA2IC0wLjQ2MDg4OSAyOC4zODAyIDEuMzgyNjcgMzMuNzU4OUMxLjYwODQzIDM0LjQ4ODkgMS42ODQyOCAzNS4yNTY5IDEuNjA1NjYgMzYuMDE2OUMxLjUyNzA0IDM2Ljc3NjkgMS4yOTU1NyAzNy41MTMyIDAuOTI1MTY3IDM4LjE4MTRDLTAuMDM4MTIzNSA0MC4xMjkzIC0wLjI1NTEwNyA0Mi4zNjI0IDAuMzE1MTY3IDQ0LjQ1OTRDMC43MzQ2ODQgNDUuOTQyOCAxLjUyNzMxIDQ3LjI5NDEgMi42MTc0MiA0OC4zODQyQzMuNzA3NTMgNDkuNDc0MyA1LjA1ODc4IDUwLjI2NjkgNi41NDIyNSA1MC42ODY0QzguNjE5NTkgNTEuMTk5OCAxMC44MTIzIDUwLjk0NzEgMTIuNzE4NSA0OS45NzQ4QzEzLjM3MTUgNDkuNjEzOSAxNC4wODkzIDQ5LjM4NTQgMTQuODMwOCA0OS4zMDI1QzE1LjU3MjIgNDkuMjE5NyAxNi4zMjI4IDQ5LjI4NCAxNy4wMzkzIDQ5LjQ5MTlDMTkuNzM0NCA1MC40MzUxIDIyLjU3MTUgNTAuOTA4IDI1LjQyNjggNTAuODg5OEMyOC4yNTMyIDUwLjg4MzkgMzEuMDU5OSA1MC40MjA0IDMzLjczODEgNDkuNTE3M0MzNy4zOTM5IDQ4LjI4MTYgNDAuNzE1NCA0Ni4yMTkyIDQzLjQ0NDIgNDMuNDkwNUM0Ni4xNzI5IDQwLjc2MTcgNDguMjM1MyAzNy40NDAyIDQ5LjQ3MSAzMy43ODQ0QzUxLjMwNjMgMjguNDAyOCA1MS4yOTc0IDIyLjU2MzIgNDkuNDQ1NiAxNy4xODczWk0yNS40MjY4IDEyLjc2NDhDMjIuMDU2NCAxMi43NjQ4IDE4LjgyNCAxNC4xMDM3IDE2LjQ0MDcgMTYuNDg3QzE0LjA1NzQgMTguODcwMiAxMi43MTg1IDIyLjEwMjYgMTIuNzE4NSAyNS40NzMxSDcuNjM1MTdDNy42MzUxNyAyMC43NTQ1IDkuNTA5NjQgMTYuMjI5MSAxMi44NDYyIDEyLjg5MjVDMTYuMTgyOCA5LjU1NTkxIDIwLjcwODIgNy42ODE0NCAyNS40MjY4IDcuNjgxNDRWMTIuNzY0OFoiIGZpbGw9IiNGNkI1MDEiLz4KPC9zdmc+Cg==',
 		'show_in_rest' => true,
@@ -162,7 +166,7 @@ function lemon_concentrate_register_cpt() {
 		),
 		'public'            => true,
 		'show_in_nav_menus' => true,
-		'rewrite'           => array( 'slug' => 'product-category' ),
+		'rewrite'           => array( 'slug' => 'catalogue', 'with_front' => false, 'hierarchical' => false ),
 		'hierarchical'      => true,
 		'show_in_rest'      => true,
 		'show_admin_column' => true,
@@ -319,8 +323,9 @@ function lemon_concentrate_darken_color( $color, $percent ) {
 function lemon_concentrate_apply_product_colors( $block_content, $block ) {
 	$is_product_page  = is_singular( 'lemon_product' );
 	$is_category_page = is_tax( 'product_category' );
+	$is_archive_page  = is_post_type_archive( 'lemon_product' ) || ( is_archive() && 'lemon_product' === get_query_var( 'post_type' ) );
 
-	if ( ! $is_product_page && ! $is_category_page ) {
+	if ( ! $is_product_page && ! $is_category_page && ! $is_archive_page ) {
 		return $block_content;
 	}
 
@@ -355,6 +360,11 @@ function lemon_concentrate_apply_product_colors( $block_content, $block ) {
 		if ( $category ) {
 			$color = lemon_concentrate_get_category_color( $category->slug );
 		}
+	}
+
+	// Set default to Orange if no color is found (e.g. Main Catalogue / Archive)
+	if ( ! $color && ( is_post_type_archive( 'lemon_product' ) || ( is_archive() && 'lemon_product' === get_query_var( 'post_type' ) ) ) ) {
+		$color = '#F6B501';
 	}
 
 	if ( $color ) {
@@ -443,6 +453,11 @@ function lemon_concentrate_category_color_css() {
 	} elseif ( is_tax( 'product_category' ) ) {
 		$slug = get_queried_object()->slug;
 		$color = lemon_concentrate_get_category_color( $slug );
+	}
+
+	// Set default to Orange if no color is found (e.g. Main Catalogue / Archive)
+	if ( ! $color ) {
+		$color = '#F6B501';
 	}
 
 	if ( $color ) {
@@ -768,8 +783,8 @@ add_filter( 'query_vars', 'lemon_concentrate_query_vars' );
  * Add catch-all rewrite rules to handle root URLs for products and categories.
  */
 function lemon_concentrate_root_rewrite_rules() {
-	add_rewrite_rule( '^(?!wp-json|wp-admin|wp-content|wp-includes)(.+?)/?$', 'index.php?lemon_custom_slug=$matches[1]', 'top' );
-	add_rewrite_rule( '^(?!wp-json|wp-admin|wp-content|wp-includes)(.+?)/page/?([0-9]{1,})/?$', 'index.php?lemon_custom_slug=$matches[1]&paged=$matches[2]', 'top' );
+	add_rewrite_rule( '^catalogue/(.+?)/page/([0-9]+)/?$', 'index.php?lemon_custom_slug=$matches[1]&paged=$matches[2]', 'top' );
+	add_rewrite_rule( '^catalogue/(.+?)/?$', 'index.php?lemon_custom_slug=$matches[1]', 'top' );
 }
 add_action( 'init', 'lemon_concentrate_root_rewrite_rules' );
 
@@ -777,28 +792,121 @@ add_action( 'init', 'lemon_concentrate_root_rewrite_rules' );
  * Resolve the custom slug to a Product, Category, Page, or Post.
  */
 function lemon_concentrate_resolve_slug( $query_vars ) {
+	// DEBUG: Frontend Inspector
+	if ( isset( $_GET['debug_request'] ) && current_user_can( 'manage_options' ) ) {
+		echo '<div style="background:#fff; padding:20px; border:2px solid red; position:relative; z-index:99999;">';
+		echo '<h3>Debug Request</h3>';
+		echo '<pre>' . esc_html( print_r( $query_vars, true ) ) . '</pre>';
+	}
+
+	$slug = '';
+	$source_var = '';
+
 	if ( isset( $query_vars['lemon_custom_slug'] ) ) {
 		$slug = $query_vars['lemon_custom_slug'];
+		$source_var = 'lemon_custom_slug';
+	} elseif ( isset( $query_vars['pagename'] ) ) {
+		$slug = $query_vars['pagename'];
+		$source_var = 'pagename';
+	} elseif ( isset( $query_vars['name'] ) ) {
+		$slug = $query_vars['name'];
+		$source_var = 'name';
+	}
 
+	if ( $slug ) {
 		// 1. Check Product Category
 		$slug  = untrailingslashit( $slug );
 		
 		// Remove prefixes like 'products/' or 'product-category/' if they exist in the URL
 		$clean_slug = preg_replace( '/^(products|product-category)\//', '', $slug );
-		$term_slug  = sanitize_title( urldecode( $clean_slug ) );
+		
+		// Handle hierarchical slugs (e.g. parent/child) - take the last part
+		$parts = explode( '/', $clean_slug );
+		$last_part = end( $parts );
+		
+		$term_slug = urldecode( $last_part );
 
-		$terms = get_terms( array(
-			'taxonomy'   => 'product_category',
-			'slug'       => $term_slug,
-			'hide_empty' => false,
-		) );
+		if ( isset( $_GET['debug_request'] ) && current_user_can( 'manage_options' ) ) {
+			echo "<p><strong>Slug from URL:</strong> " . esc_html( $slug ) . "</p>";
+			echo "<p><strong>Term Slug to find:</strong> " . esc_html( $term_slug ) . "</p>";
+		}
 
-		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-			$term = $terms[0];
+		$term = get_term_by( 'slug', $term_slug, 'product_category' );
+
+		// Fallback: Try sanitized slug if raw failed (handles cases like "Fruit & Veg" -> "fruit-veg")
+		if ( ! $term ) {
+			$term = get_term_by( 'slug', sanitize_title( $term_slug ), 'product_category' );
+		}
+
+		// Fallback 2: Try matching Name (e.g. "Fruit Powders" from "fruit-powders")
+		if ( ! $term ) {
+			$term_name = str_replace( '-', ' ', $term_slug );
+			$term = get_term_by( 'name', $term_name, 'product_category' );
+		}
+
+		// Fallback 3: Try Capitalized Name (e.g. "Fruit Powders")
+		if ( ! $term ) {
+			$term_name = str_replace( '-', ' ', $term_slug );
+			$term = get_term_by( 'name', ucwords( $term_name ), 'product_category' );
+		}
+
+		// Fallback 4: Try slug with suffixes (import artifacts)
+		if ( ! $term ) {
+			$term = get_term_by( 'slug', $term_slug . '-1', 'product_category' );
+		}
+		if ( ! $term ) {
+			$term = get_term_by( 'slug', $term_slug . '-2', 'product_category' );
+		}
+
+		// Fallback 5: Try get_terms (brute force lookup)
+		if ( ! $term ) {
+			$found_terms = get_terms( array(
+				'taxonomy'   => 'product_category',
+				'slug'       => $term_slug,
+				'hide_empty' => false,
+				'number'     => 1,
+			) );
+			if ( ! empty( $found_terms ) && ! is_wp_error( $found_terms ) ) {
+				$term = $found_terms[0];
+			}
+		}
+
+		// Fallback 6: Check term_exists (direct DB check)
+		if ( ! $term ) {
+			$exists = term_exists( $term_slug, 'product_category' );
+			if ( $exists && is_array( $exists ) ) {
+				$term = get_term( $exists['term_id'], 'product_category' );
+			}
+		}
+
+		// Fallback 7: Direct SQL Query (Bypass WP Cache/Filters)
+		if ( ! $term ) {
+			global $wpdb;
+			$term_id = $wpdb->get_var( $wpdb->prepare(
+				"SELECT t.term_id FROM $wpdb->terms t 
+				INNER JOIN $wpdb->term_taxonomy tt ON t.term_id = tt.term_id 
+				WHERE t.slug = %s AND tt.taxonomy = 'product_category'",
+				$term_slug
+			) );
+			if ( $term_id ) {
+				$term = get_term( $term_id, 'product_category' );
+			}
+		}
+
+		if ( isset( $_GET['debug_request'] ) && current_user_can( 'manage_options' ) ) {
+			echo "<p><strong>Term Lookup Result:</strong> " . ( $term ? 'FOUND (ID: ' . $term->term_id . ')' : 'NOT FOUND' ) . "</p>";
+		}
+
+		if ( $term && ! is_wp_error( $term ) ) {
 			$query_vars['product_category'] = $term->slug;
 			$query_vars['taxonomy']         = 'product_category';
 			$query_vars['term']             = $term->slug;
+			
+			// Clear conflicting vars
 			unset( $query_vars['lemon_custom_slug'] );
+			if ( 'pagename' === $source_var ) unset( $query_vars['pagename'] );
+			if ( 'name' === $source_var ) unset( $query_vars['name'] );
+			
 			return $query_vars;
 		}
 
@@ -815,6 +923,7 @@ function lemon_concentrate_resolve_slug( $query_vars ) {
 			$query_vars['name']      = $slug;
 			$query_vars['lemon_product'] = $slug;
 			unset( $query_vars['lemon_custom_slug'] );
+			// If we found a product but came from pagename, we might need to unset pagename, but usually setting post_type is enough.
 			return $query_vars;
 		}
 
@@ -834,8 +943,14 @@ function lemon_concentrate_resolve_slug( $query_vars ) {
 			return $query_vars;
 		}
 
-		// If no match is found, force 404.
-		$query_vars['error'] = '404';
+		// Only force 404 if we originated from our custom catch-all rule.
+		// If we came from 'pagename', let WordPress handle the 404 naturally if no page exists.
+		if ( 'lemon_custom_slug' === $source_var ) {
+			$query_vars['error'] = '404';
+			if ( isset( $_GET['debug_request'] ) && current_user_can( 'manage_options' ) ) {
+				echo "<p style='color:red'><strong>Result:</strong> No match found via custom slug. Forcing 404.</p>";
+			}
+		}
 	}
 	return $query_vars;
 }
@@ -845,16 +960,13 @@ add_filter( 'request', 'lemon_concentrate_resolve_slug' );
  * Remove bases from permalinks.
  */
 function lemon_concentrate_remove_bases( $permalink, $post_or_term, $taxonomy = null ) {
-	// Handle Post Type Link
+	// Handle Post Type Link: Remove /catalogue/ from single products
 	if ( is_object( $post_or_term ) && isset( $post_or_term->post_type ) && 'lemon_product' === $post_or_term->post_type ) {
-		return str_replace( '/products/', '/', $permalink );
+		return str_replace( '/catalogue/', '/', $permalink );
 	}
-	// Handle Term Link
-	if ( 'product_category' === $taxonomy ) {
-		if ( is_object( $post_or_term ) ) {
-			return home_url( '/' . $post_or_term->slug . '/' );
-		}
-		return str_replace( '/product-category/', '/', $permalink );
+	// Handle Term Link: Remove /catalogue/ from product categories
+	if ( 'product_category' === $taxonomy && is_object( $post_or_term ) ) {
+		return str_replace( '/catalogue/', '/', $permalink );
 	}
 	return $permalink;
 }
@@ -997,3 +1109,154 @@ function lemon_concentrate_rank_math_breadcrumbs( $crumbs, $class ) {
 	return $crumbs;
 }
 add_filter( 'rank_math/frontend/breadcrumb/items', 'lemon_concentrate_rank_math_breadcrumbs', 10, 2 );
+
+/**
+ * Register Mega Menu Intro Fields on Menu Items.
+ */
+function lemon_concentrate_register_mega_menu_options() {
+	if ( function_exists( 'acf_add_local_field_group' ) ) {
+		acf_add_local_field_group( array(
+			'key' => 'group_mega_menu_intro',
+			'title' => 'Mega Menu Intro',
+			'fields' => array(
+				array(
+					'key' => 'field_mega_menu_heading',
+					'label' => 'Intro Heading',
+					'name' => 'mega_menu_intro_heading',
+					'type' => 'text',
+				),
+				array(
+					'key' => 'field_mega_menu_text',
+					'label' => 'Intro Text',
+					'name' => 'mega_menu_intro_text',
+					'type' => 'textarea',
+					'rows' => 3,
+					'default_value' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param' => 'nav_menu_item',
+						'operator' => '==',
+						'value' => 'all',
+					),
+				),
+			),
+		) );
+	}
+}
+add_action( 'acf/init', 'lemon_concentrate_register_mega_menu_options' );
+
+/**
+ * AJAX Search Handler.
+ */
+function lemon_concentrate_ajax_search() {
+	$term = isset( $_GET['term'] ) ? sanitize_text_field( $_GET['term'] ) : '';
+
+	if ( empty( $term ) ) {
+		wp_send_json_error();
+	}
+
+	$args = array(
+		'post_type'      => 'lemon_product',
+		'post_status'    => 'publish',
+		's'              => $term,
+		'posts_per_page' => 5,
+	);
+
+	$query = new WP_Query( $args );
+	$results = array();
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			
+			$image_url = '';
+			if ( has_post_thumbnail() ) {
+				$image_url = get_the_post_thumbnail_url( get_the_ID(), 'thumbnail' );
+			} else {
+				$image_url = get_theme_file_uri( 'assets/images/placeholder.svg' );
+			}
+
+			$results[] = array(
+				'title' => get_the_title(),
+				'url'   => get_permalink(),
+				'image' => $image_url,
+			);
+		}
+	}
+
+	wp_send_json_success( $results );
+}
+add_action( 'wp_ajax_lemon_ajax_search', 'lemon_concentrate_ajax_search' );
+add_action( 'wp_ajax_nopriv_lemon_ajax_search', 'lemon_concentrate_ajax_search' );
+
+/**
+ * Handle Contact Form Submission.
+ */
+function lemon_concentrate_handle_contact_form() {
+	// Verify nonce
+	if ( ! isset( $_POST['lemon_contact_nonce'] ) || ! wp_verify_nonce( $_POST['lemon_contact_nonce'], 'lemon_contact_form_submit' ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid security token. Please refresh the page.' ) );
+	}
+
+	// Sanitize and validate inputs
+	$name    = sanitize_text_field( $_POST['contact_name'] ?? '' );
+	$phone   = sanitize_text_field( $_POST['contact_phone'] ?? '' );
+	$role    = sanitize_text_field( $_POST['contact_role'] ?? '' );
+	$email   = sanitize_email( $_POST['contact_email'] ?? '' );
+	$company = sanitize_text_field( $_POST['contact_company'] ?? '' );
+	$country = sanitize_text_field( $_POST['contact_country'] ?? '' );
+	$message = sanitize_textarea_field( $_POST['contact_message'] ?? '' );
+
+	if ( empty( $name ) || empty( $email ) || empty( $message ) ) {
+		wp_send_json_error( array( 'message' => 'Please fill in all required fields.' ) );
+	}
+
+	// Prepare Email
+	$to      = get_option( 'admin_email' ); // Sends to the site admin email
+	$subject = 'New Contact Form Submission from ' . $name;
+	$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+	$headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
+
+	$body  = '<strong>Name:</strong> ' . $name . '<br>';
+	$body .= '<strong>Email:</strong> ' . $email . '<br>';
+	$body .= '<strong>Phone:</strong> ' . $phone . '<br>';
+	$body .= '<strong>Role:</strong> ' . $role . '<br>';
+	$body .= '<strong>Company:</strong> ' . $company . '<br>';
+	$body .= '<strong>Country:</strong> ' . $country . '<br><br>';
+	$body .= '<strong>Message:</strong><br>' . nl2br( $message );
+
+	if ( wp_mail( $to, $subject, $body, $headers ) ) {
+		wp_send_json_success( array( 'message' => 'Thank you! Your message has been sent successfully.' ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to send email. Please try again later.' ) );
+	}
+}
+add_action( 'wp_ajax_lemon_contact_form_submit', 'lemon_concentrate_handle_contact_form' );
+add_action( 'wp_ajax_nopriv_lemon_contact_form_submit', 'lemon_concentrate_handle_contact_form' );
+
+/**
+ * Show current template in Admin Bar.
+ */
+function lemon_concentrate_show_template_admin_bar( $admin_bar ) {
+	if ( ! is_admin() && current_user_can( 'manage_options' ) ) {
+		global $template;
+		$template_name = basename( $template );
+		$object_id     = get_queried_object_id();
+		$title         = 'Template: ' . $template_name;
+		if ( $object_id ) {
+			$title .= ' | ID: ' . $object_id;
+		}
+		$admin_bar->add_node( array(
+			'id'    => 'lemon-current-template',
+			'title' => $title,
+			'href'  => '#',
+			'meta'  => array(
+				'title' => $template,
+			),
+		) );
+	}
+}
+add_action( 'admin_bar_menu', 'lemon_concentrate_show_template_admin_bar', 999 );

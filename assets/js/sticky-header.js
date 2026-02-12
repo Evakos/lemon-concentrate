@@ -5,12 +5,16 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		return;
 	}
 
-	// Toggle class on scroll
-	window.addEventListener( 'scroll', function() {
+	const checkScroll = function() {
 		if ( window.scrollY > 30 ) {
 			header.classList.add( 'is-scrolled' );
 		} else {
 			header.classList.remove( 'is-scrolled' );
 		}
-	} );
+	};
+
+	// Toggle class on scroll
+	window.addEventListener( 'scroll', checkScroll );
+	// Check immediately on load in case of refresh
+	checkScroll();
 } );

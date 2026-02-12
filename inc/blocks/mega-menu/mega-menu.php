@@ -27,6 +27,7 @@ $menu_tree = array();
 $children  = array();
 
 if ( $menu_items ) {
+	_wp_menu_item_classes_by_context( $menu_items );
 	foreach ( $menu_items as $item ) {
 		if ( $item->menu_item_parent ) {
 			$children[ $item->menu_item_parent ][] = $item;
@@ -37,6 +38,7 @@ if ( $menu_items ) {
 }
 ?>
 <nav <?php echo $wrapper_attributes; ?>>
+	<div class="lemon-mega-menu-desktop">
 	<?php if ( ! empty( $menu_tree ) ) : ?>
 		<ul class="lemon-mega-menu-nav">
 			<?php foreach ( $menu_tree as $item ) : ?>
@@ -77,8 +79,19 @@ if ( $menu_items ) {
 
 				$has_children = ! empty( $child_items );
 				$item_classes = 'lemon-mega-menu-item';
+				if ( ! empty( $item->classes ) && is_array( $item->classes ) ) {
+					$item_classes .= ' ' . implode( ' ', $item->classes );
+				}
 				if ( $has_children ) {
 					$item_classes .= ' has-children';
+				}
+
+				// Get Intro fields for this specific menu item
+				$intro_heading = function_exists( 'get_field' ) ? get_field( 'mega_menu_intro_heading', $item->ID ) : '';
+				$intro_text    = function_exists( 'get_field' ) ? get_field( 'mega_menu_intro_text', $item->ID ) : '';
+
+				if ( empty( $intro_text ) ) {
+					$intro_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 				}
 				?>
 				<li class="<?php echo esc_attr( $item_classes ); ?>">
@@ -93,6 +106,16 @@ if ( $menu_items ) {
 
 					<?php if ( $has_children ) : ?>
 						<div class="lemon-mega-menu-dropdown">
+							<?php if ( $intro_heading || $intro_text ) : ?>
+								<div class="lemon-mega-menu-intro">
+									<?php if ( $intro_heading ) : ?>
+										<h3><?php echo esc_html( $intro_heading ); ?></h3>
+									<?php endif; ?>
+									<?php if ( $intro_text ) : ?>
+										<p><?php echo esc_html( $intro_text ); ?></p>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
 							<div class="lemon-mega-menu-container">
 								<ul class="lemon-mega-menu-grid">
 									<?php foreach ( $child_items as $child ) : ?>
@@ -169,4 +192,66 @@ if ( $menu_items ) {
 	<?php else : ?>
 		<p><?php esc_html_e( 'Please assign a menu to the Primary location.', 'lemon-concentrate' ); ?></p>
 	<?php endif; ?>
+	</div>
+
+	<div class="lemon-mega-menu-mobile">
+		<?php echo do_blocks( '<!-- wp:lemon-concentrate/mobile-menu /-->' ); ?>
+	</div>
+	<style>
+		.lemon-mega-menu-nav {
+			display: flex;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			gap: 0;
+			align-items: stretch;
+			border: 1px solid white;
+			border-radius: 100px;
+		}
+		.lemon-mega-menu-item {
+			display: flex;
+			align-items: stretch;
+		}
+		.lemon-mega-menu-link {
+			display: flex;
+			align-items: center;
+			padding: 0.75rem 2rem;
+			transition: background-color 0.3s ease, color 0.3s ease;
+		}
+		.lemon-mega-menu-item:hover .lemon-mega-menu-link,
+		.lemon-mega-menu-item.current-menu-item .lemon-mega-menu-link,
+		.lemon-mega-menu-item.current-menu-ancestor .lemon-mega-menu-link,
+		.lemon-mega-menu-item.active .lemon-mega-menu-link {
+			background-color: rgba(255, 255, 255, 0.7);
+			color: var(--wp--preset--color--primary, #000);
+		}
+		.lemon-mega-menu-item:first-child .lemon-mega-menu-link {
+			border-radius: 100px 0 0 100px;
+		}
+		.lemon-mega-menu-item:last-child .lemon-mega-menu-link {
+			border-radius: 0 100px 100px 0;
+		}
+		.lemon-mega-menu-intro h3 {
+			position: relative;
+			margin-bottom: 1rem;
+			display: inline-block;
+		}
+		.lemon-mega-menu-intro h3::after {
+			content: '';
+			display: none;
+			margin-top: 8px;
+			width: 60px;
+			height: 12px;
+			background-image: url("data:image/svg+xml,%3Csvg width='60' height='12' viewBox='0 0 60 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='6' cy='6' r='6' fill='%23F6B501' fill-opacity='0.4'/%3E%3Ccircle cx='22' cy='6' r='4' fill='%23FF9500' fill-opacity='0.6'/%3E%3Ccircle cx='34' cy='6' r='3' fill='%23FFB74D' fill-opacity='0.8'/%3E%3Ccircle cx='44' cy='6' r='2' fill='%23F6B501' fill-opacity='1'/%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-size: contain;
+		}
+		.lemon-mega-menu-mobile {
+			display: none;
+		}
+		@media (max-width: 1024px) {
+			.lemon-mega-menu-desktop { display: none; }
+			.lemon-mega-menu-mobile { display: block; }
+		}
+	</style>
 </nav>

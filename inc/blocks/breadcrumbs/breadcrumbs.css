@@ -2,28 +2,31 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	background-color:white;
-	border-radius:100px;
-	max-width: 500px;
-	padding: 0 10px;
+	background-color: white;
+	border-radius: 100px;
+	width: fit-content;
+	max-width: 100%;
+	padding: 10px 20px;
+	border: 1px solid #F6B501;
+	box-sizing: border-box;
 }
 
 .lemon-concentrate-breadcrumbs p {
 	margin: 0;
 	font-size: 14px;
+	line-height: 1.2;
 }
 
-.lemon-concentrate-breadcrumbs {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: white;
-    border-radius: 100px;
-    max-width: max-content !important;
-    padding: 10px 20px;
-	border: 1px solid #F6B501;
+.lemon-concentrate-breadcrumbs-icon {
+	line-height: 0;
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
 }
 
-:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) .wp-block-search__input {
-	border: none;
+.lemon-concentrate-breadcrumbs-icon img {
+	width: 20px;
+	height: 20px;
+	object-fit: contain;
+	display: block;
 }
