@@ -11,9 +11,14 @@ $intro          = get_field( 'introduction' );
 $columns        = get_field( 'data_columns' );
 $transparent_bg = get_field( 'transparent_background' );
 
-// Check Product Data if columns are empty
+// Check Product Data
+$product_specs = get_field( 'technical_specifications', $post_id );
+
+if ( ! empty( $product_specs['hide_section'] ) && ! $is_preview ) {
+	return;
+}
+
 if ( empty( $columns ) ) {
-	$product_specs = get_field( 'technical_specifications', $post_id );
 	if ( $product_specs ) {
 		if ( empty( $title ) && ! empty( $product_specs['title'] ) ) {
 			$title = $product_specs['title'];

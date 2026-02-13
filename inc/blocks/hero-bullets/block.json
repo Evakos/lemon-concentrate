@@ -5,6 +5,7 @@
 	"icon": "list-view",
 	"description": "Displays the Hero Bullets defined in the Product Settings.",
 	"keywords": [ "bullets", "hero", "product" ],
+	"style": "file:./hero-bullets.css",
 	"acf": {
 		"mode": "preview",
 		"renderTemplate": "hero-bullets.php"

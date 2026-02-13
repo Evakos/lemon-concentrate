@@ -1,5 +1,43 @@
 .wp-block-lemon-concentrate-contact-form {
-	padding: 3rem;
+	padding: 0rem;
+}
+
+.lemon-contact-layout {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4rem;
+	align-items: start;
+}
+
+.lemon-contact-info {
+	background: linear-gradient(148deg, #FFE59F 0%, #F6B501 100%);
+	padding: var(--wp--preset--spacing--80);
+	border-radius: 8px;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.lemon-contact-label {
+	letter-spacing: 0px;
+	text-transform: uppercase;
+	margin-bottom: 1rem;
+	color: var(--wp--preset--color--contrast);
+}
+
+.lemon-contact-title {
+	margin-top: 0;
+	margin-bottom: 1.5rem;
+	font-size: 2.5rem;
+	color: #fff;
+	font-weight: 500;
+}
+
+.lemon-contact-text {
+	color: #fff;
 }
 
 .lemon-contact-form-row {
@@ -66,10 +104,67 @@
 		flex-direction: column;
 		gap: 1.5rem;
 	}
+	.lemon-contact-layout {
+		grid-template-columns: 1fr;
+	}
 }
 
 .lemon-contact-form-submit .wp-block-button__link {
-	color: #fff;
-	font-size: 0.9rem;
+	font-size: 1.1rem;
+	background-color: #ffffff;
+	border: 2px solid var(--category-color, var(--wp--preset--color--secondary));
+	color: var(--wp--preset--color--primary);
 	box-shadow: none;
+}
+
+/* Testimonials inside Contact Form */
+.lemon-testimonials-block {
+	margin-top: 3rem;
+}
+.lemon-testimonials-track {
+	display: grid;
+	grid-template-areas: "slide";
+}
+.lemon-testimonial-slide {
+	grid-area: slide;
+	opacity: 0;
+	transform: translateX(20px);
+	transition: opacity 0.5s ease, transform 0.5s ease;
+	pointer-events: none;
+}
+.lemon-testimonial-slide.is-active {
+	opacity: 1;
+	transform: translateX(0);
+	pointer-events: auto;
+}
+.lemon-testimonial-quote {
+	font-size: 1.5rem;
+	font-style: normal;
+	margin: 0;
+	color: #fff;
+	border-left: none;
+	padding-left: 0;
+}
+.lemon-testimonials-nav {
+	display: flex;
+	gap: 0.5rem;
+	margin-top: 1.5rem;
+}
+.lemon-testimonials-nav button {
+	background: #ffffff;
+	border: none;
+	color: var(--wp--preset--color--primary, #000000);
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	padding: 0;
+	transition: all 0.3s ease;
+}
+.lemon-testimonials-nav button:hover {
+	transform: scale(1.1);
+	box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }

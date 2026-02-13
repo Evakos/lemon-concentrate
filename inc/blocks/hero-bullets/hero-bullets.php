@@ -32,6 +32,8 @@ if ( empty( $bullets ) ) {
 	);
 }
 
+$bullet_count = count( $bullets );
+
 $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-hero-bullets' ) );
 
 // Icons map
@@ -46,7 +48,7 @@ $icons = array(
 ?>
 <div <?php echo $wrapper_attributes; ?>>
 	<?php if ( $bullets ) : ?>
-		<ul class="lemon-hero-bullets-list">
+		<ul class="lemon-hero-bullets-list" style="--hero-col-count: <?php echo intval( $bullet_count ); ?>">
 			<?php foreach ( $bullets as $bullet ) : ?>
 				<li class="lemon-hero-bullet-item">
 					<?php 
@@ -62,47 +64,5 @@ $icons = array(
 				</li>
 			<?php endforeach; ?>
 		</ul>
-		<style>
-			.lemon-hero-bullets-list {
-				display: grid;
-				grid-template-columns: 1fr;
-				gap: 1.5rem;
-				list-style: none;
-				padding: 0;
-				margin: 0;
-			}
-			@media (min-width: 768px) {
-				.lemon-hero-bullets-list {
-					grid-template-columns: repeat(3, 1fr);
-				}
-			}
-			.lemon-hero-bullet-item {
-				border: 1px solid currentColor;
-				padding: 1.5rem;
-				text-align: center;
-				display: flex;
-				align-items: center;
-				flex-direction: column;
-				justify-content: center;
-				font-size: 0.95em;
-				line-height: 1.4;
-			}
-			.lemon-hero-bullet-icon {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-bottom: 0.75rem;
-				background-color: #ffffff;
-				border-radius: 50%;
-				width: 60px;
-				height: 60px;
-				color: var(--category-color, #000000);
-			}
-			.lemon-hero-bullet-title {
-				display: block;
-				margin-bottom: 0.5rem;
-				font-weight: 700;
-			}
-		</style>
 	<?php endif; ?>
 </div>

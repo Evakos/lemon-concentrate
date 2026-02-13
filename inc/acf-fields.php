@@ -432,6 +432,13 @@ add_action( 'acf/init', function() {
 				'layout' => 'block',
 				'sub_fields' => array(
 					array(
+						'key' => 'field_tech_specs_hide',
+						'label' => 'Hide Section',
+						'name' => 'hide_section',
+						'type' => 'true_false',
+						'ui' => 1,
+					),
+					array(
 						'key' => 'field_tech_specs_transparent_bg',
 						'label' => 'Transparent Background',
 						'name' => 'transparent_background',
@@ -1311,6 +1318,51 @@ add_action( 'acf/init', function() {
 	) );
 
 	acf_add_local_field_group( array(
+		'key' => 'group_contact_form_block',
+		'title' => 'Contact Form Settings',
+		'fields' => array(
+			array(
+				'key' => 'field_contact_label',
+				'label' => 'Label',
+				'name' => 'label',
+				'type' => 'text',
+				'default_value' => 'Contact us',
+			),
+			array(
+				'key' => 'field_contact_title',
+				'label' => 'Title',
+				'name' => 'title',
+				'type' => 'text',
+				'default_value' => 'We will be happy to assist you',
+			),
+			array(
+				'key' => 'field_contact_text',
+				'label' => 'Introduction Text',
+				'name' => 'text',
+				'type' => 'textarea',
+				'default_value' => 'Email us and our team will answer all your needs.',
+				'rows' => 3,
+			),
+			array(
+				'key' => 'field_contact_bg_color',
+				'label' => 'Info Background Color',
+				'name' => 'info_background_color',
+				'type' => 'text',
+				'instructions' => 'Enter a hex color (e.g. #000000) or a CSS gradient (e.g. linear-gradient(...)).',
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'block',
+					'operator' => '==',
+					'value' => 'lemon-concentrate/contact',
+				),
+			),
+		),
+	) );
+
+	acf_add_local_field_group( array(
 		'key' => 'group_category_button',
 		'title' => 'Category Button Settings',
 		'fields' => array(
@@ -1384,6 +1436,95 @@ add_action( 'acf/init', function() {
 				'name' => 'mirror_section_transparent_bg',
 				'type' => 'true_false',
 				'ui' => 1,
+			),
+			array(
+				'key' => 'field_mirror_include_contact',
+				'label' => 'Include Contact Form',
+				'name' => 'mirror_section_include_contact',
+				'type' => 'true_false',
+				'ui' => 1,
+			),
+			array(
+				'key' => 'field_mirror_contact_position',
+				'label' => 'Contact Form Position',
+				'name' => 'mirror_section_contact_position',
+				'type' => 'number',
+				'instructions' => 'Insert the contact form after this row number.',
+				'default_value' => 2,
+				'conditional_logic' => array(
+					array(
+						array(
+							'field' => 'field_mirror_include_contact',
+							'operator' => '==',
+							'value' => '1',
+						),
+					),
+				),
+			),
+			array(
+				'key' => 'field_mirror_contact_label',
+				'label' => 'Contact Label',
+				'name' => 'mirror_contact_label',
+				'type' => 'text',
+				'default_value' => 'Contact us',
+				'conditional_logic' => array(
+					array(
+						array(
+							'field' => 'field_mirror_include_contact',
+							'operator' => '==',
+							'value' => '1',
+						),
+					),
+				),
+			),
+			array(
+				'key' => 'field_mirror_contact_title',
+				'label' => 'Contact Title',
+				'name' => 'mirror_contact_title',
+				'type' => 'text',
+				'default_value' => 'We will be happy to assist you',
+				'conditional_logic' => array(
+					array(
+						array(
+							'field' => 'field_mirror_include_contact',
+							'operator' => '==',
+							'value' => '1',
+						),
+					),
+				),
+			),
+			array(
+				'key' => 'field_mirror_contact_text',
+				'label' => 'Contact Text',
+				'name' => 'mirror_contact_text',
+				'type' => 'textarea',
+				'default_value' => 'Email us and our team will answer all your needs.',
+				'rows' => 3,
+				'conditional_logic' => array(
+					array(
+						array(
+							'field' => 'field_mirror_include_contact',
+							'operator' => '==',
+							'value' => '1',
+						),
+					),
+				),
+			),
+			array(
+				'key' => 'field_mirror_contact_bg_color',
+				'label' => 'Contact Info Background',
+				'name' => 'mirror_contact_bg_color',
+				'type' => 'text',
+				'instructions' => 'Enter a hex color (e.g. #000000) or a CSS gradient (e.g. linear-gradient(...)).',
+				'conditional_logic' => array(
+					array(
+						array(
+							'field' => 'field_mirror_include_contact',
+							'operator' => '==',
+							'value' => '1',
+						),
+					),
+				),
 			),
 		),
 		'location' => array(

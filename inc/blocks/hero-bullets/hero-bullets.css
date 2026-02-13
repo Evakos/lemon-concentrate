@@ -1,21 +1,44 @@
-.lemon-hero-bullets .lemon-hero-bullets-list {
+.lemon-hero-bullets-list {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.5rem;
 	list-style: none;
 	padding: 0;
 	margin: 0;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
 }
 
-.lemon-hero-bullets .lemon-hero-bullets-list li {
+@media (min-width: 768px) {
+	.lemon-hero-bullets-list {
+		grid-template-columns: repeat(var(--hero-col-count, 3), 1fr);
+	}
+}
+
+.lemon-hero-bullet-item {
+	border: 1px solid currentColor;
+	padding: 1.5rem;
+	text-align: center;
 	display: flex;
 	align-items: center;
-	font-weight: 600;
+	flex-direction: column;
+	justify-content: center;
+	font-size: 0.95em;
+	line-height: 1.4;
 }
 
-.lemon-hero-bullets .lemon-hero-bullets-list li:not(:last-child)::after {
-	content: "•";
-	margin: 0 1rem;
-	color: #ffffff;
+.lemon-hero-bullet-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 0.75rem;
+	background-color: #ffffff;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	color: var(--category-color, #000000);
+}
+
+.lemon-hero-bullet-title {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 700;
 }

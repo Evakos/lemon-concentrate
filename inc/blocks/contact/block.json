@@ -1,20 +1,18 @@
 {
-	"apiVersion": 3,
-	"name": "lemon-concentrate/contact-form",
-	"version": "1.0.0",
+	"name": "lemon-concentrate/contact",
 	"title": "Contact Form",
 	"category": "lemon-concentrate",
 	"icon": "email",
-	"description": "A modern contact form with fields for Name, Surname, Company, Telephone, and Comments.",
+	"description": "A contact form with optional testimonials.",
 	"keywords": [ "contact", "form", "email" ],
 	"textdomain": "lemon-concentrate",
-	"supports": {
-		"html": false
-	},
 	"style": "file:./contact-form.css",
 	"viewScript": "file:./contact-form.js",
 	"acf": {
-		"renderTemplate": "contact-form.php",
-		"mode": "preview"
+		"mode": "preview",
+		"renderTemplate": "contact-form.php"
+	},
+	"supports": {
+		"align": [ "wide", "full" ]
 	}
 }
