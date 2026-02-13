@@ -9,7 +9,8 @@
 	"keywords": [ "specifications", "technical", "data" ],
 	"textdomain": "lemon-concentrate",
 	"supports": {
-		"html": false
+		"html": false,
+		"align": true
 	},
 	"style": "file:./technical-specifications.css",
 	"acf": {

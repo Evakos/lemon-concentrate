@@ -12,7 +12,7 @@
 $sections = get_field( 'sections', $post_id );
 
 // Fallback if no sections are found.
-if ( empty( $sections ) ) {
+if ( empty( $sections ) && ! empty( $is_preview ) ) {
 	$sections = array(
 		array(
 			'title' => 'Industrial Processing',
@@ -27,6 +27,21 @@ if ( empty( $sections ) ) {
 			'order' => 0, // Right
 		),
 	);
+}
+
+// Filter sections based on block setting.
+$display_mode = get_field( 'mirror_section_display_mode' );
+$transparent_bg = get_field( 'mirror_section_transparent_bg' );
+if ( $sections && is_array( $sections ) ) {
+	if ( 'first_2' === $display_mode ) {
+		$sections = array_slice( $sections, 0, 2 );
+	} elseif ( 'offset_2' === $display_mode ) {
+		$sections = array_slice( $sections, 2 );
+	}
+}
+
+if ( empty( $sections ) ) {
+	return;
 }
 
 // Determine background color from product category
@@ -59,7 +74,9 @@ if ( ! $color && function_exists( 'lemon_concentrate_get_category_color' ) ) {
 	}
 }
 
-if ( $color && 'transparent' !== $color ) {
+if ( $transparent_bg ) {
+	$style_attr = 'padding: 0;';
+} elseif ( $color && 'transparent' !== $color ) {
 	// Darken the color slightly (15%) for consistency with other blocks.
 	if ( function_exists( 'lemon_concentrate_darken_color' ) ) {
 		$color = lemon_concentrate_darken_color( $color, 15 );
@@ -80,7 +97,15 @@ if ( $color && 'transparent' !== $color ) {
 	}
 }
 
-$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-mirror-sections', 'style' => $style_attr ) );
+$wrapper_attributes_args = array( 'class' => 'lemon-mirror-sections' );
+if ( $transparent_bg ) {
+	$wrapper_attributes_args['class'] .= ' is-transparent';
+}
+if ( $style_attr ) {
+	$wrapper_attributes_args['style'] = $style_attr;
+}
+
+$wrapper_attributes = get_block_wrapper_attributes( $wrapper_attributes_args );
 ?>
 <div <?php echo $wrapper_attributes; ?>>
 	<?php if ( ! empty( $sections ) ) : ?>
@@ -100,10 +125,12 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-mir
 			?>
 			<div class="lemon-mirror-section-row <?php echo esc_attr( $row_class ); ?>">
 				<div class="lemon-mirror-section-content">
-					<?php if ( $title ) : ?>
-						<h3 class="lemon-mirror-section-title"><?php echo esc_html( $title ); ?></h3>
-					<?php endif; ?>
-					<div class="lemon-mirror-section-body"><?php echo wp_kses_post( $text ); ?></div>
+					<div class="lemon-mirror-section-body">
+						<?php if ( $title ) : ?>
+							<h3 class="lemon-mirror-section-title"><?php echo esc_html( $title ); ?></h3>
+						<?php endif; ?>
+						<?php echo wp_kses_post( $text ); ?>
+					</div>
 				</div>
 				<div class="lemon-mirror-section-image">
 					<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( $title ); ?>" />
@@ -113,7 +140,8 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-mir
 	<?php endif; ?>
 </div>
 <style>
-	.lemon-mirror-section-body ul {
-		padding-left: 20px;
+	.lemon-mirror-section-body ul li {
+		font-size: 1.125rem;
+		margin-bottom: 0.5rem;
 	}
 </style>

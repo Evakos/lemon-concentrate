@@ -12,7 +12,7 @@
 $sections = get_field( 'double_sections', $post_id );
 
 // Fallback if no sections are found.
-if ( empty( $sections ) ) {
+if ( empty( $sections ) && ! empty( $is_preview ) ) {
 	$product_title = get_the_title( $post_id );
 	$sections = array(
 		array(
@@ -24,9 +24,14 @@ if ( empty( $sections ) ) {
 	);
 }
 
+if ( empty( $sections ) ) {
+	return;
+}
+
 // Determine background color from product category
 $style_attr = '';
 $color = '';
+$transparent_bg = get_field( 'double_section_transparent_bg' );
 
 // 1. Check Product Override
 if ( function_exists( 'get_field' ) ) {
@@ -54,7 +59,9 @@ if ( ! $color && function_exists( 'lemon_concentrate_get_category_color' ) ) {
 	}
 }
 
-if ( $color && 'transparent' !== $color ) {
+if ( $transparent_bg ) {
+	$style_attr = 'padding: 0;';
+} elseif ( $color && 'transparent' !== $color ) {
 	// Darken the color slightly (15%) for consistency with other blocks.
 	if ( function_exists( 'lemon_concentrate_darken_color' ) ) {
 		$color = lemon_concentrate_darken_color( $color, 15 );
@@ -75,7 +82,15 @@ if ( $color && 'transparent' !== $color ) {
 	}
 }
 
-$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-double-sections', 'style' => $style_attr ) );
+$wrapper_attributes_args = array( 'class' => 'lemon-double-sections' );
+if ( $transparent_bg ) {
+	$wrapper_attributes_args['class'] .= ' is-transparent';
+}
+if ( $style_attr ) {
+	$wrapper_attributes_args['style'] = $style_attr;
+}
+
+$wrapper_attributes = get_block_wrapper_attributes( $wrapper_attributes_args );
 ?>
 <div <?php echo $wrapper_attributes; ?>>
 	<?php if ( ! empty( $sections ) ) : ?>
@@ -98,3 +113,9 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-dou
 		<?php endforeach; ?>
 	<?php endif; ?>
 </div>
+<style>
+	.lemon-double-section-body ul li {
+		font-size: 1.125rem;
+		margin-bottom: 0.5rem;
+	}
+</style>

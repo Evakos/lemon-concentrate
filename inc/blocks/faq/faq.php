@@ -23,6 +23,10 @@ $header_intro = str_ireplace( 'orange pulp cells', $product_title, $header_intro
 $faq_items = get_field( 'faq_items' );
 
 if ( empty( $faq_items ) ) {
+	$faq_items = get_field( 'faq', $post_id );
+}
+
+if ( empty( $faq_items ) && ! empty( $is_preview ) ) {
 	$faq_items = array(
 		array(
 			'question' => sprintf( 'What is %s in industrial manufacturing?', $product_title ),
@@ -55,7 +59,17 @@ if ( empty( $faq_items ) ) {
 	);
 }
 
+if ( empty( $faq_items ) ) {
+	return;
+}
+
 $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-faq-block' ) );
+
+$schema = array(
+	'@context'   => 'https://schema.org',
+	'@type'      => 'FAQPage',
+	'mainEntity' => array(),
+);
 ?>
 <div <?php echo $wrapper_attributes; ?>>
 	<div class="lemon-faq-header">
@@ -84,6 +98,15 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-faq
 				// Also replace hardcoded "Orange pulp cells" if present (case-insensitive)
 				$question = str_ireplace( 'orange pulp cells', $product_title, $question );
 				$answer   = str_ireplace( 'orange pulp cells', $product_title, $answer );
+
+				$schema['mainEntity'][] = array(
+					'@type'          => 'Question',
+					'name'           => wp_strip_all_tags( $question ),
+					'acceptedAnswer' => array(
+						'@type' => 'Answer',
+						'text'  => $answer,
+					),
+				);
 				?>
 				<div class="lemon-faq-item">
 					<button class="lemon-faq-question" aria-expanded="false">
@@ -99,15 +122,25 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-faq
 			<?php endforeach; ?>
 		</div>
 	<?php endif; ?>
+	<?php if ( ! empty( $schema['mainEntity'] ) && ! $is_preview ) : ?>
+		<script type="application/ld+json">
+			<?php echo wp_json_encode( $schema ); ?>
+		</script>
+	<?php endif; ?>
 </div>
 <style>
+	.lemon-faq-header {
+		display: grid;
+		grid-template-columns: 1fr 970px 1fr;
+		align-items: start;
+		margin-bottom: 3rem;
+	}
 	.lemon-faq-label {
 		font-size: 1.1rem;
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		margin: 0;
-		font-weight: 600;
-		flex: 0 0 auto;
+		font-weight: 500;
 	}
 	.lemon-faq-accordion {
 		background-color: #F9F9F9;
@@ -115,5 +148,26 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-faq
 		border-radius: 8px;
 		margin: 0 auto;
 		border: 1px solid #bdbdbd;
+		max-width: 1000px;
+		width: 970px;
+	}
+	.lemon-faq-button {
+		box-shadow: none !important;
+	}
+	.lemon-faq-intro {
+		grid-column: 2;
+	}
+	.lemon-faq-actions {
+		justify-self: end;
+	}
+	@media (max-width: 1300px) {
+		.lemon-faq-header {
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+		}
+		.lemon-faq-accordion {
+			width: 100%;
+		}
 	}
 </style>

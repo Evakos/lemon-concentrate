@@ -215,7 +215,7 @@ if ( $menu_items ) {
 		.lemon-mega-menu-link {
 			display: flex;
 			align-items: center;
-			padding: 0.75rem 2rem;
+			padding: 0.45rem 2rem;
 			transition: background-color 0.3s ease, color 0.3s ease;
 		}
 		.lemon-mega-menu-item:hover .lemon-mega-menu-link,

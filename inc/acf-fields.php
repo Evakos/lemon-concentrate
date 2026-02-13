@@ -355,6 +355,7 @@ add_action( 'acf/init', function() {
 						'name' => 'icon',
 						'type' => 'select',
 						'choices' => array(
+							'none'    => 'None',
 							'star'    => 'Star',
 							'leaf'    => 'Leaf',
 							'award'   => 'Award',
@@ -431,6 +432,13 @@ add_action( 'acf/init', function() {
 				'layout' => 'block',
 				'sub_fields' => array(
 					array(
+						'key' => 'field_tech_specs_transparent_bg',
+						'label' => 'Transparent Background',
+						'name' => 'transparent_background',
+						'type' => 'true_false',
+						'ui' => 1,
+					),
+					array(
 						'key' => 'field_6982f2955723a',
 						'label' => 'Title',
 						'name' => 'title',
@@ -473,148 +481,75 @@ add_action( 'acf/init', function() {
 						'append' => '',
 					),
 					array(
-						'key' => 'field_analytical_parameters',
-						'label' => 'Key analytical parameters',
-						'name' => 'analytical_parameters',
+						'key' => 'field_tech_specs_columns',
+						'label' => 'Data Columns',
+						'name' => 'data_columns',
 						'type' => 'repeater',
-						'layout' => 'table',
-						'button_label' => 'Add Parameter',
+						'layout' => 'block',
+						'button_label' => 'Add Column',
 						'default_value' => array(
 							array(
-								'icon' => 'droplet',
-								'text' => 'Soluble solids: ºBrix 08–16',
+								'column_title' => 'Key analytical parameters',
+								'items' => array(
+									array( 'icon' => 'droplet', 'text' => 'Soluble solids: ºBrix 08–16' ),
+									array( 'icon' => 'droplet', 'text' => 'pH range: 2.5–4.2' ),
+									array( 'icon' => 'droplet', 'text' => 'Titratable acidity: 0.4–1.5 % as citric acid w/w' ),
+								),
 							),
 							array(
-								'icon' => 'droplet',
-								'text' => 'pH range: 2.5–4.2',
+								'column_title' => 'Appearance and sensory',
+								'items' => array(
+									array( 'icon' => 'tag', 'text' => 'Visual aspect: Characteristic orange cells with defined structure' ),
+									array( 'icon' => 'material', 'text' => 'Texture: Uniform orange pulp fiber content supporting mouthfeel and visual pulp level' ),
+								),
 							),
 							array(
-								'icon' => 'droplet',
-								'text' => 'Titratable acidity: 0.4–1.5 % as citric acid w/w',
-							),
-							array(
-								'icon' => 'tag',
-								'text' => 'Organoleptic profile: Colour, flavour and aroma characteristic of the orange range',
-							),
-							array(
-								'icon' => 'material',
-								'text' => 'Physical form: Suspended orange cells and pulp orange phase suitable for blending into liquid matrices',
+								'column_title' => 'Supply formats and storage',
+								'items' => array(
+									array( 'icon' => 'dimensions', 'text' => 'Packaging format: Aseptic bulk packaging for integration into industrial processing' ),
+									array( 'icon' => 'temperature', 'text' => 'Storage options: Refrigerated storage at 4–10 °C; Frozen storage at –18 °C' ),
+								),
 							),
 						),
 						'sub_fields' => array(
 							array(
-								'key' => 'field_analytical_icon',
-								'label' => 'Icon',
-								'name' => 'icon',
-								'type' => 'select',
-								'choices' => array(
-									'weight'      => 'Weight',
-									'dimensions'  => 'Dimensions',
-									'material'    => 'Material',
-									'temperature' => 'Temperature',
-									'warranty'    => 'Warranty',
-									'tag'         => 'Tag',
-									'droplet'     => 'Droplet',
-								),
-								'return_format' => 'value',
-							),
-							array(
-								'key' => 'field_analytical_text',
-								'label' => 'Text',
-								'name' => 'text',
+								'key' => 'field_column_title',
+								'label' => 'Column Title',
+								'name' => 'column_title',
 								'type' => 'text',
 							),
-						),
-					),
-					array(
-						'key' => 'field_appearance_sensory',
-						'label' => 'Appearance and sensory',
-						'name' => 'appearance_sensory',
-						'type' => 'repeater',
-						'layout' => 'table',
-						'button_label' => 'Add Item',
-						'default_value' => array(
 							array(
-								'icon' => 'tag',
-								'text' => 'Visual aspect: Characteristic orange cells with defined structure',
-							),
-							array(
-								'icon' => 'material',
-								'text' => 'Texture: Uniform orange pulp fiber content supporting mouthfeel and visual pulp level',
-							),
-							array(
-								'icon' => 'tag',
-								'text' => 'Flavour profile: Typical of orange pulp, aligned with industrial citrus beverage standards',
-							),
-						),
-						'sub_fields' => array(
-							array(
-								'key' => 'field_appearance_icon',
-								'label' => 'Icon',
-								'name' => 'icon',
-								'type' => 'select',
-								'choices' => array(
-									'weight'      => 'Weight',
-									'dimensions'  => 'Dimensions',
-									'material'    => 'Material',
-									'temperature' => 'Temperature',
-									'warranty'    => 'Warranty',
-									'tag'         => 'Tag',
-									'droplet'     => 'Droplet',
+								'key' => 'field_column_items',
+								'label' => 'Items',
+								'name' => 'items',
+								'type' => 'repeater',
+								'layout' => 'table',
+								'button_label' => 'Add Item',
+								'sub_fields' => array(
+									array(
+										'key' => 'field_column_item_icon',
+										'label' => 'Icon',
+										'name' => 'icon',
+										'type' => 'select',
+										'choices' => array(
+											'none'        => 'None',
+											'weight'      => 'Weight',
+											'dimensions'  => 'Dimensions',
+											'material'    => 'Material',
+											'temperature' => 'Temperature',
+											'warranty'    => 'Warranty',
+											'tag'         => 'Tag',
+											'droplet'     => 'Droplet',
+										),
+										'return_format' => 'value',
+									),
+									array(
+										'key' => 'field_column_item_text',
+										'label' => 'Text',
+										'name' => 'text',
+										'type' => 'text',
+									),
 								),
-								'return_format' => 'value',
-							),
-							array(
-								'key' => 'field_appearance_text',
-								'label' => 'Text',
-								'name' => 'text',
-								'type' => 'text',
-							),
-						),
-					),
-					array(
-						'key' => 'field_supply_storage',
-						'label' => 'Supply formats and storage',
-						'name' => 'supply_storage',
-						'type' => 'repeater',
-						'layout' => 'table',
-						'button_label' => 'Add Item',
-						'default_value' => array(
-							array(
-								'icon' => 'dimensions',
-								'text' => 'Packaging format: Aseptic bulk packaging for integration into industrial processing',
-							),
-							array(
-								'icon' => 'temperature',
-								'text' => 'Storage options: Refrigerated storage at 4–10 °C; Frozen storage at –18 °C',
-							),
-							array(
-								'icon' => 'warranty',
-								'text' => 'Handling after opening: Once opened, product should be kept in a cool room and used within 5 days',
-							),
-						),
-						'sub_fields' => array(
-							array(
-								'key' => 'field_supply_icon',
-								'label' => 'Icon',
-								'name' => 'icon',
-								'type' => 'select',
-								'choices' => array(
-									'weight'      => 'Weight',
-									'dimensions'  => 'Dimensions',
-									'material'    => 'Material',
-									'temperature' => 'Temperature',
-									'warranty'    => 'Warranty',
-									'tag'         => 'Tag',
-									'droplet'     => 'Droplet',
-								),
-								'return_format' => 'value',
-							),
-							array(
-								'key' => 'field_supply_text',
-								'label' => 'Text',
-								'name' => 'text',
-								'type' => 'text',
 							),
 						),
 					),
@@ -1387,6 +1322,32 @@ add_action( 'acf/init', function() {
 				'instructions' => 'Use %s to include the category name (e.g., "Back to %s").',
 				'default_value' => 'Related Products',
 			),
+			array(
+				'key' => 'field_cat_btn_style',
+				'label' => 'Button Style',
+				'name' => 'button_style',
+				'type' => 'select',
+				'choices' => array(
+					'dark'  => 'Dark',
+					'light' => 'Light (White)',
+				),
+				'default_value' => 'dark',
+			),
+			array(
+				'key' => 'field_cat_btn_no_shadow',
+				'label' => 'Remove Box Shadow',
+				'name' => 'remove_box_shadow',
+				'type' => 'true_false',
+				'ui' => 1,
+				'default_value' => 1,
+			),
+			array(
+				'key' => 'field_cat_btn_hide_icon',
+				'label' => 'Hide Icon',
+				'name' => 'hide_icon',
+				'type' => 'true_false',
+				'ui' => 1,
+			),
 		),
 		'location' => array(
 			array(
@@ -1394,6 +1355,96 @@ add_action( 'acf/init', function() {
 					'param' => 'block',
 					'operator' => '==',
 					'value' => 'lemon-concentrate/category-button',
+				),
+			),
+		),
+	) );
+
+	acf_add_local_field_group( array(
+		'key' => 'group_mirror_section_block_settings',
+		'title' => 'Mirror Section Settings',
+		'fields' => array(
+			array(
+				'key' => 'field_mirror_display_mode',
+				'label' => 'Rows to Display',
+				'name' => 'mirror_section_display_mode',
+				'type' => 'select',
+				'instructions' => 'Select which rows from the product data to display in this block instance.',
+				'choices' => array(
+					'all'      => 'Show All',
+					'first_2'  => 'First 2 Rows',
+					'offset_2' => 'Skip First 2 Rows',
+				),
+				'default_value' => 'all',
+				'ui' => 0,
+			),
+			array(
+				'key' => 'field_mirror_transparent_bg',
+				'label' => 'Transparent Background',
+				'name' => 'mirror_section_transparent_bg',
+				'type' => 'true_false',
+				'ui' => 1,
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'block',
+					'operator' => '==',
+					'value' => 'lemon-concentrate/mirror-section',
+				),
+			),
+		),
+	) );
+
+	acf_add_local_field_group( array(
+		'key' => 'group_double_section_block_settings',
+		'title' => 'Double Section Settings',
+		'fields' => array(
+			array(
+				'key' => 'field_double_transparent_bg',
+				'label' => 'Transparent Background',
+				'name' => 'double_section_transparent_bg',
+				'type' => 'true_false',
+				'ui' => 1,
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'block',
+					'operator' => '==',
+					'value' => 'lemon-concentrate/double-section',
+				),
+			),
+		),
+	) );
+
+	acf_add_local_field_group( array(
+		'key' => 'group_product_slider_settings',
+		'title' => 'Product Slider Settings',
+		'fields' => array(
+			array(
+				'key' => 'field_product_slider_minimal',
+				'label' => 'Minimal Style (No Background)',
+				'name' => 'minimal_style',
+				'type' => 'true_false',
+				'ui' => 1,
+			),
+			array(
+				'key' => 'field_product_slider_hide_title',
+				'label' => 'Hide Product Title',
+				'name' => 'hide_title',
+				'type' => 'true_false',
+				'ui' => 1,
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'block',
+					'operator' => '==',
+					'value' => 'lemon-concentrate/product-slider',
 				),
 			),
 		),
@@ -1411,3 +1462,118 @@ function lemon_concentrate_populate_menu_select( $field ) {
 	return $field;
 }
 add_filter( 'acf/load_field/name=selected_menu', 'lemon_concentrate_populate_menu_select' );
+
+/**
+ * Temporary data update for Product 283.
+ * This can be removed after the update has run.
+ */
+add_action( 'init', function() {
+	// Only run if ACF is active
+	if ( ! function_exists( 'update_field' ) ) {
+		return;
+	}
+
+	// Run once
+	if ( get_option( 'lemon_product_283_data_imported_mirror' ) ) {
+		return;
+	}
+
+	$post_id = 283;
+	
+	// Ensure post exists
+	if ( ! get_post( $post_id ) ) {
+		return;
+	}
+
+	$mirror_sections = array(
+		array(
+			'title' => 'Specifications',
+			'text'  => '<ul><li>Soluble solids: 51.0–55.0 °Brix</li><li>Titratable acidity: 12.0–15.0% (as citric acid)</li><li>pH: &lt; 4.0</li><li>Product type: Cranberry Concentrate</li><li>Intended use: Diluted use in industrial food applications</li><li>Storage conditions: Refrigerated (4–10°C) or frozen (-18°C) recommended</li></ul>',
+			'order' => 1, // Left
+			'image' => '',
+		),
+		array(
+			'title' => 'Process & Quality',
+			'text'  => '<ul><li>Filled using aseptic filling to support product safety and shelf-life performance under recommended conditions.</li><li>Formulated and supplied as allergen-free according to EU Regulation 1169/2011 Annex II (as stated).</li><li>Manufactured using raw materials not produced from GMO origins (as stated).</li><li>Not subjected to irradiation processes (as stated).</li><li>Compliant with pesticide residue limits according to EC 396/2005 (as amended).</li><li>Compliant with contaminant limits according to EC 915/2023 (as amended).</li><li>Where applicable, flavor-related aspects are aligned with EC 1334/2008.</li></ul>',
+			'order' => 0, // Right
+			'image' => '',
+		),
+		array(
+			'title' => 'Packaging & Logistics',
+			'text'  => '<ul><li>Packaging formats offered: metal drums with inner aluminum laminated bag and outer PE protective bag.</li><li>Transport and storage conditions: refrigerated at 4–10°C or frozen at -18°C.</li><li>Shelf life under recommended conditions: 9 months refrigerated; 18 months frozen.</li></ul>',
+			'order' => 1, // Left
+			'image' => '',
+		),
+		array(
+			'title' => 'Applications',
+			'text'  => '<ul><li>Diluted use in food industrial applications requiring standardized cranberry concentrate.</li><li>RTD beverage formulation based on cranberry profiles, with recommended dosage guidance available for 1000 L RTD batches.</li><li>Use as a cranberry flavor and color base in multi-fruit beverage systems.</li><li>Component in syrups or concentrates for further dilution by co-packers and industrial blenders.</li><li>Ingredient in functional-style beverage concepts where cranberry character is required.</li><li>Acidic fruit base for culinary or sauce-type industrial preparations that are further processed.</li><li>Use in industrial-scale trials and pilot formulations requiring controlled Brix and acidity input.</li></ul>',
+			'order' => 0, // Right
+			'image' => '',
+		),
+		array(
+			'title' => 'Ordering & Documents',
+			'text'  => '<ul><li>Product Technical Specification available to support formulation, QA review and regulatory assessment.</li></ul>',
+			'order' => 1, // Left
+			'image' => '',
+		),
+	);
+
+	update_field( 'sections', $mirror_sections, $post_id );
+	update_option( 'lemon_product_283_data_imported_mirror', true );
+} );
+
+/**
+ * Temporary data update for Product 283 FAQs.
+ */
+add_action( 'init', function() {
+	// Only run if ACF is active
+	if ( ! function_exists( 'update_field' ) ) {
+		return;
+	}
+
+	// Run once
+	if ( get_option( 'lemon_product_283_data_imported_faq' ) ) {
+		return;
+	}
+
+	$post_id = 283;
+	
+	// Ensure post exists
+	if ( ! get_post( $post_id ) ) {
+		return;
+	}
+
+	$faqs = array(
+		array(
+			'question' => 'What are the key analytical specifications of this cranberry concentrate?',
+			'answer'   => 'The concentrate is standardized to 51.0–55.0 °Brix, with titratable acidity at 12.0–15.0% expressed as citric acid, and pH below 4.0. These parameters enable predictable performance when designing dilution ratios and balancing sweetness–acidity in finished products.',
+		),
+		array(
+			'question' => 'How should the cranberry concentrate be stored and handled?',
+			'answer'   => 'It should be transported and stored either refrigerated at 4–10°C or frozen at -18°C. Under these conditions, the shelf life is 9 months in refrigeration and 18 months when frozen. Industrial users should maintain the cold chain and follow standard thawing and handling practices for concentrates.',
+		),
+		array(
+			'question' => 'Is the product suitable for allergen-sensitive formulations?',
+			'answer'   => 'Yes. The cranberry concentrate is declared allergen-free in line with EU Regulation 1169/2011 Annex II (as stated), making it suitable for use in formulations where exclusion of listed allergens is required, subject to the customer’s own risk assessment and validation.',
+		),
+		array(
+			'question' => 'Can this cranberry concentrate be used in RTD beverages?',
+			'answer'   => 'Yes. It is intended for diluted industrial use, including RTD beverage formulation. Recommended dosage guidance is available for 1000 L RTD batches, helping formulators to achieve the desired cranberry character while respecting the defined Brix and acidity ranges.',
+		),
+		array(
+			'question' => 'Does the product comply with EU pesticide and contaminant regulations?',
+			'answer'   => 'The product is aligned with EU requirements, with pesticides according to EC 396/2005 and contaminants according to EC 915/2023 (both as amended). This supports regulatory compliance checks for food and beverage manufacturers operating in or supplying to the EU market.',
+		),
+		array(
+			'question' => 'What packaging is offered for industrial supply?',
+			'answer'   => 'The cranberry concentrate is supplied in metal drums incorporating an inner aluminum laminated bag and an outer PE protective bag. This configuration is designed for food-contact suitability, product protection during transport, and compatibility with typical industrial emptying and transfer systems.',
+		),
+		array(
+			'question' => 'Is the concentrate GMO or irradiated?',
+			'answer'   => 'The product is stated as non-GMO, meaning it is not produced from GMO-origin raw materials, and it is not irradiated (as stated). These attributes assist manufacturers in meeting internal standards and external market expectations related to GMO and irradiation policies.',
+		),
+	);
+
+	update_field( 'faq', $faqs, $post_id );
+	update_option( 'lemon_product_283_data_imported_faq', true );
+} );

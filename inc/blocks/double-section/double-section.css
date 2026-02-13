@@ -22,12 +22,14 @@
 .lemon-double-section-title {
 	margin-top: 0;
 	margin-bottom: 1rem;
+	font-size: 2.25rem;
 }
 
 .lemon-double-section-body {
 	font-size: 1rem;
 	line-height: 1.6;
 }
+
 
 @media (max-width: 768px) {
 	.lemon-double-section-row {

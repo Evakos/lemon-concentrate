@@ -12,7 +12,7 @@
 $sections = get_field( 'sections', $post_id );
 
 // Fallback if no sections are found.
-if ( empty( $sections ) ) {
+if ( empty( $sections ) && ! empty( $is_preview ) ) {
 	$sections = array(
 		array(
 			'title' => 'Industrial Processing',
@@ -27,6 +27,10 @@ if ( empty( $sections ) ) {
 			'order' => 0, // Right
 		),
 	);
+}
+
+if ( empty( $sections ) ) {
+	return;
 }
 
 // Determine background color from product category

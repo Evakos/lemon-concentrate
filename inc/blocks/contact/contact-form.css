@@ -1,5 +1,5 @@
-.lemon-contact-form {
-	padding: 2rem 0;
+.wp-block-lemon-concentrate-contact-form {
+	padding: 3rem;
 }
 
 .lemon-contact-form-row {
@@ -71,4 +71,5 @@
 .lemon-contact-form-submit .wp-block-button__link {
 	color: #fff;
 	font-size: 0.9rem;
+	box-shadow: none;
 }
