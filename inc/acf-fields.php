@@ -1438,6 +1438,33 @@ add_action( 'acf/init', function() {
 	) );
 
 	acf_add_local_field_group( array(
+		'key' => 'group_hero_bullets_block',
+		'title' => 'Hero Bullets Settings',
+		'fields' => array(
+			array(
+				'key' => 'field_hero_bullets_layout',
+				'label' => 'Layout',
+				'name' => 'layout',
+				'type' => 'select',
+				'choices' => array(
+					'grid'   => 'Grid',
+					'inline' => 'Inline (String of text)',
+				),
+				'default_value' => 'grid',
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'block',
+					'operator' => '==',
+					'value' => 'lemon-concentrate/hero-bullets',
+				),
+			),
+		),
+	) );
+
+	acf_add_local_field_group( array(
 		'key' => 'group_mirror_section_block_settings',
 		'title' => 'Mirror Section Settings',
 		'fields' => array(

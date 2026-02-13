@@ -34,7 +34,8 @@ if ( empty( $bullets ) ) {
 
 $bullet_count = count( $bullets );
 
-$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-hero-bullets' ) );
+$layout = get_field( 'layout' ) ?: 'grid';
+$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'lemon-hero-bullets is-layout-' . esc_attr( $layout ) ) );
 
 // Icons map
 $icons = array(

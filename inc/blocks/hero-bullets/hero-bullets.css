@@ -42,3 +42,30 @@
 	margin-bottom: 0.5rem;
 	font-weight: 700;
 }
+
+/* Inline Layout */
+.lemon-hero-bullets.is-layout-inline .lemon-hero-bullets-list {
+	display: block;
+	text-align: center;
+}
+
+.lemon-hero-bullets.is-layout-inline .lemon-hero-bullet-item {
+	display: inline;
+	border: none;
+	padding: 0;
+}
+
+.lemon-hero-bullets.is-layout-inline .lemon-hero-bullet-item:not(:last-child)::after {
+	content: "•";
+	margin: 0 0.5rem;
+	display: inline-block;
+}
+
+.lemon-hero-bullets.is-layout-inline .lemon-hero-bullet-icon {
+	display: none;
+}
+
+.lemon-hero-bullets.is-layout-inline .lemon-hero-bullet-title {
+	display: inline;
+	margin: 0 0.25rem 0 0;
+}
