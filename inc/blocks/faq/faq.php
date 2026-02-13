@@ -170,4 +170,14 @@ $schema = array(
 			width: 100%;
 		}
 	}
+	.lemon-faq-question[aria-expanded="true"] .lemon-faq-icon {
+		transform: none;
+		background-color: white;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 100px;
+	}
 </style>
