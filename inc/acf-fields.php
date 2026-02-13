@@ -642,6 +642,19 @@ add_action( 'acf/init', function() {
 				),
 			),
 			array(
+				'key' => 'field_product_contact_simple_text',
+				'label' => 'Contact Form: Simple Paragraph Text',
+				'name' => 'product_contact_simple_text',
+				'type' => 'wysiwyg',
+				'tabs' => 'visual',
+				'toolbar' => 'basic',
+				'media_upload' => 0,
+				'delay' => 0,
+				'instructions' => 'Text to display in the contact form area if "Simple Paragraph" is selected in the block settings.',
+				'required' => 0,
+				'conditional_logic' => 0,
+			),
+			array(
 				'key' => 'field_6982f7f1e4e3f',
 				'label' => 'Double Sections',
 				'name' => '',
@@ -1350,6 +1363,18 @@ add_action( 'acf/init', function() {
 				'type' => 'text',
 				'instructions' => 'Enter a hex color (e.g. #000000) or a CSS gradient (e.g. linear-gradient(...)).',
 			),
+			array(
+				'key' => 'field_contact_extra_type',
+				'label' => 'Extra Content Type',
+				'name' => 'contact_extra_type',
+				'type' => 'select',
+				'choices' => array(
+					'none'         => 'None',
+					'testimonials' => 'Testimonials',
+					'text'         => 'Simple Paragraph',
+				),
+				'default_value' => 'testimonials',
+			),
 		),
 		'location' => array(
 			array(
@@ -1516,6 +1541,27 @@ add_action( 'acf/init', function() {
 				'name' => 'mirror_contact_bg_color',
 				'type' => 'text',
 				'instructions' => 'Enter a hex color (e.g. #000000) or a CSS gradient (e.g. linear-gradient(...)).',
+				'conditional_logic' => array(
+					array(
+						array(
+							'field' => 'field_mirror_include_contact',
+							'operator' => '==',
+							'value' => '1',
+						),
+					),
+				),
+			),
+			array(
+				'key' => 'field_mirror_contact_extra_type',
+				'label' => 'Extra Content Type',
+				'name' => 'mirror_contact_extra_type',
+				'type' => 'select',
+				'choices' => array(
+					'none'         => 'None',
+					'testimonials' => 'Testimonials',
+					'text'         => 'Simple Paragraph',
+				),
+				'default_value' => 'testimonials',
 				'conditional_logic' => array(
 					array(
 						array(

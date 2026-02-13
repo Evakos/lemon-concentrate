@@ -12,6 +12,8 @@ $label = get_field( 'label' ) ?: 'Contact us';
 $title = get_field( 'title' ) ?: 'We will be happy to assist you';
 $text  = get_field( 'text' ) ?: 'Email us and our team will answer all your needs.';
 $testimonials = get_field( 'testimonials', 'option' );
+$extra_type   = get_field( 'contact_extra_type' ) ?: 'testimonials';
+$simple_text  = get_field( 'product_contact_simple_text', $post_id );
 $bg_color     = get_field( 'info_background_color' );
 
 if ( empty( $bg_color ) ) {
@@ -68,7 +70,7 @@ if ( $bg_color ) {
 				<?php endif; ?>
 			</div>
 
-			<?php if ( $testimonials ) : ?>
+			<?php if ( 'testimonials' === $extra_type && $testimonials ) : ?>
 				<div class="lemon-testimonials-block align wp-block-lemon-concentrate-testimonials">
 					<div class="lemon-testimonials-carousel">
 						<div class="lemon-testimonials-track">
@@ -91,6 +93,10 @@ if ( $bg_color ) {
 						</div>
 						<?php endif; ?>
 					</div>
+				</div>
+			<?php elseif ( 'text' === $extra_type && $simple_text ) : ?>
+				<div class="lemon-contact-simple-text">
+					<?php echo wp_kses_post( $simple_text ); ?>
 				</div>
 			<?php endif; ?>
 		</div>

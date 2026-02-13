@@ -148,6 +148,8 @@ $wrapper_attributes = get_block_wrapper_attributes( $wrapper_attributes_args );
 				$contact_title = get_field( 'mirror_contact_title' ) ?: 'We will be happy to assist you';
 				$contact_text  = get_field( 'mirror_contact_text' ) ?: 'Email us and our team will answer all your needs.';
 				$contact_bg    = get_field( 'mirror_contact_bg_color' );
+				$extra_type    = get_field( 'mirror_contact_extra_type' ) ?: 'testimonials';
+				$simple_text   = get_field( 'product_contact_simple_text', $post_id );
 				$testimonials  = get_field( 'testimonials', 'option' );
 
 				if ( empty( $contact_bg ) ) {
@@ -174,7 +176,7 @@ $wrapper_attributes = get_block_wrapper_attributes( $wrapper_attributes_args );
 								<?php endif; ?>
 							</div>
 
-							<?php if ( $testimonials ) : ?>
+							<?php if ( 'testimonials' === $extra_type && $testimonials ) : ?>
 								<div class="lemon-testimonials-block align wp-block-lemon-concentrate-testimonials">
 									<div class="lemon-testimonials-carousel">
 										<div class="lemon-testimonials-track">
@@ -197,6 +199,10 @@ $wrapper_attributes = get_block_wrapper_attributes( $wrapper_attributes_args );
 										</div>
 										<?php endif; ?>
 									</div>
+								</div>
+							<?php elseif ( 'text' === $extra_type && $simple_text ) : ?>
+								<div class="lemon-contact-simple-text">
+									<?php echo wp_kses_post( $simple_text ); ?>
 								</div>
 							<?php endif; ?>
 						</div>
@@ -415,6 +421,14 @@ $wrapper_attributes = get_block_wrapper_attributes( $wrapper_attributes_args );
 	.lemon-testimonials-nav button:hover {
 		transform: scale(1.1);
 		box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+	}
+	.lemon-contact-simple-text {
+		margin-top: 3rem;
+		font-size: 1.125rem;
+	}
+	.lemon-contact-simple-text p {
+		margin-bottom: 1rem;
+		color: inherit;
 	}
 	@media (max-width: 768px) {
 		.lemon-contact-form-row-split { flex-direction: column; gap: 1.5rem; }
