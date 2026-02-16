@@ -82,7 +82,7 @@ function lemon_concentrate_register_options_page() {
 		acf_add_options_page( array(
 			'page_title' => 'Settings',
 			'menu_slug'  => 'settings',
-			'position'   => '2.1',
+			'position'   => '3',
 			'redirect'   => false,
 			'icon_url'   => 'dashicons-admin-tools',
 		) );
@@ -147,6 +147,12 @@ add_action( 'acf/init', function() {
 		'title' => 'Global Settings',
 		'fields' => array(
 			array(
+				'key' => 'field_tab_global_testimonials',
+				'label' => 'Global Testimonials',
+				'name' => '',
+				'type' => 'tab',
+			),
+			array(
 				'key' => 'field_698091aba2ae0',
 				'label' => 'Testimonials',
 				'name' => 'testimonials',
@@ -196,6 +202,49 @@ add_action( 'acf/init', function() {
 						'parent_repeater' => 'field_698091aba2ae0',
 					),
 				),
+			),
+			array(
+				'key' => 'field_tab_floating_panel',
+				'label' => 'Floating Panel',
+				'name' => '',
+				'type' => 'tab',
+			),
+			array(
+				'key' => 'field_fp_contact',
+				'label' => 'Contact Content',
+				'name' => 'floating_panel_contact',
+				'type' => 'wysiwyg',
+				'media_upload' => 0,
+				'toolbar' => 'basic',
+			),
+			array(
+				'key' => 'field_fp_map',
+				'label' => 'Map Embed Code',
+				'name' => 'floating_panel_map',
+				'type' => 'textarea',
+				'instructions' => 'Paste the Google Maps iframe embed code here.',
+			),
+			array(
+				'key' => 'field_fp_whatsapp',
+				'label' => 'WhatsApp Number',
+				'name' => 'floating_panel_whatsapp',
+				'type' => 'text',
+				'instructions' => 'Enter phone number with country code (e.g., 34600000000).',
+			),
+			array(
+				'key' => 'field_tab_fallback_image',
+				'label' => 'Fallback Featured Image',
+				'name' => '',
+				'type' => 'tab',
+			),
+			array(
+				'key' => 'field_default_product_image',
+				'label' => 'Default Product Image',
+				'name' => 'default_product_image',
+				'type' => 'image',
+				'return_format' => 'id',
+				'preview_size' => 'thumbnail',
+				'library' => 'all',
 			),
 		),
 		'location' => array(
@@ -1263,44 +1312,6 @@ add_action( 'acf/init', function() {
 					'param' => 'block',
 					'operator' => '==',
 					'value' => 'lemon-concentrate/simple-menu',
-				),
-			),
-		),
-	) );
-
-	acf_add_local_field_group( array(
-		'key' => 'group_floating_panel',
-		'title' => 'Floating Panel',
-		'fields' => array(
-			array(
-				'key' => 'field_fp_contact',
-				'label' => 'Contact Content',
-				'name' => 'floating_panel_contact',
-				'type' => 'wysiwyg',
-				'media_upload' => 0,
-				'toolbar' => 'basic',
-			),
-			array(
-				'key' => 'field_fp_map',
-				'label' => 'Map Embed Code',
-				'name' => 'floating_panel_map',
-				'type' => 'textarea',
-				'instructions' => 'Paste the Google Maps iframe embed code here.',
-			),
-			array(
-				'key' => 'field_fp_whatsapp',
-				'label' => 'WhatsApp Number',
-				'name' => 'floating_panel_whatsapp',
-				'type' => 'text',
-				'instructions' => 'Enter phone number with country code (e.g., 34600000000).',
-			),
-		),
-		'location' => array(
-			array(
-				array(
-					'param' => 'options_page',
-					'operator' => '==',
-					'value' => 'settings',
 				),
 			),
 		),

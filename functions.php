@@ -1037,8 +1037,11 @@ add_filter( 'has_post_thumbnail', 'lemon_concentrate_force_has_post_thumbnail', 
  * @return string
  */
 function lemon_concentrate_default_featured_image( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
-	if ( empty( $html ) ) {
-		$html = wp_get_attachment_image( 661, $size, false, $attr );
+	if ( empty( $html ) && function_exists( 'get_field' ) && 'lemon_product' === get_post_type( $post_id ) ) {
+		$default_image_id = get_field( 'default_product_image', 'option' );
+		if ( $default_image_id ) {
+			$html = wp_get_attachment_image( $default_image_id, $size, false, $attr );
+		}
 	}
 	return $html;
 }
@@ -1278,22 +1281,180 @@ add_action( 'wp_ajax_nopriv_lemon_contact_form_submit', 'lemon_concentrate_handl
  * Show current template in Admin Bar.
  */
 function lemon_concentrate_show_template_admin_bar( $admin_bar ) {
-	if ( ! is_admin() && current_user_can( 'manage_options' ) ) {
+	if ( ! is_admin() && current_user_can( 'edit_theme_options' ) ) {
 		global $template;
-		$template_name = basename( $template );
-		$object_id     = get_queried_object_id();
-		$title         = 'Template: ' . $template_name;
-		if ( $object_id ) {
-			$title .= ' | ID: ' . $object_id;
+		
+		$slug = '';
+		
+		// 1. Try to derive slug from the file path
+		if ( $template && strpos( $template, 'template-canvas.php' ) === false ) {
+			$slug = basename( $template );
+			$slug = preg_replace( '/\.(html|php)$/', '', $slug );
 		}
+
+		// 2. If generic or canvas, try to guess based on hierarchy (Specific to your needs)
+		if ( empty( $slug ) || 'template-canvas' === $slug ) {
+			if ( is_tax( 'product_category' ) ) {
+				$term = get_queried_object();
+				if ( $term ) {
+					$slug = 'taxonomy-product_category-' . $term->slug;
+				}
+			} elseif ( is_singular( 'lemon_product' ) ) {
+				$slug = 'single-lemon_product';
+			}
+		}
+
+		$title = 'Template: ' . ( $slug ? $slug : 'Unknown' );
+		
 		$admin_bar->add_node( array(
 			'id'    => 'lemon-current-template',
 			'title' => $title,
 			'href'  => '#',
-			'meta'  => array(
-				'title' => $template,
-			),
 		) );
+
+		if ( $slug ) {
+			// Check if DB customization exists
+			$args = array(
+				'post_type'      => 'wp_template',
+				'post_status'    => 'any',
+				'name'           => $slug,
+				'posts_per_page' => 1,
+				'tax_query'      => array(
+					array(
+						'taxonomy' => 'wp_theme',
+						'field'    => 'name',
+						'terms'    => get_stylesheet(),
+					),
+				),
+			);
+			$query = new WP_Query( $args );
+
+			if ( $query->have_posts() ) {
+				$reset_url = add_query_arg( 'reset_template', $slug );
+				$admin_bar->add_node( array(
+					'parent' => 'lemon-current-template',
+					'id'     => 'lemon-reset-template',
+					'title'  => '<span style="color: #ff8080;">⚠ Reset Customization (Use File)</span>',
+					'href'   => $reset_url,
+					'meta'   => array( 'onclick' => 'return confirm("Are you sure? This will delete the database version and load your file.");' ),
+				) );
+			} else {
+				$admin_bar->add_node( array(
+					'parent' => 'lemon-current-template',
+					'id'     => 'lemon-file-active',
+					'title'  => '<span style="color: #90ff90;">✔ Using File Version</span>',
+					'href'   => '#',
+				) );
+			}
+		}
 	}
 }
 add_action( 'admin_bar_menu', 'lemon_concentrate_show_template_admin_bar', 999 );
+
+/**
+ * Developer Tool: Reset a template to its file version via URL.
+ * Usage: ?reset_template=taxonomy-product_category-juice-concentrate
+ * 
+ * This deletes the database customization for the specified template, forcing WordPress
+ * to load the file version from the theme.
+ */
+function lemon_concentrate_reset_template_customization() {
+	if ( isset( $_GET['reset_template'] ) && current_user_can( 'edit_theme_options' ) ) {
+		$raw_slug = sanitize_text_field( $_GET['reset_template'] );
+		// Strip extension if present
+		$slug = preg_replace( '/\.(html|php)$/', '', $raw_slug );
+		
+		$args = array(
+			'post_type'      => 'wp_template',
+			'post_status'    => 'any',
+			'name'           => $slug,
+			'posts_per_page' => 1,
+			'tax_query'      => array(
+				array(
+					'taxonomy' => 'wp_theme',
+					'field'    => 'name',
+					'terms'    => get_stylesheet(),
+				),
+			),
+		);
+
+		$query = new WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			$query->the_post();
+			wp_delete_post( get_the_ID(), true );
+			wp_die( "Template '$slug' customization deleted. It will now load from the file. <a href='" . remove_query_arg( 'reset_template' ) . "'>Go Back</a>" );
+		} else {
+			wp_die( "No database customization found for template '$slug'. It is already using the file version. <a href='" . remove_query_arg( 'reset_template' ) . "'>Go Back</a>" );
+		}
+	}
+}
+add_action( 'init', 'lemon_concentrate_reset_template_customization' );
+
+/**
+ * Dashboard widget to manage template customizations.
+ */
+function lemon_concentrate_template_dashboard_widget() {
+	wp_add_dashboard_widget(
+		'lemon_template_manager',
+		'Theme Template Manager (Debug)',
+		'lemon_concentrate_render_template_manager'
+	);
+}
+add_action( 'wp_dashboard_setup', 'lemon_concentrate_template_dashboard_widget' );
+
+function lemon_concentrate_render_template_manager() {
+	if ( isset( $_POST['lemon_delete_template'] ) && check_admin_referer( 'lemon_delete_template_nonce' ) ) {
+		$post_id = intval( $_POST['lemon_delete_template'] );
+		wp_delete_post( $post_id, true );
+		echo '<div class="notice notice-success"><p>Template customization deleted. File version will now be used.</p></div>';
+	}
+
+	// Use native WP function to get all templates (File + DB)
+	$templates = get_block_templates();
+	
+	// Filter to show only relevant ones or sort by source
+	$customized = array();
+	$theme_files = array();
+
+	foreach ( $templates as $template ) {
+		if ( 'custom' === $template->source ) {
+			$customized[] = $template;
+		} else {
+			$theme_files[] = $template;
+		}
+	}
+
+	echo '<table class="widefat">';
+	echo '<thead><tr><th>Template Slug</th><th>Source</th><th>Action</th></tr></thead>';
+	echo '<tbody>';
+	
+	// Show Customized First
+	foreach ( $customized as $template ) {
+		echo '<tr>';
+		echo '<td><strong>' . esc_html( $template->slug ) . '</strong></td>';
+		echo '<td><span style="color:red; font-weight:bold;">Database (Custom)</span></td>';
+		echo '<td>';
+		echo '<form method="post">';
+		wp_nonce_field( 'lemon_delete_template_nonce' );
+		echo '<input type="hidden" name="lemon_delete_template" value="' . esc_attr( $template->wp_id ) . '">';
+		echo '<button type="submit" class="button button-small button-link-delete" onclick="return confirm(\'Are you sure? This will revert the template to the file version.\');">Reset to File</button>';
+		echo '</form>';
+		echo '</td>';
+		echo '</tr>';
+	}
+	
+	// Show File Based (for confirmation)
+	foreach ( $theme_files as $template ) {
+		// Only show specific ones to avoid clutter, or show all
+		if ( strpos( $template->slug, 'juice' ) !== false || strpos( $template->slug, 'product' ) !== false ) {
+			echo '<tr>';
+			echo '<td>' . esc_html( $template->slug ) . '</td>';
+			echo '<td><span style="color:green;">Theme File</span></td>';
+			echo '<td>-</td>';
+			echo '</tr>';
+		}
+	}
+	
+	echo '</tbody></table>';
+}

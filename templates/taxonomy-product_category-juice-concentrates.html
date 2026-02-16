@@ -1,3 +1,4 @@
+<!-- FILE: taxonomy-product_category-juice-concentrates.html LOADED (V3 - Explosion & Colors) -->
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"right":"0","left":"0"},"margin":{"top":"0"}}},"layout":{"type":"default"}} -->
 <div class="wp-block-group alignfull" style="margin-top:0;padding-right:0;padding-left:0"><!-- wp:columns {"align":"full","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"},"blockGap":"0"}}} -->
 <div class="wp-block-columns alignfull" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;height:100vh;overflow:hidden;gap:0;flex-wrap:nowrap"><!-- wp:column {"width":"20%","className":"product-colour","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"},"blockGap":"0"}},"gradient":"fruit-burst"} -->
@@ -17,8 +18,10 @@
 <div class="wp-block-column" style="flex:1;min-width:0;height:100vh;position:relative;overflow:hidden">
 <!-- wp:group {"style":{"dimensions":{"minHeight":"100%"}},"layout":{"type":"default"}} -->
 <div class="wp-block-group" style="min-height:100%;height:100%;overflow-y:auto">
-<!-- wp:query {"queryId":1,"query":{"perPage":25,"pages":0,"offset":0,"postType":"lemon_product","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true,"parents":[],"format":[]},"layout":{"type":"default"}} -->
-<div class="wp-block-query" style="height:100%;padding-bottom:0"><!-- wp:post-template {"className":"lemon-product-grid","layout":{"type":"grid","columnCount":5},"style":{"spacing":{"blockGap":"0px"}}} -->
+
+<div id="lemon-products-ajax-container">
+<!-- wp:query {"queryId":1,"query":{"perPage":25,"pages":0,"offset":0,"postType":"lemon_product","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true,"parents":[],"format":[]},"layout":{"type":"default"},"anchor":"lemon-products-query","className":"lemon-products-query-container"} -->
+<div id="lemon-products-query" class="wp-block-query lemon-products-query-container" style="height:100%;padding-bottom:0"><!-- wp:post-template {"className":"lemon-product-grid","layout":{"type":"grid","columnCount":5},"style":{"spacing":{"blockGap":"0px"}}} -->
 <!-- wp:group {"className":"lemon-product-card","style":{"spacing":{"margin":{"top":"0","bottom":"0"}},"dimensions":{"minHeight":"0px"}},"backgroundColor":"transparent","layout":{"type":"default"}} -->
 <div class="wp-block-group lemon-product-card has-transparent-background-color has-background" style="min-height:0px;margin-top:0;margin-bottom:0"><!-- wp:post-featured-image {"isLink":true,"aspectRatio":"1/1","sizeSlug":"full"} /-->
 
@@ -97,11 +100,13 @@
     font-size: 2rem;
     font-weight: 600;
     line-height: 1;
-    background-color: #000000;
-    color: #fffdf2;
+    background-color: #ffffff;
+    color: #000000;
     opacity: 0;
     transform: scale(0.5);
     transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 10;
 }
 .lemon-category-count.is-visible { opacity: 1; transform: scale(1); }
 .lemon-category-info {
@@ -141,8 +146,8 @@
 }
 .lemon-mobile-menu-drawer.is-open { transform: translateX(0); }
 .lemon-mobile-menu-overlay { display: none !important; }
-.lemon-info-toggle-btn, .lemon-filter-toggle-custom, .lemon-mobile-menu-toggle, .lemon-theme-toggle-btn { background: transparent !important; border: none; cursor: pointer; padding: 10px; display: flex; align-items: center; justify-content: center; color: inherit; width: 100%; }
-.lemon-mobile-menu-close, .lemon-filter-close-btn, .lemon-info-close-btn { background: transparent !important; border: none !important; cursor: pointer; color: inherit; padding: 0; }
+.lemon-info-toggle-btn, .lemon-filter-toggle-custom, .lemon-mobile-menu-toggle, .lemon-theme-toggle-btn, .lemon-back-toggle-btn { background: transparent !important; border: none; cursor: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 2L10 22L22 10L2 2Z' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 2 2, pointer; padding: 10px; display: flex; align-items: center; justify-content: center; color: inherit; width: 100%; }
+.lemon-mobile-menu-close, .lemon-filter-close-btn, .lemon-info-close-btn { background: transparent !important; border: none !important; cursor: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 2L10 22L22 10L2 2Z' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 2 2, pointer; color: inherit; padding: 0; }
 .lemon-info-toggle-btn.is-active, .lemon-filter-toggle-custom.is-active, .lemon-mobile-menu-toggle.is-active { position: relative; color: #F6B501; }
 .lemon-info-toggle-btn.is-active::after, .lemon-filter-toggle-custom.is-active::after, .lemon-mobile-menu-toggle.is-active::after {
     content: ''; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px;
@@ -156,14 +161,19 @@
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(246, 181, 1, 0); }
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.lemon-particle { position: absolute; border-radius: 50%; pointer-events: none; z-index: 1; }
 body.lemon-dark-mode { background-color: #000000 !important; color: #ffffff !important; }
 body.lemon-dark-mode .wp-block-group, body.lemon-dark-mode .wp-block-column, body.lemon-dark-mode main { background-color: #000000 !important; color: #ffffff !important; }
 body.lemon-dark-mode .lemon-product-card { border-color: rgba(255,255,255,0.3); }
+body.lemon-dark-mode .lemon-info-toggle-btn, body.lemon-dark-mode .lemon-filter-toggle-custom, body.lemon-dark-mode .lemon-mobile-menu-toggle, body.lemon-dark-mode .lemon-theme-toggle-btn, body.lemon-dark-mode .lemon-back-toggle-btn, body.lemon-dark-mode .lemon-mobile-menu-close, body.lemon-dark-mode .lemon-filter-close-btn, body.lemon-dark-mode .lemon-info-close-btn {
+    cursor: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 2L10 22L22 10L2 2Z' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 2 2, pointer;
+}
 body.lemon-dark-mode h1, body.lemon-dark-mode h2, body.lemon-dark-mode h3, body.lemon-dark-mode h4, body.lemon-dark-mode h5, body.lemon-dark-mode h6, body.lemon-dark-mode p, body.lemon-dark-mode span, body.lemon-dark-mode a, body.lemon-dark-mode li { color: #ffffff !important; }
 body.lemon-dark-mode .product-colour { background: #000000 !important; }
 body.lemon-dark-mode .lemon-product-overlay { background-color: rgba(0,0,0,0.9); border: none !important; }
 body.lemon-dark-mode .lemon-product-card:hover { border-color: rgba(255,255,255,0.3) !important; }
 body.lemon-dark-mode .lemon-filter-modal { border-right: 1px solid #ffffff !important; }
+body.lemon-dark-mode .lemon-category-count { background-color: #000000; color: #ffffff; }
 .lemon-category-info .lemon-concentrate-breadcrumbs {
     display: none !important;
     align-items: center;
@@ -272,10 +282,19 @@ body.lemon-dark-mode .lemon-filter-modal { border-right: 1px solid #ffffff !impo
 .lemon-primary-menu-wrapper ul li a { color: #ffffff; text-decoration: none; font-size: 1.5rem; font-weight: 500; display: block; }
 .lemon-primary-menu-wrapper ul ul { padding-left: 2rem; margin-top: 0.5rem; }
 .lemon-primary-menu-wrapper ul ul li a { font-size: 1.2rem; opacity: 0.8; }
+.lemon-category-count.pop { animation: lemonPop 2.5s ease-in-out; } @keyframes lemonPop { 0% { transform: scale(1); } 10% { transform: scale(1.25); } 20% { transform: scale(0.95); } 30% { transform: scale(1.1); } 40% { transform: scale(1); } 100% { transform: scale(1); } }
+.wpc-filters-main-wrap .wpc-filters-labels li.wpc-term-item label span.wpc-filter-label-wrapper {
+    padding: 4px 7px !important;
+    font-size: 1.125rem !important;
+}
+.wpc-filters-main-wrap .wpc-filters-labels li.wpc-term-item {
+    margin-bottom: 0.5rem !important;
+}
 </style>
 <!-- /wp:html -->
 
 <!-- /wp:query --></div>
+</div>
 <!-- /wp:group --></div></div>
 <!-- /wp:column -->
 
@@ -288,12 +307,36 @@ body.lemon-dark-mode .lemon-filter-modal { border-right: 1px solid #ffffff !impo
 <!-- /wp:spacer -->
 
 <!-- wp:html -->
+<button onclick="history.back()" class="lemon-back-toggle-btn" aria-label="Back" style="margin-bottom: 20px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></button>
 <button class="lemon-mobile-menu-toggle" aria-label="Menu"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
 <button class="lemon-info-toggle-btn" aria-label="Info" style="margin-bottom: 20px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
 <button class="lemon-filter-toggle-custom" aria-label="Filters"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></button>
 <button class="lemon-theme-toggle-btn" aria-label="Toggle Theme" style="margin-top: 20px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></button>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Lemon Template Loaded: Juice Concentrates - V3');
+
+    // Dark Mode Persistence
+    function applyDarkMode(isDark) {
+        const productCol = document.querySelector('.product-colour');
+        if (isDark) {
+            document.body.classList.add('lemon-dark-mode');
+            if(productCol) {
+                if (!productCol.dataset.originalBg) productCol.dataset.originalBg = productCol.style.backgroundColor;
+                productCol.style.setProperty('background-color', '#000000', 'important');
+                productCol.style.setProperty('background-image', 'none', 'important');
+            }
+        } else {
+            document.body.classList.remove('lemon-dark-mode');
+            if(productCol) {
+                if (productCol.dataset.originalBg) productCol.style.setProperty('background-color', productCol.dataset.originalBg, 'important');
+                else productCol.style.removeProperty('background-color');
+                productCol.style.removeProperty('background-image');
+            }
+        }
+    }
+    if (localStorage.getItem('lemonDarkMode') === 'true') applyDarkMode(true);
+
     const infoBtn = document.querySelector('.lemon-info-toggle-btn');
     const infoCloseBtn = document.querySelector('.lemon-info-close-btn');
     const infoPanel = document.querySelector('.lemon-category-info');
@@ -306,6 +349,52 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterModal = document.querySelector('.lemon-filter-modal');
     const filterCloseBtn = document.querySelector('.lemon-filter-close-btn');
     const themeBtn = document.querySelector('.lemon-theme-toggle-btn');
+
+    function createExplosion(element) {
+        const parent = element.parentElement;
+        if (window.getComputedStyle(parent).position === 'static') {
+            parent.style.position = 'relative';
+        }
+
+        const colors = ['#FFF700', '#FF9900', '#D32F2F', '#FF6F61', '#C6FF00', '#FF6D00', '#FF1744', '#880E4F', '#ffffff'];
+        const rect = element.getBoundingClientRect();
+        const parentRect = parent.getBoundingClientRect();
+        
+        const centerX = (rect.left - parentRect.left) + rect.width / 2;
+        const centerY = (rect.top - parentRect.top) + rect.height / 2;
+
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('lemon-particle');
+            parent.appendChild(particle);
+
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.backgroundColor = color;
+            
+            const size = Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            particle.style.left = `${centerX}px`;
+            particle.style.top = `${centerY}px`;
+
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 150 + 50;
+            
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+
+            const animation = particle.animate([
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`, opacity: 0 }
+            ], {
+                duration: 1000 + Math.random() * 500,
+                easing: 'cubic-bezier(0, .9, .57, 1)',
+            });
+
+            animation.onfinish = () => particle.remove();
+        }
+    }
 
     function updateLayout() {
         const toolbarBtn = document.querySelector('.lemon-mobile-menu-toggle');
@@ -352,25 +441,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if(themeBtn) {
         themeBtn.addEventListener('click', function() {
             closeAllPanels();
-            document.body.classList.toggle('lemon-dark-mode');
-            
-            const productCol = document.querySelector('.product-colour');
-            if(productCol) {
-                if(document.body.classList.contains('lemon-dark-mode')) {
-                    if (!productCol.dataset.originalBg) {
-                        productCol.dataset.originalBg = productCol.style.backgroundColor;
-                    }
-                    productCol.style.setProperty('background-color', '#000000', 'important');
-                    productCol.style.setProperty('background-image', 'none', 'important');
-                } else {
-                    if (productCol.dataset.originalBg) {
-                        productCol.style.setProperty('background-color', productCol.dataset.originalBg, 'important');
-                    } else {
-                        productCol.style.removeProperty('background-color');
-                    }
-                    productCol.style.removeProperty('background-image');
-                }
-            }
+            const isDark = !document.body.classList.contains('lemon-dark-mode');
+            applyDarkMode(isDark);
+            localStorage.setItem('lemonDarkMode', isDark);
         });
     }
 
@@ -419,6 +492,21 @@ document.addEventListener('DOMContentLoaded', function() {
     if (countEl) {
         const finalValue = parseInt(countEl.innerText, 10) || 0;
         countEl.innerText = '0';
+        
+        const isDarkMode = document.body.classList.contains('lemon-dark-mode');
+
+        const colors = [
+            { bg: 'var(--wp--preset--color--lemon-yellow)', text: '#000000' },
+            { bg: 'var(--wp--preset--color--orange)', text: '#000000' },
+            { bg: 'var(--wp--preset--color--blood-orange)', text: '#ffffff' },
+            { bg: 'var(--wp--preset--color--grapefruit)', text: '#000000' },
+            { bg: 'var(--wp--preset--color--pomegranate)', text: '#ffffff' },
+            { bg: 'var(--wp--preset--color--strawberry-red)', text: '#ffffff' },
+            { bg: 'var(--wp--preset--color--mandarin)', text: '#000000' },
+            { bg: 'var(--wp--preset--color--lime-green)', text: '#000000' },
+            { bg: isDarkMode ? '#000000' : '#ffffff', text: isDarkMode ? '#ffffff' : '#000000' }
+        ];
+
         setTimeout(() => {
             countEl.classList.add('is-visible');
             let startTimestamp = null;
@@ -427,10 +515,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                 countEl.innerText = Math.floor(progress * finalValue);
+                
                 if (progress < 1) {
+                    // Cycle colors based on progress
+                    const colorIndex = Math.floor(progress * (colors.length - 1));
+                    if (colors[colorIndex]) {
+                        countEl.style.backgroundColor = colors[colorIndex].bg;
+                        countEl.style.color = colors[colorIndex].text;
+                    }
                     window.requestAnimationFrame(step);
                 } else {
-                    countEl.classList.add('pop');
+                    countEl.style.backgroundColor = '';
+                    countEl.style.color = '';
+                    setTimeout(() => {
+                        countEl.classList.add('pop');
+                        createExplosion(countEl);
+                    }, 100);
                 }
             };
             window.requestAnimationFrame(step);
@@ -444,8 +544,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- /wp:columns --></div>
 
 <!-- wp:group {"className":"lemon-category-info","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60","left":"var:preset|spacing|60","right":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group lemon-category-info" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--60)"><!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between"}} -->
-<div class="wp-block-group"><!-- wp:heading -->
+<div class="wp-block-group lemon-category-info" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--60)"><!-- wp:group {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|50"}}},"layout":{"type":"flex","justifyContent":"space-between"}} -->
+<div class="wp-block-group" style="margin-bottom:var(--wp--preset--spacing--50)"><!-- wp:heading -->
 <h2 class="wp-block-heading">Information</h2>
 <!-- /wp:heading -->
 
@@ -461,8 +561,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- /wp:group -->
 
 <!-- wp:group {"className":"lemon-mobile-menu-drawer","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60","left":"var:preset|spacing|60","right":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group lemon-mobile-menu-drawer" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--60)"><!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between"}} -->
-<div class="wp-block-group"><!-- wp:heading -->
+<div class="wp-block-group lemon-mobile-menu-drawer" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--60)"><!-- wp:group {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|50"}}},"layout":{"type":"flex","justifyContent":"space-between"}} -->
+<div class="wp-block-group" style="margin-bottom:var(--wp--preset--spacing--50)"><!-- wp:heading -->
 <h2 class="wp-block-heading">Menu</h2>
 <!-- /wp:heading -->
 
@@ -477,8 +577,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- /wp:group -->
 
 <!-- wp:group {"className":"lemon-filter-modal","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60","left":"var:preset|spacing|60","right":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group lemon-filter-modal" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--60)"><!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between"}} -->
-<div class="wp-block-group"><!-- wp:heading -->
+<div class="wp-block-group lemon-filter-modal" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--60)"><!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50"}}},"layout":{"type":"flex","justifyContent":"space-between"}} -->
+<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--50);margin-bottom:var(--wp--preset--spacing--50)"><!-- wp:heading -->
 <h2 class="wp-block-heading">Filters</h2>
 <!-- /wp:heading -->
 
