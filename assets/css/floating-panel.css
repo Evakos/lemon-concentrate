@@ -5,7 +5,7 @@
     z-index: 9999;
     display: flex;
     align-items: flex-start;
-    font-family: var(--wp--preset--font-family--poppins, sans-serif);
+    font-family: var(--wp--preset--font-family--inter-28-pt, sans-serif);
     transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 

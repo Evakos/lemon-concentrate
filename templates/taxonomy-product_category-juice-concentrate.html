@@ -33,6 +33,7 @@
 <!-- wp:html -->
 <style>
 :root :where(.is-layout-flow) > * { margin-block-start: 0 !important; }
+:where(.wp-site-blocks) > * { margin-block-start: 0 !important; }
 .lemon-product-grid { margin: 0 !important; padding: 0 !important; height: 100%; grid-template-rows: repeat(5, 1fr) !important; }
 .lemon-product-grid > li { height: auto !important; margin: 0 !important; padding: 0 !important; box-sizing: border-box !important; }
 .wp-block-query { margin: 0 !important; height: 100%; }
@@ -426,7 +427,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                 countEl.innerText = Math.floor(progress * finalValue);
-                if (progress < 1) window.requestAnimationFrame(step);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    countEl.classList.add('pop');
+                }
             };
             window.requestAnimationFrame(step);
         }, 500);
