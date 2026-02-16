@@ -46,3 +46,15 @@ function lemon_concentrate_unregister_patterns() {
 	unregister_block_pattern_category( 'featured' );
 }
 add_action( 'init', 'lemon_concentrate_unregister_patterns', 10 );
+
+/**
+ * Modify main query for Product Category taxonomy.
+ * Handles posts per page and ensures correct post type.
+ */
+function lemon_concentrate_modify_product_category_query( $query ) {
+	if ( ! is_admin() && $query->is_main_query() && is_tax( 'product_category' ) ) {
+		$query->set( 'posts_per_page', 25 );
+		$query->set( 'post_type', 'lemon_product' );
+	}
+}
+add_action( 'pre_get_posts', 'lemon_concentrate_modify_product_category_query' );

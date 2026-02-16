@@ -83,6 +83,19 @@ function lemon_concentrate_styles() {
 		LEMON_CONCENTRATE_VERSION,
 		true
 	);
+	wp_enqueue_style(
+		'lemon-concentrate-filter-modal',
+		get_theme_file_uri( 'assets/css/filter-modal.css' ),
+		[],
+		LEMON_CONCENTRATE_VERSION
+	);
+	wp_enqueue_script(
+		'lemon-concentrate-filter-modal',
+		get_theme_file_uri( 'assets/js/filter-modal.js' ),
+		[],
+		LEMON_CONCENTRATE_VERSION,
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'lemon_concentrate_styles' );
 
@@ -139,6 +152,17 @@ function lemon_concentrate_register_blocks() {
 	register_block_type( get_theme_file_path( 'inc/blocks/category-button' ) );
 }
 add_action( 'init', 'lemon_concentrate_register_blocks' );
+
+/**
+ * Register Mega Menu Block Styles.
+ */
+function lemon_concentrate_register_mega_menu_styles() {
+	register_block_style( 'lemon-concentrate/mega-menu', array(
+		'name'  => 'underline',
+		'label' => __( 'Underline', 'lemon-concentrate' ),
+	) );
+}
+add_action( 'init', 'lemon_concentrate_register_mega_menu_styles' );
 
 /**
  * Register Custom Post Type and Taxonomy.
@@ -395,11 +419,14 @@ function lemon_concentrate_apply_product_colors( $block_content, $block ) {
 		// Handle Read More Block.
 		if ( 'core/read-more' === $block['blockName'] ) {
 			$processor = new WP_HTML_Tag_Processor( $block_content );
-			if ( $processor->next_tag( 'a' ) ) {
-				$style = $processor->get_attribute( 'style' );
-				$style = $style ? rtrim( $style, ';' ) . ';' : '';
-				$processor->set_attribute( 'style', $style . "background-color: $color !important; border-color: $color !important;" );
-				$block_content = $processor->get_updated_html();
+			if ( ! isset( $block['attrs']['className'] ) || strpos( $block['attrs']['className'], 'lemon-view-product-btn' ) === false ) {
+				$processor = new WP_HTML_Tag_Processor( $block_content );
+				if ( $processor->next_tag( 'a' ) ) {
+					$style = $processor->get_attribute( 'style' );
+					$style = $style ? rtrim( $style, ';' ) . ';' : '';
+					$processor->set_attribute( 'style', $style . "background-color: $color !important; border-color: $color !important;" );
+					$block_content = $processor->get_updated_html();
+				}
 			}
 		}
 
@@ -699,6 +726,16 @@ function lemon_concentrate_featured_orderby( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'lemon_concentrate_featured_orderby' );
+
+/**
+ * Modify posts per page for product category archives.
+ */
+function lemon_concentrate_category_posts_per_page( $query ) {
+	if ( ! is_admin() && $query->is_main_query() && is_tax( 'product_category' ) ) {
+		$query->set( 'posts_per_page', 25 );
+	}
+}
+add_action( 'pre_get_posts', 'lemon_concentrate_category_posts_per_page' );
 
 /**
  * Enqueue admin scripts for featured toggle.

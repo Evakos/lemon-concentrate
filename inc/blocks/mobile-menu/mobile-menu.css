@@ -6,7 +6,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--wp--preset--color--primary, #000);
+	color: inherit;
 }
 
 .lemon-mobile-menu-icon {

@@ -1791,3 +1791,64 @@ add_action( 'init', function() {
 	update_field( 'faq', $faqs, $post_id );
 	update_option( 'lemon_product_283_data_imported_faq', true );
 } );
+
+/**
+ * Shortcode to display current category count.
+ */
+function lemon_current_category_count_shortcode() {
+	$term = get_queried_object();
+	if ( $term instanceof WP_Term ) {
+		return '<span class="lemon-category-count">' . esc_html( $term->count ) . '</span>';
+	}
+	return '';
+}
+add_shortcode( 'lemon_current_category_count', 'lemon_current_category_count_shortcode' );
+
+/**
+ * Inject category color CSS variable into blocks with 'dynamic-category-bg' class.
+ */
+function lemon_concentrate_inject_category_color( $block_content, $block ) {
+	if ( ! isset( $block['attrs']['className'] ) || strpos( $block['attrs']['className'], 'dynamic-category-bg' ) === false ) {
+		return $block_content;
+	}
+
+	$color = '';
+	$post_id = get_the_ID();
+
+	// 1. Check Product Override
+	if ( function_exists( 'get_field' ) ) {
+		$color = get_field( 'product_color_override', $post_id );
+	}
+
+	// 2. Check Category if no override
+	if ( ! $color ) {
+		$terms = get_the_terms( $post_id, 'product_category' );
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			$term = $terms[0];
+			// Try to find the most specific category (deepest child).
+			foreach ( $terms as $t ) {
+				if ( $t->parent !== 0 && ( $term->parent === 0 || $t->parent === $term->term_id ) ) {
+					$term = $t;
+				}
+			}
+			if ( function_exists( 'lemon_concentrate_get_category_color' ) ) {
+				$color = lemon_concentrate_get_category_color( $term->slug );
+			}
+		}
+	}
+
+	if ( $color ) {
+		if ( class_exists( 'WP_HTML_Tag_Processor' ) ) {
+			$tags = new WP_HTML_Tag_Processor( $block_content );
+			if ( $tags->next_tag() ) {
+				$existing_style = $tags->get_attribute( 'style' );
+				$style = '--category-color: ' . esc_attr( $color ) . ';';
+				$tags->set_attribute( 'style', $style . ( $existing_style ? $existing_style : '' ) );
+				$block_content = $tags->get_updated_html();
+			}
+		}
+	}
+
+	return $block_content;
+}
+add_filter( 'render_block', 'lemon_concentrate_inject_category_color', 10, 2 );

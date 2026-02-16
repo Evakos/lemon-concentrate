@@ -1,0 +1,33 @@
+.lemon-filter-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	z-index: 10000;
+	overflow-y: auto;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.lemon-filter-modal.is-open {
+	opacity: 1;
+	visibility: visible;
+}
+
+.lemon-filter-close-btn {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0.5rem;
+	color: var(--wp--preset--color--primary, #000);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.lemon-filter-close-btn:hover {
+	opacity: 0.7;
+}
