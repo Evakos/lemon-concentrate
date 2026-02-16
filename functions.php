@@ -732,7 +732,7 @@ add_action( 'pre_get_posts', 'lemon_concentrate_featured_orderby' );
  */
 function lemon_concentrate_category_posts_per_page( $query ) {
 	if ( ! is_admin() && $query->is_main_query() && is_tax( 'product_category' ) ) {
-		$query->set( 'posts_per_page', 25 );
+		$query->set( 'posts_per_page', 30 );
 	}
 }
 add_action( 'pre_get_posts', 'lemon_concentrate_category_posts_per_page' );
